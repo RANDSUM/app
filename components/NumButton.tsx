@@ -1,3 +1,4 @@
+import { Platform } from 'react-native'
 import { Button } from 'react-native-paper'
 
 type ButtonProps = {
@@ -14,8 +15,11 @@ export default function NumButton({ onPress, label, disabled }: ButtonProps) {
         alignItems: 'center',
       }}
       labelStyle={{
-        height: 30,
         width: 120,
+        justifyContent: 'center',
+        alignItems: 'center',
+        lineHeight: Platform.select({ android: 55 }),
+        height: Platform.select({ web: 35 }),
         fontSize: 50,
       }}
       disabled={disabled}

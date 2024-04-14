@@ -37,10 +37,7 @@ export default function App() {
           <View style={styles.numContainer}>
             <NumButton label="+" onPress={increaseQuantity} />
             <TextInput
-              style={[
-                styles.num,
-                { backgroundColor: theme.colors.background, fontSize: 64 },
-              ]}
+              style={[styles.num, { backgroundColor: theme.colors.background }]}
               underlineColor="transparent"
               activeUnderlineColor="transparent"
               label=""
@@ -106,9 +103,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 140,
-    width: 140,
+    minHeight: 120,
+    maxWidth: 250,
     padding: 20,
+    fontSize: 55,
   },
   diceContainer: {
     flexDirection: 'row',
