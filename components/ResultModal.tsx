@@ -50,12 +50,12 @@ export default function ResultModal({
     <View style={{ position: 'absolute', right: 10, top: -40 }}>
       <CircularProgress
         activeStrokeColor={theme.colors.primary}
-        circleBackgroundColor={theme.colors.background}
         ref={progressRef}
+        progressValueStyle={{ display: 'none' }}
+        inActiveStrokeOpacity={0}
         initialValue={100}
         value={0}
         duration={DURATION}
-        progressFormatter={() => ''}
         radius={15}
         activeStrokeWidth={2}
       />
