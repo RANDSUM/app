@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "RandsumApp",
-    "slug": "randsum-app",
+    "slug": "randsumapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/randsumLogo.png",
     "userInterfaceStyle": "light",
     "scheme": "com.randsum.app",
     "splash": {
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/randsumLogo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.randsum.app"
@@ -41,10 +41,13 @@
       "router": {
         "origin": false
       },
+      "eas": {
+        "projectId": "d50b53cf-026b-45e8-823d-c96fb621a521"
+      }
     },
-    "owner": "dusktools",
     "runtimeVersion": {
       "policy": "appVersion"
     },
+    "owner": "randsum"
   }
 }

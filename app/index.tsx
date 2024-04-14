@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 
 import { roll, RollResult } from 'randsum'
 import { StyleSheet, View } from 'react-native'
-import { Text, Button, TextInput, Snackbar } from 'react-native-paper'
+import { Text, Button, TextInput } from 'react-native-paper'
 
+import NumButton from '~components/NumButton'
+import ResultModal from '~components/ResultModal'
 import useAppTheme from '~theme/useAppTheme'
 
 const dieSides = [2, 4, 6, 8, 10, 12, 20, 100]
@@ -15,6 +17,8 @@ export default function App() {
   const decreaseSidesIndex = () => setSidesIndex((s) => s - 1)
   const disableSidesUp = sidesIndex === dieSides.length - 1
   const disableSidesDown = sidesIndex === 0
+  console.log('disableSidesUp', disableSidesUp)
+  console.log('disableSidesDown', disableSidesDown)
   const sides = dieSides[sidesIndex]
 
   const increaseQuantity = () => setQuantity((q) => q + 1 || 1)
@@ -23,7 +27,8 @@ export default function App() {
   const [lastRoll, setLastRoll] = useState<RollResult<number>>()
   const rollDie = () => setLastRoll(roll({ sides, quantity }))
 
-  const onDismissSnackBar = () => setLastRoll(undefined)
+  const dismissModal = () => setLastRoll(undefined)
+  const modalIsVisible = !!lastRoll
 
   return (
     <>
@@ -31,10 +36,13 @@ export default function App() {
         style={[styles.container, { backgroundColor: theme.colors.background }]}
       >
         <View style={styles.diceContainer}>
-          <View style={[styles.numContainer, styles.numInputContainer]}>
-            <Button onPress={increaseQuantity}>+</Button>
+          <View style={styles.numContainer}>
+            <NumButton label="+" onPress={increaseQuantity} />
             <TextInput
-              style={[styles.num, { backgroundColor: theme.colors.background }]}
+              style={[
+                styles.num,
+                { backgroundColor: theme.colors.background, fontSize: 64 },
+              ]}
               underlineColor="transparent"
               activeUnderlineColor="transparent"
               label=""
@@ -47,37 +55,38 @@ export default function App() {
                   : setQuantity(Number(num))
               }
             />
-            <Button disabled={quantityDownDisabled} onPress={decreaseQuantity}>
-              -
-            </Button>
+            <NumButton
+              label="-"
+              disabled={quantityDownDisabled}
+              onPress={decreaseQuantity}
+            />
           </View>
           <View style={styles.numContainer}>
-            <Text>D</Text>
-          </View>
-          <View style={[styles.numContainer, styles.numInputContainer]}>
-            <Button disabled={disableSidesUp} onPress={increaseSidesIndex}>
-              +
-            </Button>
+            <NumButton
+              label="+"
+              disabled={disableSidesUp}
+              onPress={increaseSidesIndex}
+            />
             <View style={styles.num}>
-              <Text>{sides}</Text>
+              <Text variant="displayLarge">D{sides}</Text>
             </View>
-            <Button disabled={disableSidesDown} onPress={decreaseSidesIndex}>
-              -
-            </Button>
+            <NumButton
+              label="-"
+              disabled={disableSidesDown}
+              onPress={decreaseSidesIndex}
+            />
           </View>
         </View>
-        <Button onPress={rollDie}>Roll</Button>
+        <Button mode="contained" onPress={rollDie}>
+          Roll
+        </Button>
       </View>
-      <Snackbar
-        visible={!!lastRoll}
-        onDismiss={onDismissSnackBar}
-        action={{
-          label: 'X',
-          onPress: onDismissSnackBar,
-        }}
-      >
-        {`You rolled ${lastRoll?.rollParameters.diceOptions[0].quantity}D${lastRoll?.rollParameters.diceOptions[0].sides} and rolled [${lastRoll?.rolls.join(',')}] = ${lastRoll?.total}!`}
-      </Snackbar>
+      <ResultModal
+        visible={modalIsVisible}
+        onDismiss={dismissModal}
+        rollResult={lastRoll}
+        rollAgain={rollDie}
+      />
     </>
   )
 }
@@ -85,26 +94,27 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
   },
+  modalStyle: {},
   numContainer: {
     flexDirection: 'column',
     alignContent: 'center',
     justifyContent: 'center',
   },
   num: {
-    flex: 1,
     flexDirection: 'column',
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 50,
-  },
-  numInputContainer: {
-    width: 80,
+    width: 140,
+    padding: 20,
   },
   diceContainer: {
     flexDirection: 'row',
+    flex: 2,
+    width: '100%',
+    justifyContent: 'center',
   },
 })
