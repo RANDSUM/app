@@ -48,6 +48,9 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
+    "updates": {
+      "url": "https://u.expo.dev/d50b53cf-026b-45e8-823d-c96fb621a521"
+    },
     "owner": "randsum"
   }
 }
