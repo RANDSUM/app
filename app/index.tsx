@@ -17,8 +17,6 @@ export default function App() {
   const decreaseSidesIndex = () => setSidesIndex((s) => s - 1)
   const disableSidesUp = sidesIndex === dieSides.length - 1
   const disableSidesDown = sidesIndex === 0
-  console.log('disableSidesUp', disableSidesUp)
-  console.log('disableSidesDown', disableSidesDown)
   const sides = dieSides[sidesIndex]
 
   const increaseQuantity = () => setQuantity((q) => q + 1 || 1)
@@ -108,6 +106,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    minHeight: 140,
     width: 140,
     padding: 20,
   },
