@@ -27,7 +27,8 @@
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-paper": "^5.12.3",
     "react-native-web": "~0.19.6",
-    "expo-dev-client": "~3.3.11"
+    "expo-dev-client": "~3.3.11",
+    "react-native-reanimated": "~3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
