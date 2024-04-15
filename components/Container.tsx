@@ -25,7 +25,7 @@ export default function Container({
 
   return (
     <SafeAreaView
-      edges={!header ? ['top'] : []}
+      edges={!header ? ['top'] : ['bottom']}
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,
@@ -37,6 +37,7 @@ export default function Container({
             flex: 1,
             justifyContent: 'center',
             backgroundColor: theme.colors.background,
+            gap: 10,
           },
           style,
         ]}

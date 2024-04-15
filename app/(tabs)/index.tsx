@@ -1,9 +1,9 @@
 import Container from '~components/Container'
 import Roller from '~components/Roller'
 
-export default function App() {
+export default function RollDisplay() {
   return (
-    <Container>
+    <Container style={{ paddingBottom: 10 }}>
       <Roller />
     </Container>
   )

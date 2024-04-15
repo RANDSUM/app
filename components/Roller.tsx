@@ -104,6 +104,21 @@ export default function Roller(props: Props) {
     setSnackbarText('Roll saved!')
   }
 
+  const saveChanges = () => {
+    setSavedRolls((rolls) => {
+      const newRolls = [...rolls]
+      return newRolls.map((roll) => {
+        if (roll.uuid === props.savedRoll?.uuid) {
+          return {
+            ...roll,
+            rolls: dieGroups,
+          }
+        }
+        return roll
+      })
+    })
+  }
+
   const removeDie = () => {
     if (dieGroups.length <= 1) return
     const newDieGroups = [...dieGroups]
@@ -118,10 +133,20 @@ export default function Roller(props: Props) {
     }
   }
 
-  const isDirty = JSON.stringify(dieGroups) !== JSON.stringify(defaultDiegroups)
+  const isDirty =
+    JSON.stringify(dieGroups) !==
+    JSON.stringify(props.savedRoll ? props.savedRoll.rolls : defaultDiegroups)
 
-  const ButtonControlRow = () => {
-    return (
+  const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
+  const deleteSavedRoll = () => {
+    if (!props.savedRoll) return
+    removeSavedRoll(props.savedRoll?.uuid)
+    router.push('/myRolls')
+    setSnackbarText('Roll deleted')
+  }
+
+  return (
+    <View style={styles.container}>
       <View style={styles.lesserButtonRow}>
         <Button mode="text" onPress={addDie} disabled={dieGroups.length >= 4}>
           Add Die
@@ -138,21 +163,16 @@ export default function Roller(props: Props) {
             Reset
           </Button>
         )}
+        {!!props.savedRoll && (
+          <Button
+            labelStyle={{ color: theme.colors.error }}
+            mode="text"
+            onPress={() => setDeleteDialogIsVisible(true)}
+          >
+            Delete
+          </Button>
+        )}
       </View>
-    )
-  }
-
-  const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
-  const deleteSavedRoll = () => {
-    if (!props.savedRoll) return
-    removeSavedRoll(props.savedRoll?.uuid)
-    router.push('/myRolls')
-    setSnackbarText('Roll deleted!')
-  }
-
-  return (
-    <View style={styles.container}>
-      <ButtonControlRow />
       <DieGroupDisplay
         dieGroups={dieGroups}
         activeIndex={currentDieGroupIndex}
@@ -165,6 +185,7 @@ export default function Roller(props: Props) {
             style={[styles.num, { backgroundColor: theme.colors.background }]}
             underlineColor="transparent"
             activeUnderlineColor="transparent"
+            maxFontSizeMultiplier={1}
             label=""
             keyboardType="numeric"
             numberOfLines={1}
@@ -211,23 +232,23 @@ export default function Roller(props: Props) {
           </Button>
         </View>
       )}
+      {isSavedRoll && (
+        <View style={styles.lesserButtonRow}>
+          <Button
+            style={{ width: '100%' }}
+            mode="text"
+            disabled={!isDirty}
+            onPress={saveChanges}
+          >
+            Save Changes
+          </Button>
+        </View>
+      )}
       <View style={styles.lesserButtonRow}>
         <Button style={{ width: '100%' }} onPress={rollDie} mode="contained">
           Roll
         </Button>
       </View>
-      {isSavedRoll && (
-        <View style={styles.lesserButtonRow}>
-          <Button
-            style={{ width: '100%' }}
-            labelStyle={{ color: theme.colors.error }}
-            mode="text"
-            onPress={() => setDeleteDialogIsVisible(true)}
-          >
-            Delete Roll
-          </Button>
-        </View>
-      )}
       <ResultModal
         visible={resultModalIsVisible}
         onDismiss={dismissResultModal}
@@ -266,7 +287,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     gap: 10,
-    paddingBottom: 15,
   },
   num: {
     flexDirection: 'column',

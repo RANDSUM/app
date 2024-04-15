@@ -45,7 +45,7 @@ export default function ResultModal({
     setIsLoading(true)
     const interval = setInterval(() => {
       setIsLoading(false)
-    }, 200)
+    }, 300)
 
     return () => clearInterval(interval)
   }, [combinedTotal])
@@ -100,29 +100,27 @@ export default function ResultModal({
           <Card.Title title={title ? `Rolling "${title}"` : 'Rolling...'} />
           <Card.Content>
             <Text style={{ textAlign: 'center' }}>{rollsDescription}</Text>
+            {isCollapsed && (
+              <View style={{ position: 'absolute', right: 10, top: -40 }}>
+                <CircularProgress
+                  activeStrokeColor={theme.colors.primary}
+                  ref={progressRef}
+                  progressValueStyle={{ display: 'none' }}
+                  inActiveStrokeOpacity={0}
+                  initialValue={100}
+                  value={isLoading ? 100 : 0}
+                  duration={DURATION}
+                  radius={15}
+                  activeStrokeWidth={2}
+                />
+              </View>
+            )}
             {isLoading ? (
               <ActivityIndicator size="large" style={{ height: 85 }} />
             ) : (
-              <>
-                {isCollapsed && (
-                  <View style={{ position: 'absolute', right: 10, top: -40 }}>
-                    <CircularProgress
-                      activeStrokeColor={theme.colors.primary}
-                      ref={progressRef}
-                      progressValueStyle={{ display: 'none' }}
-                      inActiveStrokeOpacity={0}
-                      initialValue={100}
-                      value={0}
-                      duration={DURATION}
-                      radius={15}
-                      activeStrokeWidth={2}
-                    />
-                  </View>
-                )}
-                <Text style={styles.result} variant="displayLarge">
-                  {combinedTotal}
-                </Text>
-              </>
+              <Text style={styles.result} variant="displayLarge">
+                {new Intl.NumberFormat().format(combinedTotal)}
+              </Text>
             )}
             <Button
               mode="text"
@@ -145,7 +143,9 @@ export default function ResultModal({
             </Collapsible>
           </Card.Content>
           <Card.Actions>
-            <Button onPress={rollAgain}>Roll Again</Button>
+            <Button disabled={isLoading} onPress={rollAgain}>
+              Roll Again
+            </Button>
           </Card.Actions>
         </Card>
       </Modal>
