@@ -19,6 +19,7 @@ import useAppTheme from '~theme/useAppTheme'
 
 type Props = {
   visible: boolean
+  title: string | undefined
   onDismiss: () => void
   rollResults: RollResult[] | undefined
   rollAgain: () => void
@@ -30,6 +31,7 @@ export default function ResultModal({
   onDismiss,
   rollResults,
   rollAgain,
+  title,
 }: Props) {
   const theme = useAppTheme()
   const progressRef = useRef<ProgressRef>(null)
@@ -79,7 +81,7 @@ export default function ResultModal({
 
     const rollDescription = `${quantity}D${sides}`
 
-    const rollsDescription = `${rolls.join(' + ')}`
+    const rollsDescription = `${rolls.join(', ')}`
     return { title: rollDescription, value: rollsDescription }
   })
 
@@ -91,7 +93,7 @@ export default function ResultModal({
         style={[styles.modalStyle]}
       >
         <Card style={{ backgroundColor: theme.colors.background }}>
-          <Card.Title title={isLoading ? `Rolling...` : undefined} />
+          <Card.Title title={isLoading ? `Rolling...` : title} />
           <Card.Content>
             {isLoading ? (
               <ActivityIndicator size="large" style={{ height: 140 }} />

@@ -14,14 +14,21 @@ const defaultRollOptions: RollOptions<number> = {
   quantity: 1,
   sides: 20,
 }
-export default function Roller() {
-  const theme = useAppTheme()
-  const [rollOptions, setRollOptions] =
-    useState<RollOptions<number>>(defaultRollOptions)
 
-  const [dieGroups, setDieGroups] = useState<RollOptions<number>[]>([
-    rollOptions,
-  ])
+const defaultDiegroups = [defaultRollOptions]
+type Props = {
+  dieGroups?: RollOptions<number>[]
+  title?: string
+}
+export default function Roller(props: Props) {
+  const theme = useAppTheme()
+  const [rollOptions, setRollOptions] = useState<RollOptions<number>>(
+    defaultDiegroups[0]
+  )
+
+  const [dieGroups, setDieGroups] = useState<RollOptions<number>[]>(
+    props.dieGroups || defaultDiegroups
+  )
   const [currentDieGroupIndex, setCurrentDieGroupIndex] = useState(0)
 
   useEffect(() => {
@@ -74,8 +81,25 @@ export default function Roller() {
     setRollOptions(defaultRollOptions)
   }
 
+  const removeDie = () => {
+    if (dieGroups.length <= 1) return
+    const newDieGroups = [...dieGroups]
+    newDieGroups.splice(currentDieGroupIndex, 1)
+    setDieGroups(newDieGroups)
+    setLastRolls(undefined)
+    if (currentDieGroupIndex >= newDieGroups.length - 1) {
+      setCurrentDieGroupIndex(newDieGroups.length - 1)
+      setRollOptions(newDieGroups[newDieGroups.length - 1])
+    } else {
+      setRollOptions(newDieGroups[currentDieGroupIndex])
+    }
+  }
+
   return (
     <>
+      <Text style={{ textAlign: 'center' }} variant="displaySmall">
+        {props.title}
+      </Text>
       <DieGroupDisplay
         dieGroups={dieGroups}
         activeIndex={currentDieGroupIndex}
@@ -124,8 +148,15 @@ export default function Roller() {
         </View>
       </View>
       <View style={styles.lesserButtonRow}>
-        <Button mode="text" onPress={addDie} disabled={dieGroups.length >= 5}>
+        <Button mode="text" onPress={addDie} disabled={dieGroups.length >= 4}>
           Add Die
+        </Button>
+        <Button
+          mode="text"
+          onPress={removeDie}
+          disabled={dieGroups.length <= 1}
+        >
+          Remove Die
         </Button>
         <Button mode="text" onPress={reset}>
           Reset
@@ -137,6 +168,7 @@ export default function Roller() {
         </Button>
       </View>
       <ResultModal
+        title={props.title}
         visible={modalIsVisible}
         onDismiss={dismissModal}
         rollResults={lastRolls}

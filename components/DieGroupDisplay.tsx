@@ -1,6 +1,6 @@
 import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Chip } from 'react-native-paper'
 
 type Props = {
   dieGroups: RollOptions<number>[]
@@ -15,21 +15,25 @@ export default function DieGroupDisplay({
 }: Props) {
   return (
     <View style={[styles.container]}>
-      {dieGroups.length > 1 &&
-        dieGroups.map((group, index) => (
-          <Button
-            mode={activeIndex === index ? 'contained' : 'outlined'}
-            key={index}
-            onPress={() => onPress(index)}
-          >
-            {`${group.quantity}D${group.sides}`}
-          </Button>
-        ))}
+      {dieGroups.map((group, index) => (
+        <Chip
+          selected={activeIndex === index}
+          key={index}
+          showSelectedOverlay
+          showSelectedCheck={false}
+          onPress={() => onPress(index)}
+        >
+          {`${group.quantity}D${group.sides}`}
+        </Chip>
+      ))}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginHorizontal: 0,
+  },
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
