@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Portal, Text, Button, Dialog, TextInput } from 'react-native-paper'
+import { Portal, Button, Dialog, TextInput } from 'react-native-paper'
 
 type Props = {
   visible: boolean
@@ -20,17 +20,16 @@ export default function SaveRollDialog({
       <Dialog visible={visible} onDismiss={onDismiss}>
         <Dialog.Title>Save Roll</Dialog.Title>
         <Dialog.Content>
-          <Text variant="bodySmall">Add a title for your Roll</Text>
           <TextInput
             placeholder="My Saved Roll"
-            label=""
+            label="Give your Roll a Title"
             value={title}
             onChangeText={setTitle}
           />
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={onDismiss}>Cancel</Button>
-          <Button disabled={!!title} onPress={() => onAccept(title)}>
+          <Button disabled={!title} onPress={() => onAccept(title)}>
             Save
           </Button>
         </Dialog.Actions>

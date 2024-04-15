@@ -99,8 +99,9 @@ export default function ResultModal({
         <Card style={{ backgroundColor: theme.colors.background }}>
           <Card.Title title={title ? `Rolling "${title}"` : 'Rolling...'} />
           <Card.Content>
+            <Text style={{ textAlign: 'center' }}>{rollsDescription}</Text>
             {isLoading ? (
-              <ActivityIndicator size="large" style={{ height: 140 }} />
+              <ActivityIndicator size="large" style={{ height: 124 }} />
             ) : (
               <>
                 {isCollapsed && (
@@ -118,7 +119,6 @@ export default function ResultModal({
                     />
                   </View>
                 )}
-                <Text style={{ textAlign: 'center' }}>{rollsDescription}</Text>
                 <Text style={styles.result} variant="displayLarge">
                   {combinedTotal}
                 </Text>

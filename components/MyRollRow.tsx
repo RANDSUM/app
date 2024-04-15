@@ -28,36 +28,40 @@ export default function MyRollRow({
 
   return (
     <>
-      <Link asChild href={`/${uuid}`}>
-        <Pressable>
-          <View
-            style={StyleSheet.flatten([
-              styles.container,
-              {
-                backgroundColor: theme.colors.background,
-              },
-            ])}
-          >
+      <View
+        style={StyleSheet.flatten([
+          styles.container,
+          {
+            backgroundColor: theme.colors.background,
+          },
+        ])}
+      >
+        <Link asChild href={`/${uuid}`}>
+          <Pressable style={{ flexGrow: 1 }}>
             <View>
               <Text variant="titleMedium">{title}</Text>
               <Text variant="bodySmall">{description}</Text>
             </View>
-            <View style={styles.interactionRow}>
-              <Button mode="contained" onPress={rollDie}>
-                Roll
-              </Button>
-              <View
-                style={{
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                }}
-              >
+          </Pressable>
+        </Link>
+        <View style={styles.interactionRow}>
+          <Button mode="contained" onPress={rollDie}>
+            Roll
+          </Button>
+          <View
+            style={{
+              alignContent: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Link asChild href={`/${uuid}`}>
+              <Pressable>
                 <Icon source="chevron-right" size={24} />
-              </View>
-            </View>
+              </Pressable>
+            </Link>
           </View>
-        </Pressable>
-      </Link>
+        </View>
+      </View>
       <ResultModal
         title={title}
         visible={resultModalIsVisible}
@@ -73,8 +77,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: '100%',
-    borderColor: 'black',
-    borderBottomWidth: 1,
     paddingVertical: 10,
     paddingHorizontal: 20,
     justifyContent: 'space-between',

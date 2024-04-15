@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet } from 'react-native'
-import { Text } from 'react-native-paper'
+import { FlatList, StyleSheet, View } from 'react-native'
+import { Divider, Text } from 'react-native-paper'
 
 import Container from '~components/Container'
 import MyRollRow from '~components/MyRollRow'
@@ -14,7 +14,12 @@ export default function MyRolls() {
       <FlatList
         data={savedRolls}
         keyExtractor={({ uuid }) => uuid}
-        ListEmptyComponent={() => <Text>No saved rolls</Text>}
+        ItemSeparatorComponent={Divider}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.text}>No Saved Rolls</Text>
+          </View>
+        )}
         contentContainerStyle={[
           styles.contentContainerStyle,
           { backgroundColor: theme.colors.background },
@@ -30,5 +35,12 @@ export default function MyRolls() {
 const styles = StyleSheet.create({
   contentContainerStyle: {
     flexGrow: 1,
+  },
+  text: {
+    textAlign: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
 })

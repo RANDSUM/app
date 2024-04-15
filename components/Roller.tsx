@@ -222,7 +222,7 @@ export default function Roller(props: Props) {
             style={{ width: '100%' }}
             labelStyle={{ color: theme.colors.error }}
             mode="text"
-            onPress={deleteSavedRoll}
+            onPress={() => setDeleteDialogIsVisible(true)}
           >
             Delete Roll
           </Button>
