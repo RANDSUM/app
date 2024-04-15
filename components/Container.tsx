@@ -10,16 +10,22 @@ import useAppTheme from '~theme/useAppTheme'
 type Props = PropsWithChildren<{
   style?: ViewStyle
   loading?: boolean
+  header?: boolean
 }>
 
-export default function Container({ children, style, loading = false }: Props) {
+export default function Container({
+  children,
+  style,
+  header = false,
+  loading = false,
+}: Props) {
   const theme = useAppTheme()
   const { hydrated } = useAppContext()
   const showLoading = !hydrated || loading
 
   return (
     <SafeAreaView
-      edges={['top']}
+      edges={!header ? ['top'] : []}
       style={{
         flex: 1,
         backgroundColor: theme.colors.background,

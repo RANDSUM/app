@@ -1,15 +1,16 @@
 import { useState } from 'react'
 
+import { Link } from 'expo-router'
 import { RollResult, roll } from 'randsum'
-import { View } from 'react-native'
-import { Text, Button } from 'react-native-paper'
+import { Pressable, StyleSheet, View } from 'react-native'
+import { Text, Button, Icon } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
 import useAppTheme from '~theme/useAppTheme'
 import { SavedRoll } from '~types'
 
 export default function MyRollRow({
-  savedRoll: { title, rolls },
+  savedRoll: { title, rolls, uuid },
 }: {
   savedRoll: SavedRoll
 }) {
@@ -27,39 +28,36 @@ export default function MyRollRow({
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          borderColor: 'black',
-          borderBottomWidth: 1,
-          paddingVertical: 10,
-          paddingHorizontal: 20,
-          justifyContent: 'space-between',
-        }}
-      >
-        <View>
-          <Text variant="titleMedium">{title}</Text>
-          <Text variant="bodySmall">{description}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 10,
-          }}
-        >
-          <Button mode="contained" onPress={rollDie}>
-            Roll
-          </Button>
-          <Button
-            mode="contained"
-            buttonColor={theme.colors.error}
-            onPress={rollDie}
+      <Link asChild href={`/${uuid}`}>
+        <Pressable>
+          <View
+            style={StyleSheet.flatten([
+              styles.container,
+              {
+                backgroundColor: theme.colors.background,
+              },
+            ])}
           >
-            Delete
-          </Button>
-        </View>
-      </View>
+            <View>
+              <Text variant="titleMedium">{title}</Text>
+              <Text variant="bodySmall">{description}</Text>
+            </View>
+            <View style={styles.interactionRow}>
+              <Button mode="contained" onPress={rollDie}>
+                Roll
+              </Button>
+              <View
+                style={{
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Icon source="chevron-right" size={24} />
+              </View>
+            </View>
+          </View>
+        </Pressable>
+      </Link>
       <ResultModal
         title={title}
         visible={resultModalIsVisible}
@@ -70,3 +68,19 @@ export default function MyRollRow({
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    width: '100%',
+    borderColor: 'black',
+    borderBottomWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+  },
+  interactionRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+})

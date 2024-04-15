@@ -30,7 +30,9 @@ export default function SaveRollDialog({
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={onDismiss}>Cancel</Button>
-          <Button onPress={() => onAccept(title)}>Save</Button>
+          <Button disabled={!!title} onPress={() => onAccept(title)}>
+            Save
+          </Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

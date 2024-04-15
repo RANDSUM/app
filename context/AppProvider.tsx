@@ -15,6 +15,10 @@ export default function AppProvider({ children }: PropsWithChildren) {
     duration: 3_000,
   })
 
+  const removeSavedRoll = (uuid: string) => {
+    setSavedRolls((rolls) => rolls.filter((r) => r.uuid !== uuid))
+  }
+
   const setSnackbarText = (text: string | undefined) =>
     setSnackbarConfig((c) => ({ ...c, children: text }))
 
@@ -42,7 +46,13 @@ export default function AppProvider({ children }: PropsWithChildren) {
 
   return (
     <AppStateContext.Provider
-      value={{ savedRolls, setSavedRolls, hydrated, setSnackbarText }}
+      value={{
+        savedRolls,
+        setSavedRolls,
+        hydrated,
+        setSnackbarText,
+        removeSavedRoll,
+      }}
     >
       {children}
       <Snackbar

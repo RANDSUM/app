@@ -6,6 +6,7 @@ import { roll, RollOptions, RollResult } from 'randsum'
 import { Keyboard, StyleSheet, View } from 'react-native'
 import { Text, Button, TextInput } from 'react-native-paper'
 
+import DeleteSavedRollDialog from './DeleteSavedRollDialog'
 import DieGroupDisplay from './DieGroupDisplay'
 import SaveRollDialog from './SaveRollDialog'
 import NumButton from '~components/NumButton'
@@ -13,22 +14,25 @@ import ResultModal from '~components/ResultModal'
 import { defaultDiegroups, defaultRollOptions, dieSides } from '~constants'
 import useAppContext from '~context/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
+import { SavedRoll } from '~types'
 
 type Props = {
-  dieGroups?: RollOptions<number>[]
+  savedRoll?: SavedRoll
   title?: string
 }
 export default function Roller(props: Props) {
   const theme = useAppTheme()
-  const { setSavedRolls, setSnackbarText } = useAppContext()
+  const { setSavedRolls, setSnackbarText, removeSavedRoll } = useAppContext()
   const [rollOptions, setRollOptions] = useState<RollOptions<number>>(
-    defaultDiegroups[0]
+    props.savedRoll?.rolls ? props.savedRoll?.rolls[0] : defaultDiegroups[0]
   )
 
   const [dieGroups, setDieGroups] = useState<RollOptions<number>[]>(
-    props.dieGroups || defaultDiegroups
+    props.savedRoll?.rolls || defaultDiegroups
   )
   const [currentDieGroupIndex, setCurrentDieGroupIndex] = useState(0)
+
+  const isSavedRoll = !!props.savedRoll
 
   useEffect(() => {
     setDieGroups((groups) => {
@@ -76,7 +80,7 @@ export default function Roller(props: Props) {
   const dismissResultModal = () => setLastRolls(undefined)
   const resultModalIsVisible = !!lastRolls
 
-  const [dialogIsVisible, setDialogIsVisible] = useState(false)
+  const [saveDialogIsVisible, setSaveDialogIsVisible] = useState(false)
 
   const reset = () => {
     setDieGroups([defaultRollOptions])
@@ -136,14 +140,17 @@ export default function Roller(props: Props) {
     )
   }
 
+  const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
+  const deleteSavedRoll = () => {
+    if (!props.savedRoll) return
+    removeSavedRoll(props.savedRoll?.uuid)
+    router.push('/myRolls')
+    setSnackbarText('Roll deleted!')
+  }
+
   return (
     <View style={styles.container}>
       <View>
-        {props.title && (
-          <Text style={{ textAlign: 'center' }} variant="displaySmall">
-            {props.title}
-          </Text>
-        )}
         <ButtonControlRow />
         <DieGroupDisplay
           dieGroups={dieGroups}
@@ -193,31 +200,51 @@ export default function Roller(props: Props) {
           />
         </View>
       </View>
-      <View style={styles.lesserButtonRow}>
-        <Button
-          style={{ width: '100%' }}
-          mode="text"
-          onPress={() => setDialogIsVisible(true)}
-        >
-          Add to My Rolls
-        </Button>
-      </View>
+      {!isSavedRoll && (
+        <View style={styles.lesserButtonRow}>
+          <Button
+            style={{ width: '100%' }}
+            mode="text"
+            onPress={() => setSaveDialogIsVisible(true)}
+          >
+            Add to My Rolls
+          </Button>
+        </View>
+      )}
       <View style={styles.lesserButtonRow}>
         <Button style={{ width: '100%' }} onPress={rollDie} mode="contained">
           Roll
         </Button>
       </View>
+      {isSavedRoll && (
+        <View style={styles.lesserButtonRow}>
+          <Button
+            style={{ width: '100%' }}
+            labelStyle={{ color: theme.colors.error }}
+            mode="text"
+            onPress={deleteSavedRoll}
+          >
+            Delete Roll
+          </Button>
+        </View>
+      )}
       <ResultModal
         visible={resultModalIsVisible}
         onDismiss={dismissResultModal}
         rollResults={lastRolls}
         rollAgain={rollDie}
       />
+      <DeleteSavedRollDialog
+        savedRoll={props.savedRoll}
+        visible={deleteDialogIsVisible}
+        onAccept={deleteSavedRoll}
+        onDismiss={() => setDeleteDialogIsVisible(false)}
+      />
       <SaveRollDialog
-        visible={dialogIsVisible}
-        onDismiss={() => setDialogIsVisible(false)}
+        visible={saveDialogIsVisible}
+        onDismiss={() => setSaveDialogIsVisible(false)}
         onAccept={(title) => {
-          setDialogIsVisible(false)
+          setSaveDialogIsVisible(false)
           addToSavedRolls(title)
         }}
       />

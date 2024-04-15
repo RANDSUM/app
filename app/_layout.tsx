@@ -1,4 +1,4 @@
-import { Slot } from 'expo-router'
+import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
@@ -15,7 +15,7 @@ export default function RootLayout() {
         <GestureHandlerRootView
           style={{ flex: 1, backgroundColor: theme.colors.background }}
         >
-          <Slot />
+          <Stack />
         </GestureHandlerRootView>
         <StatusBar style="auto" />
       </PaperProvider>
