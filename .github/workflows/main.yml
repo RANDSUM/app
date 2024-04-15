@@ -1,0 +1,46 @@
+name: CI
+on: [push]
+jobs:
+  ci:
+    name: Compile Typescript
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node: ['21.5.0']
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set timezone
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: 'America/New_York'
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: Generate Expo Route Types
+        run: npx expo customize tsconfig.json
+
+      - name: Check types
+        run: npm run ts:check
+
+      - name: Expo Doctor
+        run: npx expo-doctor
+
+      - name: Lint
+        run: npm run lint
+
+      # - name: Test
+      # run: npm run test
+
+      - name: Format
+        run: npm run format
