@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { roll, RollOptions, RollResult } from 'randsum'
-import { StyleSheet, View } from 'react-native'
+import { Keyboard, StyleSheet, View } from 'react-native'
 import { Text, Button, TextInput } from 'react-native-paper'
 
 import DieGroupDisplay from './DieGroupDisplay'
@@ -64,7 +64,10 @@ export default function Roller(props: Props) {
 
   const [lastRolls, setLastRolls] = useState<RollResult<number>[]>()
 
-  const rollDie = () => setLastRolls(dieGroups.map((group) => roll(group)))
+  const rollDie = () => {
+    Keyboard.dismiss()
+    setLastRolls(dieGroups.map((group) => roll(group)))
+  }
 
   const addDie = () => {
     setDieGroups((groups) => [...groups, defaultRollOptions])
@@ -95,16 +98,31 @@ export default function Roller(props: Props) {
     }
   }
 
+  const ButtonControlRow = () => {
+    return (
+      <View style={styles.lesserButtonRow}>
+        <Button mode="text" onPress={addDie} disabled={dieGroups.length >= 4}>
+          Add Die
+        </Button>
+        <Button
+          mode="text"
+          onPress={removeDie}
+          disabled={dieGroups.length <= 1}
+        >
+          Remove Die
+        </Button>
+        <Button mode="text" onPress={reset}>
+          Reset
+        </Button>
+      </View>
+    )
+  }
+
   return (
     <>
       <Text style={{ textAlign: 'center' }} variant="displaySmall">
         {props.title}
       </Text>
-      <DieGroupDisplay
-        dieGroups={dieGroups}
-        activeIndex={currentDieGroupIndex}
-        onPress={(index) => setCurrentDieGroupIndex(index)}
-      />
       <View style={styles.diceContainer}>
         <View style={styles.numContainer}>
           <NumButton label="+" onPress={increaseQuantity} />
@@ -147,25 +165,18 @@ export default function Roller(props: Props) {
           />
         </View>
       </View>
-      <View style={styles.lesserButtonRow}>
-        <Button mode="text" onPress={addDie} disabled={dieGroups.length >= 4}>
-          Add Die
-        </Button>
-        <Button
-          mode="text"
-          onPress={removeDie}
-          disabled={dieGroups.length <= 1}
-        >
-          Remove Die
-        </Button>
-        <Button mode="text" onPress={reset}>
-          Reset
-        </Button>
-      </View>
-      <View style={styles.lesserButtonRow}>
-        <Button mode="contained" onPress={rollDie} style={{ width: '100%' }}>
-          Roll
-        </Button>
+      <View>
+        <DieGroupDisplay
+          dieGroups={dieGroups}
+          activeIndex={currentDieGroupIndex}
+          onPress={(index) => setCurrentDieGroupIndex(index)}
+        />
+        <ButtonControlRow />
+        <View style={styles.lesserButtonRow}>
+          <Button mode="contained" onPress={rollDie} style={{ width: '100%' }}>
+            Roll
+          </Button>
+        </View>
       </View>
       <ResultModal
         title={props.title}
@@ -208,7 +219,6 @@ const styles = StyleSheet.create({
   },
   diceContainer: {
     flexDirection: 'row',
-    flex: 2,
     width: '100%',
     justifyContent: 'center',
   },

@@ -1,8 +1,7 @@
 import { PropsWithChildren } from 'react'
 
-import { ViewStyle } from 'react-native'
+import { ViewStyle, View } from 'react-native'
 import { ActivityIndicator, Portal } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 import useAppTheme from '~theme/useAppTheme'
 
@@ -17,11 +16,12 @@ export default function Container({ children, style, loading = false }: Props) {
   const showLoading = loading
 
   return (
-    <SafeAreaView
+    <View
       style={[
         {
           flex: 1,
-          paddingHorizontal: 30,
+          padding: 20,
+          justifyContent: 'center',
           backgroundColor: theme.colors.background,
         },
         style,
@@ -35,6 +35,6 @@ export default function Container({ children, style, loading = false }: Props) {
         </Portal>
       )}
       {children}
-    </SafeAreaView>
+    </View>
   )
 }

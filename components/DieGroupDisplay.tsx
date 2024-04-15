@@ -15,17 +15,18 @@ export default function DieGroupDisplay({
 }: Props) {
   return (
     <View style={[styles.container]}>
-      {dieGroups.map((group, index) => (
-        <Chip
-          selected={activeIndex === index}
-          key={index}
-          showSelectedOverlay
-          showSelectedCheck={false}
-          onPress={() => onPress(index)}
-        >
-          {`${group.quantity}D${group.sides}`}
-        </Chip>
-      ))}
+      {dieGroups.length > 1 &&
+        dieGroups.map((group, index) => (
+          <Chip
+            selected={activeIndex === index}
+            key={index}
+            showSelectedOverlay
+            showSelectedCheck={false}
+            onPress={() => onPress(index)}
+          >
+            {`${group.quantity}D${group.sides}`}
+          </Chip>
+        ))}
     </View>
   )
 }
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    minHeight: 40,
     gap: 10,
   },
 })

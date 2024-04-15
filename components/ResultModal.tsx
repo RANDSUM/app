@@ -51,6 +51,10 @@ export default function ResultModal({
   }, [combinedTotal])
 
   useEffect(() => {
+    setIsCollapsed(true)
+  }, [isLoading])
+
+  useEffect(() => {
     progressRef.current?.reAnimate()
     const interval = setInterval(() => {
       if (isCollapsed) {
