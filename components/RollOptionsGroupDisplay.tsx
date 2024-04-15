@@ -1,21 +1,22 @@
-import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
+import { RollOptions } from '~types'
+
 type Props = {
-  dieGroups: RollOptions<number>[]
+  rollOptionsGroup: RollOptions[]
   activeIndex: number
   onPress: (index: number) => void
 }
 
-export default function DieGroupDisplay({
-  dieGroups,
+export default function RollOptionsGroupDisplay({
+  rollOptionsGroup,
   activeIndex,
   onPress,
 }: Props) {
   return (
     <View style={[styles.container]}>
-      {dieGroups.map((group, index) => (
+      {rollOptionsGroup.map((group, index) => (
         <Chip
           selected={activeIndex === index}
           key={index}
@@ -23,7 +24,7 @@ export default function DieGroupDisplay({
           showSelectedCheck={false}
           onPress={() => onPress(index)}
         >
-          {`${group.quantity}D${group.sides}`}
+          {`${group.quantity}D${group.sides}${group.modifiers?.length ? '*' : ''}`}
         </Chip>
       ))}
     </View>

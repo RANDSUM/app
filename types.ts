@@ -1,7 +1,15 @@
-import { RollOptions } from 'randsum'
+import {
+  RollOptions as RandsumRollOptions,
+  Modifier as RandsumModifier,
+} from 'randsum'
 
+type Modifier = RandsumModifier<number> | { showRolls: boolean }
+
+export type RollOptions = RandsumRollOptions<number> & {
+  modifiers?: Modifier[]
+}
 export type SavedRoll = {
-  rolls: RollOptions<number>[]
+  rolls: RollOptions[]
   title: string
   uuid: string
 }

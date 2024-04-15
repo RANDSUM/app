@@ -78,7 +78,7 @@ export default function ResultModal({
     })
     .join(' + ')
 
-  const parsedDieGroups = rollResults.map((rollResult) => {
+  const parsedRollOptionsGroup = rollResults.map((rollResult) => {
     const sides = rollResult.rollParameters.diceOptions[0].sides
     const quantity = rollResult.rollParameters.diceOptions[0].quantity
     const rolls = rollResult.rolls
@@ -130,7 +130,7 @@ export default function ResultModal({
               {isCollapsed ? 'Show Details' : 'Hide Details'}
             </Button>
             <Collapsible collapsed={isCollapsed}>
-              {parsedDieGroups.map(({ title, value }, index) => {
+              {parsedRollOptionsGroup.map(({ title, value }, index) => {
                 return (
                   <View key={title + index} style={styles.dieGroupRow}>
                     <Text style={[styles.text, { fontWeight: '800' }]}>
