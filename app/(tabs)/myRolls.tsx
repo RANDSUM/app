@@ -1,4 +1,5 @@
 import { FlatList } from 'react-native'
+import { Text } from 'react-native-paper'
 
 import Container from '~components/Container'
 import MyRollRow from '~components/MyRollRow'
@@ -12,6 +13,7 @@ export default function MyRolls() {
         <FlatList
           data={savedRolls}
           keyExtractor={({ uuid }) => uuid}
+          ListEmptyComponent={() => <Text>No saved rolls</Text>}
           renderItem={({ item: savedRoll }) => (
             <MyRollRow savedRoll={savedRoll} />
           )}
