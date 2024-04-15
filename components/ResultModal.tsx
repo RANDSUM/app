@@ -45,7 +45,7 @@ export default function ResultModal({
     setIsLoading(true)
     const interval = setInterval(() => {
       setIsLoading(false)
-    }, 500)
+    }, 200)
 
     return () => clearInterval(interval)
   }, [combinedTotal])
@@ -101,7 +101,7 @@ export default function ResultModal({
           <Card.Content>
             <Text style={{ textAlign: 'center' }}>{rollsDescription}</Text>
             {isLoading ? (
-              <ActivityIndicator size="large" style={{ height: 124 }} />
+              <ActivityIndicator size="large" style={{ height: 85 }} />
             ) : (
               <>
                 {isCollapsed && (
@@ -122,26 +122,27 @@ export default function ResultModal({
                 <Text style={styles.result} variant="displayLarge">
                   {combinedTotal}
                 </Text>
-                <Button
-                  mode="text"
-                  onPress={() => setIsCollapsed((collapsed) => !collapsed)}
-                >
-                  {isCollapsed ? 'Show Details' : 'Hide Details'}
-                </Button>
-                <Collapsible collapsed={isCollapsed}>
-                  {parsedDieGroups.map(({ title, value }, index) => {
-                    return (
-                      <View key={title + index} style={styles.dieGroupRow}>
-                        <Text style={[styles.text, { fontWeight: '800' }]}>
-                          {title}
-                        </Text>
-                        <Text style={styles.text}>{value}</Text>
-                      </View>
-                    )
-                  })}
-                </Collapsible>
               </>
             )}
+            <Button
+              mode="text"
+              disabled={isLoading}
+              onPress={() => setIsCollapsed((collapsed) => !collapsed)}
+            >
+              {isCollapsed ? 'Show Details' : 'Hide Details'}
+            </Button>
+            <Collapsible collapsed={isCollapsed}>
+              {parsedDieGroups.map(({ title, value }, index) => {
+                return (
+                  <View key={title + index} style={styles.dieGroupRow}>
+                    <Text style={[styles.text, { fontWeight: '800' }]}>
+                      {title}
+                    </Text>
+                    <Text style={styles.text}>{value}</Text>
+                  </View>
+                )
+              })}
+            </Collapsible>
           </Card.Content>
           <Card.Actions>
             <Button onPress={rollAgain}>Roll Again</Button>

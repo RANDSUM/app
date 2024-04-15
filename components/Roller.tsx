@@ -133,9 +133,11 @@ export default function Roller(props: Props) {
         >
           Remove Die
         </Button>
-        <Button mode="text" onPress={reset} disabled={!isDirty}>
-          Reset
-        </Button>
+        {!props.savedRoll && (
+          <Button mode="text" onPress={reset} disabled={!isDirty}>
+            Reset
+          </Button>
+        )}
       </View>
     )
   }
@@ -150,14 +152,12 @@ export default function Roller(props: Props) {
 
   return (
     <View style={styles.container}>
-      <View>
-        <ButtonControlRow />
-        <DieGroupDisplay
-          dieGroups={dieGroups}
-          activeIndex={currentDieGroupIndex}
-          onPress={(index) => setCurrentDieGroupIndex(index)}
-        />
-      </View>
+      <ButtonControlRow />
+      <DieGroupDisplay
+        dieGroups={dieGroups}
+        activeIndex={currentDieGroupIndex}
+        onPress={(index) => setCurrentDieGroupIndex(index)}
+      />
       <View style={styles.diceContainer}>
         <View style={styles.numContainer}>
           <NumButton label="+" onPress={increaseQuantity} />
@@ -282,6 +282,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexGrow: 2,
     width: '100%',
-    justifyContent: 'center',
   },
 })
