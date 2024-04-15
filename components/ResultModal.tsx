@@ -1,84 +1,141 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { RollResult } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import CircularProgress, {
   ProgressRef,
 } from 'react-native-circular-progress-indicator'
-import { Modal, Portal, Text, Card, Button } from 'react-native-paper'
+import Collapsible from 'react-native-collapsible'
+import {
+  Modal,
+  Portal,
+  Text,
+  Card,
+  Button,
+  ActivityIndicator,
+} from 'react-native-paper'
 
 import useAppTheme from '~theme/useAppTheme'
 
 type Props = {
   visible: boolean
   onDismiss: () => void
-  rollResult: RollResult | undefined
+  rollResults: RollResult[] | undefined
   rollAgain: () => void
 }
 
-const DURATION = 5000
+const DURATION = 10_000
 
 export default function ResultModal({
   onDismiss,
-  rollResult,
+  rollResults,
   rollAgain,
 }: Props) {
   const theme = useAppTheme()
   const progressRef = useRef<ProgressRef>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(true)
+  const combinedTotal = rollResults?.reduce((prev, current) => {
+    return prev + current.total
+  }, 0)
+
+  useEffect(() => {
+    setIsLoading(true)
+    const interval = setInterval(() => {
+      setIsLoading(false)
+    }, 500)
+
+    return () => clearInterval(interval)
+  }, [combinedTotal])
 
   useEffect(() => {
     progressRef.current?.reAnimate()
     const interval = setInterval(() => {
-      onDismiss()
+      if (isCollapsed) {
+        onDismiss()
+        setIsCollapsed(true)
+        setIsLoading(true)
+      }
     }, DURATION)
 
     return () => clearInterval(interval)
-  }, [rollResult?.total])
+  }, [combinedTotal, isCollapsed])
 
-  if (!rollResult) return null
+  if (!combinedTotal || !rollResults) return null
 
-  const sides = rollResult.rollParameters.diceOptions[0].sides
-  const quantity = rollResult.rollParameters.diceOptions[0].quantity
-  const rolls = rollResult.rolls
-  const total = rollResult.total
+  const rollsDescription = rollResults
+    .map((rollResult) => {
+      const sides = rollResult.rollParameters.diceOptions[0].sides
+      const quantity = rollResult.rollParameters.diceOptions[0].quantity
 
-  const rollDescription = `${quantity}D${sides}`
+      return `${quantity}D${sides}`
+    })
+    .join(' + ')
 
-  const rollsDescription = rolls.join(' + ')
+  const parsedDieGroups = rollResults.map((rollResult) => {
+    const sides = rollResult.rollParameters.diceOptions[0].sides
+    const quantity = rollResult.rollParameters.diceOptions[0].quantity
+    const rolls = rollResult.rolls
 
-  const Progress = () => (
-    <View style={{ position: 'absolute', right: 10, top: -40 }}>
-      <CircularProgress
-        activeStrokeColor={theme.colors.primary}
-        ref={progressRef}
-        progressValueStyle={{ display: 'none' }}
-        inActiveStrokeOpacity={0}
-        initialValue={100}
-        value={0}
-        duration={DURATION}
-        radius={15}
-        activeStrokeWidth={2}
-      />
-    </View>
-  )
+    const rollDescription = `${quantity}D${sides}`
+
+    const rollsDescription = `${rolls.join(' + ')}`
+    return { title: rollDescription, value: rollsDescription }
+  })
 
   return (
     <Portal>
       <Modal
-        visible={!!rollResult}
+        visible={!!combinedTotal}
         onDismiss={onDismiss}
         style={[styles.modalStyle]}
       >
         <Card style={{ backgroundColor: theme.colors.background }}>
-          <Card.Title title={`Rolling ${rollDescription}`} />
+          <Card.Title title={isLoading ? `Rolling...` : undefined} />
           <Card.Content>
-            <Progress />
-            {rolls.length > 1 && (
-              <Text style={styles.text}>{rollsDescription}</Text>
+            {isLoading ? (
+              <ActivityIndicator size="large" style={{ height: 140 }} />
+            ) : (
+              <>
+                {isCollapsed && (
+                  <View style={{ position: 'absolute', right: 10, top: -40 }}>
+                    <CircularProgress
+                      activeStrokeColor={theme.colors.primary}
+                      ref={progressRef}
+                      progressValueStyle={{ display: 'none' }}
+                      inActiveStrokeOpacity={0}
+                      initialValue={100}
+                      value={0}
+                      duration={DURATION}
+                      radius={15}
+                      activeStrokeWidth={2}
+                    />
+                  </View>
+                )}
+                <Text style={{ textAlign: 'center' }}>{rollsDescription}</Text>
+                <Text style={styles.result} variant="displayLarge">
+                  {combinedTotal}
+                </Text>
+                <Button
+                  mode="text"
+                  onPress={() => setIsCollapsed((collapsed) => !collapsed)}
+                >
+                  {isCollapsed ? 'Show Details' : 'Hide Details'}
+                </Button>
+                <Collapsible collapsed={isCollapsed}>
+                  {parsedDieGroups.map(({ title, value }, index) => {
+                    return (
+                      <View key={title + index} style={styles.dieGroupRow}>
+                        <Text style={[styles.text, { fontWeight: '800' }]}>
+                          {title}
+                        </Text>
+                        <Text style={styles.text}>{value}</Text>
+                      </View>
+                    )
+                  })}
+                </Collapsible>
+              </>
             )}
-            <Text style={styles.text} variant="displayLarge">
-              {total}
-            </Text>
           </Card.Content>
           <Card.Actions>
             <Button onPress={rollAgain}>Roll Again</Button>
@@ -93,6 +150,14 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   text: {
+    textAlign: 'left',
+  },
+  dieGroupRow: {
+    paddingTop: 10,
+  },
+  result: {
     textAlign: 'center',
+    fontSize: 78,
+    lineHeight: 85,
   },
 })
