@@ -300,6 +300,7 @@ const styles = StyleSheet.create({
   },
   diceContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     flexGrow: 2,
     width: '100%',
   },

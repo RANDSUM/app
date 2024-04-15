@@ -36,6 +36,7 @@ export default function Container({
           {
             flex: 1,
             justifyContent: 'center',
+            width: '100%',
             backgroundColor: theme.colors.background,
             gap: 10,
           },
