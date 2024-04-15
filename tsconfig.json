@@ -7,7 +7,7 @@
         "./components/*"
       ],
       "~context/*": [
-        "./data/*"
+        "./context/*"
       ],
       "~assets/*": [
         "./assets/*"
@@ -35,6 +35,9 @@
       ],
       "~supabase": [
         "./supabase/index.ts"
+      ],
+      "~constants": [
+        "./constants.ts"
       ],
       "~types": [
         "./types.ts"

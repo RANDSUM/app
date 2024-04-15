@@ -19,7 +19,7 @@ import useAppTheme from '~theme/useAppTheme'
 
 type Props = {
   visible: boolean
-  title: string | undefined
+  title?: string | undefined
   onDismiss: () => void
   rollResults: RollResult[] | undefined
   rollAgain: () => void
@@ -97,7 +97,7 @@ export default function ResultModal({
         style={[styles.modalStyle]}
       >
         <Card style={{ backgroundColor: theme.colors.background }}>
-          <Card.Title title={isLoading ? `Rolling...` : title} />
+          <Card.Title title={title ? `Rolling "${title}"` : 'Rolling...'} />
           <Card.Content>
             {isLoading ? (
               <ActivityIndicator size="large" style={{ height: 140 }} />

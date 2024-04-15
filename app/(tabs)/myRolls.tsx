@@ -1,10 +1,22 @@
-import Container from '~components/Container'
-import Roller from '~components/Roller'
+import { FlatList } from 'react-native'
 
-export default function App() {
+import Container from '~components/Container'
+import MyRollRow from '~components/MyRollRow'
+import useAppContext from '~context/useAppContext'
+
+export default function MyRolls() {
+  const { savedRolls } = useAppContext()
   return (
-    <Container>
-      <Roller />
-    </Container>
+    <>
+      <Container>
+        <FlatList
+          data={savedRolls}
+          keyExtractor={({ uuid }) => uuid}
+          renderItem={({ item: savedRoll }) => (
+            <MyRollRow savedRoll={savedRoll} />
+          )}
+        />
+      </Container>
+    </>
   )
 }

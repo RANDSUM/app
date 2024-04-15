@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import * as Crypto from 'expo-crypto'
+import { useRouter } from 'expo-router'
 import { roll, RollOptions, RollResult } from 'randsum'
 import { Keyboard, StyleSheet, View } from 'react-native'
 import { Text, Button, TextInput } from 'react-native-paper'
 
 import DieGroupDisplay from './DieGroupDisplay'
+import SaveRollDialog from './SaveRollDialog'
 import NumButton from '~components/NumButton'
 import ResultModal from '~components/ResultModal'
+import { defaultDiegroups, defaultRollOptions, dieSides } from '~constants'
+import useAppContext from '~context/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 
-const dieSides = [2, 4, 6, 8, 10, 12, 20, 100]
-const defaultRollOptions: RollOptions<number> = {
-  quantity: 1,
-  sides: 20,
-}
-
-const defaultDiegroups = [defaultRollOptions]
 type Props = {
   dieGroups?: RollOptions<number>[]
   title?: string
 }
 export default function Roller(props: Props) {
   const theme = useAppTheme()
+  const { setSavedRolls, setSnackbarText } = useAppContext()
   const [rollOptions, setRollOptions] = useState<RollOptions<number>>(
     defaultDiegroups[0]
   )
@@ -74,14 +73,31 @@ export default function Roller(props: Props) {
     setCurrentDieGroupIndex(dieGroups.length)
   }
 
-  const dismissModal = () => setLastRolls(undefined)
-  const modalIsVisible = !!lastRolls
+  const dismissResultModal = () => setLastRolls(undefined)
+  const resultModalIsVisible = !!lastRolls
+
+  const [dialogIsVisible, setDialogIsVisible] = useState(false)
 
   const reset = () => {
     setDieGroups([defaultRollOptions])
     setCurrentDieGroupIndex(0)
     setLastRolls(undefined)
     setRollOptions(defaultRollOptions)
+  }
+
+  const router = useRouter()
+  const addToSavedRolls = (title: string) => {
+    setSavedRolls((rolls) => {
+      const newRolls = [...rolls]
+      newRolls.push({
+        title,
+        rolls: dieGroups,
+        uuid: Crypto.randomUUID(),
+      })
+      return newRolls
+    })
+    router.push('/myRolls')
+    setSnackbarText('Roll saved!')
   }
 
   const removeDie = () => {
@@ -98,6 +114,8 @@ export default function Roller(props: Props) {
     }
   }
 
+  const isDirty = JSON.stringify(dieGroups) !== JSON.stringify(defaultDiegroups)
+
   const ButtonControlRow = () => {
     return (
       <View style={styles.lesserButtonRow}>
@@ -111,7 +129,7 @@ export default function Roller(props: Props) {
         >
           Remove Die
         </Button>
-        <Button mode="text" onPress={reset}>
+        <Button mode="text" onPress={reset} disabled={!isDirty}>
           Reset
         </Button>
       </View>
@@ -119,10 +137,20 @@ export default function Roller(props: Props) {
   }
 
   return (
-    <>
-      <Text style={{ textAlign: 'center' }} variant="displaySmall">
-        {props.title}
-      </Text>
+    <View style={styles.container}>
+      <View>
+        {props.title && (
+          <Text style={{ textAlign: 'center' }} variant="displaySmall">
+            {props.title}
+          </Text>
+        )}
+        <ButtonControlRow />
+        <DieGroupDisplay
+          dieGroups={dieGroups}
+          activeIndex={currentDieGroupIndex}
+          onPress={(index) => setCurrentDieGroupIndex(index)}
+        />
+      </View>
       <View style={styles.diceContainer}>
         <View style={styles.numContainer}>
           <NumButton label="+" onPress={increaseQuantity} />
@@ -165,37 +193,43 @@ export default function Roller(props: Props) {
           />
         </View>
       </View>
-      <View>
-        <DieGroupDisplay
-          dieGroups={dieGroups}
-          activeIndex={currentDieGroupIndex}
-          onPress={(index) => setCurrentDieGroupIndex(index)}
-        />
-        <ButtonControlRow />
-        <View style={styles.lesserButtonRow}>
-          <Button mode="contained" onPress={rollDie} style={{ width: '100%' }}>
-            Roll
-          </Button>
-        </View>
+      <View style={styles.lesserButtonRow}>
+        <Button
+          style={{ width: '100%' }}
+          mode="text"
+          onPress={() => setDialogIsVisible(true)}
+        >
+          Add to My Rolls
+        </Button>
+      </View>
+      <View style={styles.lesserButtonRow}>
+        <Button style={{ width: '100%' }} onPress={rollDie} mode="contained">
+          Roll
+        </Button>
       </View>
       <ResultModal
-        title={props.title}
-        visible={modalIsVisible}
-        onDismiss={dismissModal}
+        visible={resultModalIsVisible}
+        onDismiss={dismissResultModal}
         rollResults={lastRolls}
         rollAgain={rollDie}
       />
-    </>
+      <SaveRollDialog
+        visible={dialogIsVisible}
+        onDismiss={() => setDialogIsVisible(false)}
+        onAccept={(title) => {
+          setDialogIsVisible(false)
+          addToSavedRolls(title)
+        }}
+      />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: 20,
     flex: 1,
-    justifyContent: 'space-between',
-    padding: 20,
   },
-  modalStyle: {},
   numContainer: {
     flexDirection: 'column',
     alignContent: 'center',
@@ -205,7 +239,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     gap: 10,
-    paddingTop: 15,
+    paddingBottom: 15,
   },
   num: {
     flexDirection: 'column',
@@ -219,6 +253,7 @@ const styles = StyleSheet.create({
   },
   diceContainer: {
     flexDirection: 'row',
+    flexGrow: 2,
     width: '100%',
     justifyContent: 'center',
   },
