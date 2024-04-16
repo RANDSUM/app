@@ -4,7 +4,7 @@
     "slug": "randsumapp",
     "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/randsumLogo.png",
+    "icon": "./assets/ios/icon.png",
     "userInterfaceStyle": "light",
     "scheme": "com.randsum.app",
     "splash": {
@@ -15,17 +15,19 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.randsum.app"
+      "bundleIdentifier": "com.randsum.app",
+      "icon": "./assets/ios/icon.png"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/randsumLogo.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/android/foreground.png",
+        "backgroundImage": "./assets/android/background.png",
+        "monochromeImage": "./assets/android/monochrome.png"
       },
       "package": "com.randsum.app"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/favicon.ico",
       "bundler": "metro",
       "output": "single"
     },

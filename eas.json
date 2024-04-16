@@ -1,7 +1,8 @@
 {
   "cli": {
     "version": ">= 7.0.0",
-    "promptToConfigurePushNotifications": false
+    "promptToConfigurePushNotifications": false,
+    "appVersionSource": "remote"
   },
   "build": {
     "development-simulator": {
@@ -27,7 +28,8 @@
       }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "autoIncrement": true
     }
   },
   "submit": {
