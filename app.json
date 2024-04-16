@@ -19,11 +19,7 @@
       "icon": "./assets/ios/icon.png"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/android/foreground.png",
-        "backgroundImage": "./assets/android/background.png",
-        "monochromeImage": "./assets/android/monochrome.png"
-      },
+      "icon": "./assets/android/icon.png",
       "package": "com.randsum.app"
     },
     "web": {
