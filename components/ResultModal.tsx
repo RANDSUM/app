@@ -67,7 +67,7 @@ export default function ResultModal({
     return () => clearInterval(interval)
   }, [combinedTotal, isCollapsed])
 
-  if (!combinedTotal || !rollResults) return null
+  if (combinedTotal === undefined || !rollResults) return null
 
   const rollsDescription = rollResults
     .map((rollResult) => {
@@ -92,7 +92,7 @@ export default function ResultModal({
   return (
     <Portal>
       <Modal
-        visible={!!combinedTotal}
+        visible={combinedTotal !== undefined}
         onDismiss={onDismiss}
         style={[styles.modalStyle]}
       >

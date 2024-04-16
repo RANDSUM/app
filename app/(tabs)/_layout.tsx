@@ -34,8 +34,10 @@ export default function TabsLayout() {
         <Tabs.Screen
           name="myRolls"
           options={{
-            headerShown: false,
             title: 'My Rolls',
+            headerTitle: 'My Saved Rolls',
+            headerStyle: { backgroundColor: theme.colors.primary },
+            headerTitleStyle: { color: theme.colors.onPrimary },
             tabBarIcon: ({ color, size }) => (
               <Icon source="dice-multiple-outline" size={size} color={color} />
             ),

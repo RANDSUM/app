@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 
 import { View, StyleSheet } from 'react-native'
-import { Button, Portal, Modal, Card, Text, Switch } from 'react-native-paper'
+import { Button, Portal, Modal, Card } from 'react-native-paper'
 
+import ShowRollsToggle from './DropToggle'
 import useAppTheme from '~theme/useAppTheme'
 import { RollOptions } from '~types'
 
@@ -11,19 +12,9 @@ type Props = {
   setRollOptions: Dispatch<SetStateAction<RollOptions>>
 }
 
-export default function ModifierPanel({}: Props) {
+export default function ModifierPanel({ rollOptions, setRollOptions }: Props) {
   const theme = useAppTheme()
   const [modalIsVisible, setModalIsVisible] = useState(false)
-
-  const MockRow = () => {
-    return (
-      <View style={{ flexDirection: 'row', margin: 5 }}>
-        <Switch />
-        <Text> Drop Lowest </Text>
-        <Text> 1 </Text>
-      </View>
-    )
-  }
 
   return (
     <>
@@ -41,20 +32,10 @@ export default function ModifierPanel({}: Props) {
           <Card style={{ backgroundColor: theme.colors.background }}>
             <Card.Title title="Modify Dice Roll" />
             <Card.Content style={{ flexDirection: 'row' }}>
-              <View>
-                <MockRow />
-                <MockRow />
-                <MockRow />
-                <MockRow />
-                <MockRow />
-              </View>
-              <View>
-                <MockRow />
-                <MockRow />
-                <MockRow />
-                <MockRow />
-                <MockRow />
-              </View>
+              <ShowRollsToggle
+                rollOptions={rollOptions}
+                setRollOptions={setRollOptions}
+              />
             </Card.Content>
           </Card>
         </Modal>
@@ -64,7 +45,9 @@ export default function ModifierPanel({}: Props) {
 }
 
 const styles = StyleSheet.create({
-  modifierContainer: {},
+  modifierContainer: {
+    display: 'none',
+  },
   panel: {
     padding: 5,
   },

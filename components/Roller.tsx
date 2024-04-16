@@ -52,7 +52,8 @@ export default function Roller(props: Props) {
 
   const rollDie = () => {
     Keyboard.dismiss()
-    setLastRolls(rollOptionsGroups.map((group) => roll(group)))
+    const rolls = rollOptionsGroups.map((group) => roll(group))
+    setLastRolls(rolls)
   }
 
   const addDie = () => {

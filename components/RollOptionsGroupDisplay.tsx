@@ -16,17 +16,20 @@ export default function RollOptionsGroupDisplay({
 }: Props) {
   return (
     <View style={[styles.container]}>
-      {rollOptionsGroup.map((group, index) => (
-        <Chip
-          selected={activeIndex === index}
-          key={index}
-          showSelectedOverlay
-          showSelectedCheck={false}
-          onPress={() => onPress(index)}
-        >
-          {`${group.quantity}D${group.sides}${group.modifiers?.length ? '*' : ''}`}
-        </Chip>
-      ))}
+      {rollOptionsGroup.map((group, index) => {
+        const showModifier = group.modifiers?.length
+        return (
+          <Chip
+            selected={activeIndex === index}
+            key={index}
+            showSelectedOverlay
+            showSelectedCheck={false}
+            onPress={() => onPress(index)}
+          >
+            {`${group.quantity}D${group.sides}${showModifier ? '*' : ''}`}
+          </Chip>
+        )
+      })}
     </View>
   )
 }

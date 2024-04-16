@@ -10,7 +10,7 @@ export default function MyRolls() {
   const { savedRolls } = useAppContext()
   const theme = useAppTheme()
   return (
-    <Container>
+    <Container header>
       <FlatList
         data={savedRolls}
         keyExtractor={({ uuid }) => uuid}
