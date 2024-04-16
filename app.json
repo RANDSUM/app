@@ -27,7 +27,7 @@
       "package": "com.randsum.app"
     },
     "web": {
-      "favicon": "./assets/favicon.ico",
+      "favicon": "./assets/web/favicon.png",
       "bundler": "metro",
       "output": "single"
     },
