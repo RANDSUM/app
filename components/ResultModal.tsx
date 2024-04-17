@@ -23,6 +23,7 @@ type Props = {
   onDismiss: () => void
   rollResults: RollResult[] | undefined
   rollAgain: () => void
+  preventAutoDismiss?: boolean
 }
 
 const DURATION = 10_000
@@ -33,6 +34,7 @@ export default function ResultModal({
   rollAgain,
   visible,
   title,
+  preventAutoDismiss = false,
 }: Props) {
   const theme = useAppTheme()
   const progressRef = useRef<ProgressRef>(null)
@@ -48,17 +50,18 @@ export default function ResultModal({
     setIsCollapsed(true)
   }, [isLoading])
 
+  const shouldCountdown = isCollapsed && !preventAutoDismiss
   useEffect(() => {
     progressRef.current?.reAnimate()
     const interval = setInterval(() => {
-      if (isCollapsed) {
+      if (shouldCountdown) {
         onDismiss()
         setIsCollapsed(true)
       }
     }, DURATION)
 
     return () => clearInterval(interval)
-  }, [combinedTotal, isCollapsed])
+  }, [combinedTotal, shouldCountdown])
 
   if (combinedTotal === undefined || !rollResults) return null
 
@@ -97,7 +100,7 @@ export default function ResultModal({
             subtitleStyle={{ textAlign: 'center' }}
           />
           <Card.Content>
-            {isCollapsed && (
+            {shouldCountdown && (
               <View style={{ position: 'absolute', right: 10, top: -60 }}>
                 <CircularProgress
                   activeStrokeColor={theme.colors.primary}

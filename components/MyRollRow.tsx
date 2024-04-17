@@ -80,6 +80,7 @@ export default function MyRollRow({
         rollAgain={rollDie}
         visible={resultModalIsVisible}
         onDismiss={() => setResultModalIsVisible(false)}
+        preventAutoDismiss
         rollResults={lastRolls}
         title={title}
       />
