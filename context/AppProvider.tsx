@@ -1,12 +1,11 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
 
-import { Snackbar, SnackbarProps } from 'react-native-paper'
+import { Snackbar } from 'react-native-paper'
 
 import AppStateContext from './AppContext'
 import initialState from './initialState'
 import StorageService from '~services/StorageService'
-
-type SnackbarConfig = Pick<SnackbarProps, 'duration' | 'children'>
+import { SnackbarConfig } from '~types'
 
 export default function AppProvider({ children }: PropsWithChildren) {
   const [savedRolls, setSavedRolls] = useState(initialState.savedRolls)
@@ -50,7 +49,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
         savedRolls,
         setSavedRolls,
         hydrated,
-        setSnackbarText,
+        setSnackbarConfig,
         removeSavedRoll,
       }}
     >
@@ -59,10 +58,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
         visible={!!snackbarConfig.children}
         duration={snackbarConfig.duration}
         onDismiss={() => setSnackbarText('')}
-        action={{
-          label: 'Dismiss',
-          onPress: () => setSnackbarText(''),
-        }}
+        action={snackbarConfig.action}
       >
         {snackbarConfig.children}
       </Snackbar>

@@ -5,7 +5,7 @@ const initialState: AppState = {
   setSavedRolls: () => {},
   removeSavedRoll: (_uuid: string) => {},
   hydrated: false,
-  setSnackbarText: () => {},
+  setSnackbarConfig: () => {},
 }
 
 export default initialState

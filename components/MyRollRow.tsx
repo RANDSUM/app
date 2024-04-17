@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import { Text, Button, Icon } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
+import useAppContext from '~context/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 import { SavedRoll } from '~types'
 
@@ -15,15 +16,28 @@ export default function MyRollRow({
   savedRoll: SavedRoll
 }) {
   const theme = useAppTheme()
-  const [lastRolls, setLastRolls] = useState<RollResult[]>()
+  const { setSnackbarConfig } = useAppContext()
+  const [resultModalIsVisible, setResultModalIsVisible] = useState(false)
+  const [lastRolls, setLastRolls] = useState<RollResult<number>[]>()
   const description = rolls
     .map(({ sides, quantity }) => `${quantity}D${sides}`)
     .join('+')
 
-  const resultModalIsVisible = !!lastRolls
-  const dismissResultModal = () => setLastRolls(undefined)
   const rollDie = () => {
-    setLastRolls(rolls.map((group) => roll(group)))
+    const result = rolls.map((group) => roll(group))
+    const combinedTotal = result.reduce((prev, current) => {
+      return prev + current.total
+    }, 0)
+    setLastRolls(result)
+    setSnackbarConfig({
+      children: `Rolled "${title}": ${combinedTotal}`,
+      action: {
+        label: 'View Details',
+        onPress: () => {
+          setResultModalIsVisible(true)
+        },
+      },
+    })
   }
 
   return (
@@ -63,11 +77,11 @@ export default function MyRollRow({
         </View>
       </View>
       <ResultModal
-        title={title}
-        visible={resultModalIsVisible}
-        onDismiss={dismissResultModal}
-        rollResults={lastRolls}
         rollAgain={rollDie}
+        visible={resultModalIsVisible}
+        onDismiss={() => setResultModalIsVisible(false)}
+        rollResults={lastRolls}
+        title={title}
       />
     </>
   )

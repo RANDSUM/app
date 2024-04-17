@@ -24,7 +24,7 @@ type Props = {
 }
 export default function Roller(props: Props) {
   const theme = useAppTheme()
-  const { setSavedRolls, setSnackbarText, removeSavedRoll } = useAppContext()
+  const { setSavedRolls, removeSavedRoll, setSnackbarConfig } = useAppContext()
   const [rollOptions, setRollOptions] = useState<RollOptions>(
     props.savedRoll?.rolls
       ? props.savedRoll?.rolls[0]
@@ -52,18 +52,19 @@ export default function Roller(props: Props) {
 
   const [lastRolls, setLastRolls] = useState<RollResult<number>[]>()
 
+  const [resultModalIsVisible, setResultModalIsVisible] = useState(false)
+  const [saveDialogIsVisible, setSaveDialogIsVisible] = useState(false)
+  const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
+
+  const router = useRouter()
+
   const rollDie = () => {
     Keyboard.dismiss()
     const rolls = rollOptionsGroups.map((group) => roll(group))
     setLastRolls(rolls)
+    setResultModalIsVisible(true)
   }
 
-  const dismissResultModal = () => setLastRolls(undefined)
-  const resultModalIsVisible = !!lastRolls
-
-  const [saveDialogIsVisible, setSaveDialogIsVisible] = useState(false)
-
-  const router = useRouter()
   const addToSavedRolls = (title: string) => {
     setSavedRolls((rolls) => {
       const newRolls = [...rolls]
@@ -75,7 +76,7 @@ export default function Roller(props: Props) {
       return newRolls
     })
     router.push('/myRolls')
-    setSnackbarText('Roll saved!')
+    setSnackbarConfig({ children: 'Roll saved!', duration: 5000 })
   }
 
   const saveChanges = () => {
@@ -113,12 +114,11 @@ export default function Roller(props: Props) {
       props.savedRoll ? props.savedRoll.rolls : defaultRollOptionsGroup
     )
 
-  const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
   const deleteSavedRoll = () => {
     if (!props.savedRoll) return
     removeSavedRoll(props.savedRoll?.uuid)
     router.push('/myRolls')
-    setSnackbarText('Roll deleted')
+    setSnackbarConfig({ children: 'Roll deleted', duration: 5000 })
   }
 
   return (
@@ -153,57 +153,66 @@ export default function Roller(props: Props) {
             onPress={(index) => setCurrentDieGroupIndex(index)}
           />
         </View>
-        <RollInput rollOptions={rollOptions} setRollOptions={setRollOptions} />
-        <ModifierPanel
-          rollOptions={rollOptions}
-          setRollOptions={setRollOptions}
-        />
         <View style={styles.collection}>
-          <View style={sharedStyles.lesserButtonRow}>
-            <Button
-              style={{ width: '100%' }}
-              onPress={rollDie}
-              mode="contained"
-            >
-              Roll
-            </Button>
-          </View>
-          <View style={sharedStyles.lesserButtonRow}>
-            {!isSavedRoll && (
-              <View style={sharedStyles.lesserButtonRow}>
-                <Button
-                  mode="text"
-                  onPress={() => setSaveDialogIsVisible(true)}
-                >
-                  Save Roll
-                </Button>
-              </View>
-            )}
-            {isSavedRoll && (
-              <>
-                <View style={sharedStyles.lesserButtonRow}>
-                  <Button mode="text" disabled={!isDirty} onPress={saveChanges}>
-                    Save Changes
-                  </Button>
-                </View>
+          <RollInput
+            rollOptions={rollOptions}
+            setRollOptions={setRollOptions}
+          />
+          <ModifierPanel
+            rollOptions={rollOptions}
+            setRollOptions={setRollOptions}
+          />
+          <View style={styles.collection}>
+            <View style={sharedStyles.lesserButtonRow}>
+              <Button
+                style={{ width: '100%' }}
+                onPress={rollDie}
+                mode="contained"
+              >
+                Roll
+              </Button>
+            </View>
+            <View style={sharedStyles.lesserButtonRow}>
+              {!isSavedRoll && (
                 <View style={sharedStyles.lesserButtonRow}>
                   <Button
-                    labelStyle={{ color: theme.colors.error }}
                     mode="text"
-                    onPress={() => setDeleteDialogIsVisible(true)}
+                    onPress={() => setSaveDialogIsVisible(true)}
                   >
-                    Delete Roll
+                    Save Roll
                   </Button>
                 </View>
-              </>
-            )}
+              )}
+              {isSavedRoll && (
+                <>
+                  <View style={sharedStyles.lesserButtonRow}>
+                    <Button
+                      mode="text"
+                      disabled={!isDirty}
+                      onPress={saveChanges}
+                    >
+                      Save Changes
+                    </Button>
+                  </View>
+                  <View style={sharedStyles.lesserButtonRow}>
+                    <Button
+                      labelStyle={{ color: theme.colors.error }}
+                      mode="text"
+                      onPress={() => setDeleteDialogIsVisible(true)}
+                    >
+                      Delete Roll
+                    </Button>
+                  </View>
+                </>
+              )}
+            </View>
           </View>
         </View>
       </View>
 
       <ResultModal
         visible={resultModalIsVisible}
-        onDismiss={dismissResultModal}
+        onDismiss={() => setResultModalIsVisible(false)}
         rollResults={lastRolls}
         rollAgain={rollDie}
       />
@@ -228,7 +237,7 @@ export default function Roller(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   lowerContainer: {
     flex: 1,

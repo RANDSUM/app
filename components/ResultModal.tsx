@@ -31,24 +31,18 @@ export default function ResultModal({
   onDismiss,
   rollResults,
   rollAgain,
+  visible,
   title,
 }: Props) {
   const theme = useAppTheme()
   const progressRef = useRef<ProgressRef>(null)
-  const [isLoading, setIsLoading] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(true)
+  const [showLoading, setShowLoading] = useState(false)
   const combinedTotal = rollResults?.reduce((prev, current) => {
     return prev + current.total
   }, 0)
 
-  useEffect(() => {
-    setIsLoading(true)
-    const interval = setInterval(() => {
-      setIsLoading(false)
-    }, 300)
-
-    return () => clearInterval(interval)
-  }, [combinedTotal])
+  const isLoading = !rollResults || showLoading
 
   useEffect(() => {
     setIsCollapsed(true)
@@ -60,7 +54,6 @@ export default function ResultModal({
       if (isCollapsed) {
         onDismiss()
         setIsCollapsed(true)
-        setIsLoading(true)
       }
     }, DURATION)
 
@@ -83,25 +76,29 @@ export default function ResultModal({
     const quantity = rollResult.rollParameters.diceOptions[0].quantity
     const rolls = rollResult.rolls
 
-    const rollDescription = `${quantity}D${sides}`
+    const rollDescription = `${quantity}D${sides} `
 
-    const rollsDescription = `${rolls.join(', ')}`
+    const rollsDescription = `[${rolls.join(', ')}]`
     return { title: rollDescription, value: rollsDescription }
   })
 
   return (
     <Portal>
       <Modal
-        visible={combinedTotal !== undefined}
+        visible={visible}
         onDismiss={onDismiss}
         style={[styles.modalStyle]}
       >
         <Card style={{ backgroundColor: theme.colors.background }}>
-          <Card.Title title={title ? `Rolling "${title}"` : 'Rolling...'} />
+          <Card.Title
+            title={title || 'Roll Result'}
+            subtitle={rollsDescription}
+            titleStyle={{ textAlign: 'center' }}
+            subtitleStyle={{ textAlign: 'center' }}
+          />
           <Card.Content>
-            <Text style={{ textAlign: 'center' }}>{rollsDescription}</Text>
             {isCollapsed && (
-              <View style={{ position: 'absolute', right: 10, top: -40 }}>
+              <View style={{ position: 'absolute', right: 10, top: -60 }}>
                 <CircularProgress
                   activeStrokeColor={theme.colors.primary}
                   ref={progressRef}
@@ -122,6 +119,22 @@ export default function ResultModal({
                 {new Intl.NumberFormat().format(combinedTotal)}
               </Text>
             )}
+            <Collapsible collapsed={isCollapsed}>
+              <View style={styles.dieGroupContainer}>
+                {parsedRollOptionsGroup.map(({ title, value }, index) => {
+                  return (
+                    <View key={title + index} style={styles.dieGroupRow}>
+                      <Text style={[styles.text, { fontWeight: '800' }]}>
+                        {title}
+                      </Text>
+                      <Text style={styles.text}>{value}</Text>
+                    </View>
+                  )
+                })}
+              </View>
+            </Collapsible>
+          </Card.Content>
+          <Card.Actions>
             <Button
               mode="text"
               disabled={isLoading}
@@ -129,21 +142,16 @@ export default function ResultModal({
             >
               {isCollapsed ? 'Show Details' : 'Hide Details'}
             </Button>
-            <Collapsible collapsed={isCollapsed}>
-              {parsedRollOptionsGroup.map(({ title, value }, index) => {
-                return (
-                  <View key={title + index} style={styles.dieGroupRow}>
-                    <Text style={[styles.text, { fontWeight: '800' }]}>
-                      {title}
-                    </Text>
-                    <Text style={styles.text}>{value}</Text>
-                  </View>
-                )
-              })}
-            </Collapsible>
-          </Card.Content>
-          <Card.Actions>
-            <Button disabled={isLoading} onPress={rollAgain}>
+            <Button
+              disabled={isLoading}
+              onPress={() => {
+                setShowLoading(true)
+                rollAgain()
+                setTimeout(() => {
+                  setShowLoading(false)
+                }, 200)
+              }}
+            >
               Roll Again
             </Button>
           </Card.Actions>
@@ -159,8 +167,13 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'left',
   },
+  dieGroupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   dieGroupRow: {
     paddingTop: 10,
+    flexDirection: 'row',
   },
   result: {
     textAlign: 'center',

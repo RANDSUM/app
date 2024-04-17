@@ -38,7 +38,8 @@
     "react-native-svg": "14.1.0",
     "react-native-swipeable-list": "^0.1.2",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "use-event-callback": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
