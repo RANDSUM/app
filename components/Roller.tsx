@@ -7,7 +7,7 @@ import { Keyboard, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import DeleteSavedRollDialog from './DeleteSavedRollDialog'
-import RollControlRow from './RollControlRow'
+import ModifierPanel from './ModifierPanel'
 import RollInput from './RollInput'
 import RollOptionsGroupDisplay from './RollOptionsGroupDisplay'
 import SaveRollDialog from './SaveRollDialog'
@@ -15,6 +15,7 @@ import sharedStyles from './sharedStyles'
 import ResultModal from '~components/ResultModal'
 import { defaultRollOptionsGroup, defaultRollOptions } from '~constants'
 import useAppContext from '~context/useAppContext'
+import useAppTheme from '~theme/useAppTheme'
 import { SavedRoll } from '~types'
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
   title?: string
 }
 export default function Roller(props: Props) {
+  const theme = useAppTheme()
   const { setSavedRolls, setSnackbarText, removeSavedRoll } = useAppContext()
   const [rollOptions, setRollOptions] = useState<RollOptions>(
     props.savedRoll?.rolls
@@ -122,26 +124,41 @@ export default function Roller(props: Props) {
   return (
     <>
       <View style={styles.container}>
-        <RollInput rollOptions={rollOptions} setRollOptions={setRollOptions} />
-        <View style={styles.lowerContainer}>
+        <View style={styles.collection}>
+          <View style={sharedStyles.lesserButtonRow}>
+            <Button
+              mode="text"
+              onPress={() => {
+                setRollOptionsGroups((groups) => [
+                  ...groups,
+                  defaultRollOptions,
+                ])
+                setCurrentDieGroupIndex(rollOptionsGroups.length)
+              }}
+              disabled={rollOptionsGroups.length >= 4}
+            >
+              Add Die
+            </Button>
+            <Button
+              mode="text"
+              onPress={removeDie}
+              disabled={rollOptionsGroups.length <= 1}
+            >
+              Remove Die
+            </Button>
+          </View>
           <RollOptionsGroupDisplay
             rollOptionsGroup={rollOptionsGroups}
             activeIndex={currentDieGroupIndex}
             onPress={(index) => setCurrentDieGroupIndex(index)}
           />
-          <RollControlRow
-            onAdd={() => {
-              setRollOptionsGroups((groups) => [...groups, defaultRollOptions])
-              setCurrentDieGroupIndex(rollOptionsGroups.length)
-            }}
-            onRemove={removeDie}
-            onSaveChanges={saveChanges}
-            onDelete={() => setDeleteDialogIsVisible(true)}
-            onSaveRoll={() => setSaveDialogIsVisible(true)}
-            isDirty={isDirty}
-            isSavedRoll={isSavedRoll}
-            rollOptionsGroups={rollOptionsGroups}
-          />
+        </View>
+        <RollInput rollOptions={rollOptions} setRollOptions={setRollOptions} />
+        <ModifierPanel
+          rollOptions={rollOptions}
+          setRollOptions={setRollOptions}
+        />
+        <View style={styles.collection}>
           <View style={sharedStyles.lesserButtonRow}>
             <Button
               style={{ width: '100%' }}
@@ -150,6 +167,36 @@ export default function Roller(props: Props) {
             >
               Roll
             </Button>
+          </View>
+          <View style={sharedStyles.lesserButtonRow}>
+            {!isSavedRoll && (
+              <View style={sharedStyles.lesserButtonRow}>
+                <Button
+                  mode="text"
+                  onPress={() => setSaveDialogIsVisible(true)}
+                >
+                  Save Roll
+                </Button>
+              </View>
+            )}
+            {isSavedRoll && (
+              <>
+                <View style={sharedStyles.lesserButtonRow}>
+                  <Button mode="text" disabled={!isDirty} onPress={saveChanges}>
+                    Save Changes
+                  </Button>
+                </View>
+                <View style={sharedStyles.lesserButtonRow}>
+                  <Button
+                    labelStyle={{ color: theme.colors.error }}
+                    mode="text"
+                    onPress={() => setDeleteDialogIsVisible(true)}
+                  >
+                    Delete Roll
+                  </Button>
+                </View>
+              </>
+            )}
           </View>
         </View>
       </View>
@@ -179,13 +226,18 @@ export default function Roller(props: Props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
   lowerContainer: {
     flex: 1,
     justifyContent: 'space-around',
   },
-  container: {
-    marginHorizontal: 20,
-    flex: 1,
-    justifyContent: 'space-evenly',
+  collection: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
   },
 })

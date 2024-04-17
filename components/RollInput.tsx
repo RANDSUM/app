@@ -4,7 +4,6 @@ import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
 
-import ModifierPanel from './ModifierPanel'
 import NumButton from './NumButton'
 import { dieSides } from '~constants'
 import useAppTheme from '~theme/useAppTheme'
@@ -35,54 +34,46 @@ export default function RollInput({ rollOptions, setRollOptions }: Props) {
     setRollOptions((o) => ({ ...o, quantity: Number(o.quantity) - 1 || 1 }))
   const quantityDownDisabled = Number(rollOptions.quantity) <= 1
   return (
-    <View style={styles.container}>
-      <View style={styles.diceRow}>
-        <View style={styles.numContainer}>
-          <NumButton label="+" onPress={increaseQuantity} />
-          <TextInput
-            style={[styles.num, { backgroundColor: theme.colors.background }]}
-            underlineColor="transparent"
-            activeUnderlineColor="transparent"
-            maxFontSizeMultiplier={1}
-            label=""
-            keyboardType="numeric"
-            numberOfLines={1}
-            value={String(rollOptions.quantity)}
-            onChangeText={(num) =>
-              setRollOptions((o) => ({
-                ...o,
-                quantity: isNaN(Number(num))
-                  ? rollOptions.quantity
-                  : Number(num),
-              }))
-            }
-          />
-          <NumButton
-            label="-"
-            disabled={quantityDownDisabled}
-            onPress={decreaseQuantity}
-          />
-        </View>
-        <View style={styles.numContainer}>
-          <NumButton
-            label="+"
-            disabled={disableSidesUp}
-            onPress={increaseSides}
-          />
-          <View style={styles.num}>
-            <Text variant="displayLarge">D{rollOptions.sides}</Text>
-          </View>
-          <NumButton
-            label="-"
-            disabled={disableSidesDown}
-            onPress={decreaseSides}
-          />
-        </View>
+    <View style={styles.diceRow}>
+      <View style={styles.numContainer}>
+        <NumButton label="+" onPress={increaseQuantity} />
+        <TextInput
+          style={[styles.num, { backgroundColor: theme.colors.background }]}
+          underlineColor="transparent"
+          activeUnderlineColor="transparent"
+          maxFontSizeMultiplier={1}
+          label=""
+          keyboardType="numeric"
+          numberOfLines={1}
+          value={String(rollOptions.quantity)}
+          onChangeText={(num) =>
+            setRollOptions((o) => ({
+              ...o,
+              quantity: isNaN(Number(num)) ? rollOptions.quantity : Number(num),
+            }))
+          }
+        />
+        <NumButton
+          label="-"
+          disabled={quantityDownDisabled}
+          onPress={decreaseQuantity}
+        />
       </View>
-      <ModifierPanel
-        rollOptions={rollOptions}
-        setRollOptions={setRollOptions}
-      />
+      <View style={styles.numContainer}>
+        <NumButton
+          label="+"
+          disabled={disableSidesUp}
+          onPress={increaseSides}
+        />
+        <View style={styles.num}>
+          <Text variant="displayLarge">D{rollOptions.sides}</Text>
+        </View>
+        <NumButton
+          label="-"
+          disabled={disableSidesDown}
+          onPress={decreaseSides}
+        />
+      </View>
     </View>
   )
 }
@@ -105,11 +96,6 @@ const styles = StyleSheet.create({
   },
   diceRow: {
     flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  container: {
-    flexGrow: 2,
-    flex: 1,
     justifyContent: 'center',
   },
 })
