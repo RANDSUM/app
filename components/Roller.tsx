@@ -58,10 +58,13 @@ export default function Roller(props: Props) {
 
   const router = useRouter()
 
-  const rollDie = () => {
-    Keyboard.dismiss()
+  const coreRoll = () => {
     const rolls = rollOptionsGroups.map((group) => roll(group))
     setLastRolls(rolls)
+  }
+  const rollDie = () => {
+    Keyboard.dismiss()
+    coreRoll()
     setResultModalIsVisible(true)
   }
 
@@ -153,59 +156,50 @@ export default function Roller(props: Props) {
             onPress={(index) => setCurrentDieGroupIndex(index)}
           />
         </View>
+        <RollInput rollOptions={rollOptions} setRollOptions={setRollOptions} />
+        <ModifierPanel
+          rollOptions={rollOptions}
+          setRollOptions={setRollOptions}
+        />
         <View style={styles.collection}>
-          <RollInput
-            rollOptions={rollOptions}
-            setRollOptions={setRollOptions}
-          />
-          <ModifierPanel
-            rollOptions={rollOptions}
-            setRollOptions={setRollOptions}
-          />
-          <View style={styles.collection}>
-            <View style={sharedStyles.lesserButtonRow}>
-              <Button
-                style={{ width: '100%' }}
-                onPress={rollDie}
-                mode="contained"
-              >
-                Roll
-              </Button>
-            </View>
-            <View style={sharedStyles.lesserButtonRow}>
-              {!isSavedRoll && (
+          <View style={sharedStyles.lesserButtonRow}>
+            <Button
+              style={{ width: '100%' }}
+              onPress={rollDie}
+              mode="contained"
+            >
+              Roll
+            </Button>
+          </View>
+          <View style={sharedStyles.lesserButtonRow}>
+            {!isSavedRoll && (
+              <View style={sharedStyles.lesserButtonRow}>
+                <Button
+                  mode="text"
+                  onPress={() => setSaveDialogIsVisible(true)}
+                >
+                  Save Roll
+                </Button>
+              </View>
+            )}
+            {isSavedRoll && (
+              <>
                 <View style={sharedStyles.lesserButtonRow}>
-                  <Button
-                    mode="text"
-                    onPress={() => setSaveDialogIsVisible(true)}
-                  >
-                    Save Roll
+                  <Button mode="text" disabled={!isDirty} onPress={saveChanges}>
+                    Save Changes
                   </Button>
                 </View>
-              )}
-              {isSavedRoll && (
-                <>
-                  <View style={sharedStyles.lesserButtonRow}>
-                    <Button
-                      mode="text"
-                      disabled={!isDirty}
-                      onPress={saveChanges}
-                    >
-                      Save Changes
-                    </Button>
-                  </View>
-                  <View style={sharedStyles.lesserButtonRow}>
-                    <Button
-                      labelStyle={{ color: theme.colors.error }}
-                      mode="text"
-                      onPress={() => setDeleteDialogIsVisible(true)}
-                    >
-                      Delete Roll
-                    </Button>
-                  </View>
-                </>
-              )}
-            </View>
+                <View style={sharedStyles.lesserButtonRow}>
+                  <Button
+                    labelStyle={{ color: theme.colors.error }}
+                    mode="text"
+                    onPress={() => setDeleteDialogIsVisible(true)}
+                  >
+                    Delete Roll
+                  </Button>
+                </View>
+              </>
+            )}
           </View>
         </View>
       </View>
@@ -214,7 +208,7 @@ export default function Roller(props: Props) {
         visible={resultModalIsVisible}
         onDismiss={() => setResultModalIsVisible(false)}
         rollResults={lastRolls}
-        rollAgain={rollDie}
+        rollAgain={coreRoll}
       />
       <DeleteSavedRollDialog
         savedRoll={props.savedRoll}

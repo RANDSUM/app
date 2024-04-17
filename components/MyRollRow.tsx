@@ -23,12 +23,17 @@ export default function MyRollRow({
     .map(({ sides, quantity }) => `${quantity}D${sides}`)
     .join('+')
 
-  const rollDie = () => {
+  const coreRoll = () => {
     const result = rolls.map((group) => roll(group))
+    setLastRolls(result)
+    return result
+  }
+
+  const rollDie = () => {
+    const result = coreRoll()
     const combinedTotal = result.reduce((prev, current) => {
       return prev + current.total
     }, 0)
-    setLastRolls(result)
     setSnackbarConfig({
       children: `Rolled "${title}": ${combinedTotal}`,
       action: {
@@ -77,7 +82,7 @@ export default function MyRollRow({
         </View>
       </View>
       <ResultModal
-        rollAgain={rollDie}
+        rollAgain={coreRoll}
         visible={resultModalIsVisible}
         onDismiss={() => setResultModalIsVisible(false)}
         preventAutoDismiss

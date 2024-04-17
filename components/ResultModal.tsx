@@ -46,10 +46,6 @@ export default function ResultModal({
 
   const isLoading = !rollResults || showLoading
 
-  useEffect(() => {
-    setIsCollapsed(true)
-  }, [isLoading])
-
   const shouldCountdown = isCollapsed && !preventAutoDismiss
   useEffect(() => {
     progressRef.current?.reAnimate()
@@ -89,7 +85,10 @@ export default function ResultModal({
     <Portal>
       <Modal
         visible={visible}
-        onDismiss={onDismiss}
+        onDismiss={() => {
+          onDismiss()
+          setIsCollapsed(true)
+        }}
         style={[styles.modalStyle]}
       >
         <Card style={{ backgroundColor: theme.colors.background }}>
@@ -171,12 +170,13 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   dieGroupContainer: {
-    flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   dieGroupRow: {
     paddingTop: 10,
-    flexDirection: 'row',
+    textAlign: 'center',
+    alignItems: 'center',
   },
   result: {
     textAlign: 'center',
