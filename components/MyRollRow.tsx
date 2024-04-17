@@ -30,19 +30,24 @@ export default function MyRollRow({
   }
 
   const rollDie = () => {
+    setSnackbarConfig({
+      children: `Rolling ...`,
+    })
     const result = coreRoll()
     const combinedTotal = result.reduce((prev, current) => {
       return prev + current.total
     }, 0)
-    setSnackbarConfig({
-      children: `Rolled "${title}": ${combinedTotal}`,
-      action: {
-        label: 'View Details',
-        onPress: () => {
-          setResultModalIsVisible(true)
+    setTimeout(() => {
+      setSnackbarConfig({
+        children: `Rolled "${title}": ${combinedTotal}`,
+        action: {
+          label: 'View Details',
+          onPress: () => {
+            setResultModalIsVisible(true)
+          },
         },
-      },
-    })
+      })
+    }, 300)
   }
 
   return (
