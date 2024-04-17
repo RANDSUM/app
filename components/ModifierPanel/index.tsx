@@ -1,18 +1,17 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 
+import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
-import { Button, Portal, Modal, Card } from 'react-native-paper'
+import { Button, Portal, Modal, Card, Text } from 'react-native-paper'
 
-import ShowRollsToggle from './DropToggle'
 import useAppTheme from '~theme/useAppTheme'
-import { RollOptions } from '~types'
 
 type Props = {
   rollOptions: RollOptions
   setRollOptions: Dispatch<SetStateAction<RollOptions>>
 }
 
-export default function ModifierPanel({ rollOptions, setRollOptions }: Props) {
+export default function ModifierPanel({}: Props) {
   const theme = useAppTheme()
   const [modalIsVisible, setModalIsVisible] = useState(false)
 
@@ -32,10 +31,7 @@ export default function ModifierPanel({ rollOptions, setRollOptions }: Props) {
           <Card style={{ backgroundColor: theme.colors.background }}>
             <Card.Title title="Modify Dice Roll" />
             <Card.Content style={{ flexDirection: 'row' }}>
-              <ShowRollsToggle
-                rollOptions={rollOptions}
-                setRollOptions={setRollOptions}
-              />
+              <Text>Foo</Text>
             </Card.Content>
           </Card>
         </Modal>

@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 
+import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
 
@@ -7,7 +8,6 @@ import ModifierPanel from './ModifierPanel'
 import NumButton from './NumButton'
 import { dieSides } from '~constants'
 import useAppTheme from '~theme/useAppTheme'
-import { RollOptions } from '~types'
 
 type Props = {
   rollOptions: RollOptions
@@ -35,7 +35,7 @@ export default function RollInput({ rollOptions, setRollOptions }: Props) {
     setRollOptions((o) => ({ ...o, quantity: Number(o.quantity) - 1 || 1 }))
   const quantityDownDisabled = Number(rollOptions.quantity) <= 1
   return (
-    <View style={styles.diceContainer}>
+    <View style={styles.container}>
       <View style={styles.diceRow}>
         <View style={styles.numContainer}>
           <NumButton label="+" onPress={increaseQuantity} />
@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  diceContainer: {
-    justifyContent: 'center',
+  container: {
     flexGrow: 2,
-    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
   },
 })

@@ -20,17 +20,13 @@ export default function RollSpecific() {
       <Stack.Screen
         options={{
           title: savedRoll.title,
-          headerTintColor: theme.colors.primary,
+          headerTintColor: theme.colors.onPrimary,
           headerBackVisible: true,
           headerBackTitleVisible: false,
           headerBackButtonMenuEnabled: true,
           headerShown: true,
-          headerTitleStyle: {
-            color: theme.colors.primary,
-          },
-          headerStyle: {
-            backgroundColor: theme.colors.background,
-          },
+          headerStyle: { backgroundColor: theme.colors.primary },
+          headerTitleStyle: { color: theme.colors.onPrimary },
         }}
       />
       <Container header>

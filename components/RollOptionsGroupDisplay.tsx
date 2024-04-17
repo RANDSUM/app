@@ -1,7 +1,6 @@
+import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
-
-import { RollOptions } from '~types'
 
 type Props = {
   rollOptionsGroup: RollOptions[]
@@ -17,7 +16,7 @@ export default function RollOptionsGroupDisplay({
   return (
     <View style={[styles.container]}>
       {rollOptionsGroup.map((group, index) => {
-        const showModifier = group.modifiers?.length
+        const showModifier = Object.keys(group.modifiers || {}).length
         return (
           <Chip
             selected={activeIndex === index}
