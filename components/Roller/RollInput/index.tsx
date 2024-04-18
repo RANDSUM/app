@@ -10,21 +10,21 @@ import useAppTheme from '~theme/useAppTheme'
 
 type Props = {
   currentDicePoolOptions: RollOptions
-  setCurrentRollOptions: Dispatch<SetStateAction<RollOptions>>
+  setCurrentDicePoolOptions: Dispatch<SetStateAction<RollOptions>>
 }
 export default function RollInput({
   currentDicePoolOptions,
-  setCurrentRollOptions,
+  setCurrentDicePoolOptions,
 }: Props) {
   const theme = useAppTheme()
 
   const increaseSides = () =>
-    setCurrentRollOptions((o) => ({
+    setCurrentDicePoolOptions((o) => ({
       ...o,
       sides: dieSides[dieSides.indexOf(Number(o.sides)) + 1] || dieSides[0],
     }))
   const decreaseSides = () =>
-    setCurrentRollOptions((o) => ({
+    setCurrentDicePoolOptions((o) => ({
       ...o,
       sides: dieSides[dieSides.indexOf(Number(o.sides)) - 1] || dieSides[0],
     }))
@@ -34,12 +34,12 @@ export default function RollInput({
   const disableSidesDown = currentDicePoolOptions.sides === dieSides[0]
 
   const increaseQuantity = () =>
-    setCurrentRollOptions((o) => ({
+    setCurrentDicePoolOptions((o) => ({
       ...o,
       quantity: Number(o.quantity) + 1 || 1,
     }))
   const decreaseQuantity = () =>
-    setCurrentRollOptions((o) => ({
+    setCurrentDicePoolOptions((o) => ({
       ...o,
       quantity: Number(o.quantity) - 1 || 1,
     }))
@@ -59,7 +59,7 @@ export default function RollInput({
           numberOfLines={1}
           value={String(currentDicePoolOptions.quantity)}
           onChangeText={(num) =>
-            setCurrentRollOptions((o) => ({
+            setCurrentDicePoolOptions((o) => ({
               ...o,
               quantity: isNaN(Number(num))
                 ? currentDicePoolOptions.quantity

@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 
 import * as Crypto from 'expo-crypto'
+import { RollOptions } from 'randsum'
 import { StyleSheet, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
@@ -47,6 +48,15 @@ export default function Roller(props: Props) {
   }
 
   const currentDicePoolOptions = dicePools[currentDicePoolId]
+  const setCurrentDicePoolOptions: Dispatch<SetStateAction<RollOptions>> = (
+    arg
+  ) => {
+    setDicePools((pools) => ({
+      ...pools,
+      [currentDicePoolId]:
+        arg instanceof Function ? arg(currentDicePoolOptions) : arg,
+    }))
+  }
 
   const addDie = () => {
     setDicePools((pools) => ({
@@ -103,13 +113,7 @@ export default function Roller(props: Props) {
         </View>
         <RollInput
           currentDicePoolOptions={currentDicePoolOptions}
-          setCurrentRollOptions={(arg) => {
-            setDicePools((pools) => ({
-              ...pools,
-              [currentDicePoolId]:
-                arg instanceof Function ? arg(currentDicePoolOptions) : arg,
-            }))
-          }}
+          setCurrentDicePoolOptions={setCurrentDicePoolOptions}
         />
         <View style={styles.row}>
           <RollButton currentRoll={currentRoll} />
