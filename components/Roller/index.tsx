@@ -1,32 +1,27 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 
-import * as Crypto from 'expo-crypto'
 import { RollOptions } from 'randsum'
 import { StyleSheet, View } from 'react-native'
-import { IconButton } from 'react-native-paper'
 
+import DicePoolControls from './DicePoolControls'
 import DicePoolDisplay from './DicePoolDisplay'
 import RollButton from './RollButton'
 import RollConfigButton from './RollConfigButton'
 import RollInput from './RollInput'
 import SaveButton from './SaveButton'
 import { SetDicePools, SetRollConfig } from './types'
-import { randomDieSide } from '../../utils'
-import { defaultRoll, defaultRollOptions } from '~constants'
-import useAppTheme from '~theme/useAppTheme'
+import { defaultRoll } from '~constants'
 import { Roll } from '~types'
 
 type Props = {
   savedRoll?: Roll
 }
 export default function Roller(props: Props) {
-  const theme = useAppTheme()
   const [currentRoll, setCurrentRoll] = useState<Roll>(
     props.savedRoll || defaultRoll
   )
 
   const dicePools = currentRoll.dicePools
-  const dicePoolsList = Object.values(dicePools)
   const [currentDicePoolId, setCurrentDicePoolId] = useState(
     Object.keys(dicePools)[0]
   )
@@ -58,44 +53,9 @@ export default function Roller(props: Props) {
     }))
   }
 
-  const addDie = () => {
-    setDicePools((pools) => ({
-      ...pools,
-      [Crypto.randomUUID()]: {
-        ...defaultRollOptions,
-        sides: randomDieSide(),
-      },
-    }))
-  }
-  const duplicateDie = () => {
-    setDicePools((pools) => ({
-      ...pools,
-      [Crypto.randomUUID()]: currentDicePoolOptions,
-    }))
-  }
-
-  const removeDie = () => {
-    if (dicePoolsList.length <= 1) return
-
-    setDicePools((pools) => {
-      const newPools = { ...pools }
-      delete newPools[currentDicePoolId]
-      return newPools
-    })
-
-    const nextPoolList = Object.keys(dicePools).filter(
-      (id) => id !== currentDicePoolId
-    )
-    const nextPoolId = nextPoolList[nextPoolList.length - 1]
-
-    setCurrentDicePoolId(nextPoolId)
-  }
   const isDirty =
     JSON.stringify(currentRoll) !==
     JSON.stringify(props.savedRoll ? props.savedRoll.dicePools : defaultRoll)
-
-  const disableRemove = dicePoolsList.length <= 1
-  const disableAdd = dicePoolsList.length >= 8
 
   return (
     <>
@@ -124,29 +84,13 @@ export default function Roller(props: Props) {
             currentDicePoolId={currentDicePoolId}
             onPress={setCurrentDicePoolId}
           />
-          <View style={styles.row}>
-            <IconButton
-              icon="plus-circle-outline"
-              size={40}
-              iconColor={theme.colors.primary}
-              disabled={disableAdd}
-              onPress={addDie}
-            />
-            <IconButton
-              icon="plus-circle-multiple-outline"
-              size={40}
-              iconColor={theme.colors.primary}
-              disabled={disableAdd}
-              onPress={duplicateDie}
-            />
-            <IconButton
-              icon="close-circle-outline"
-              size={40}
-              iconColor={theme.colors.error}
-              disabled={disableRemove}
-              onPress={removeDie}
-            />
-          </View>
+          <DicePoolControls
+            setDicePools={setDicePools}
+            currentDicePoolOptions={currentDicePoolOptions}
+            dicePools={dicePools}
+            currentDicePoolId={currentDicePoolId}
+            setCurrentDicePoolId={setCurrentDicePoolId}
+          />
         </View>
       </View>
     </>
