@@ -14,10 +14,14 @@ export default function SaveRollDialog({
   visible,
 }: Props) {
   const [title, setTitle] = useState('')
+  const handleDismiss = () => {
+    onDismiss()
+    setTitle('')
+  }
 
   return (
     <Portal>
-      <Dialog visible={visible} onDismiss={onDismiss}>
+      <Dialog visible={visible} onDismiss={handleDismiss}>
         <Dialog.Title>Save Roll</Dialog.Title>
         <Dialog.Content>
           <TextInput
@@ -28,8 +32,14 @@ export default function SaveRollDialog({
           />
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={onDismiss}>Cancel</Button>
-          <Button disabled={!title} onPress={() => onAccept(title)}>
+          <Button onPress={handleDismiss}>Cancel</Button>
+          <Button
+            disabled={!title}
+            onPress={() => {
+              onAccept(title)
+              setTitle('')
+            }}
+          >
             Save
           </Button>
         </Dialog.Actions>

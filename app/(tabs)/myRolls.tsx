@@ -33,9 +33,7 @@ export default function MyRolls() {
 }
 
 const styles = StyleSheet.create({
-  contentContainerStyle: {
-    flexGrow: 1,
-  },
+  contentContainerStyle: {},
   text: {
     textAlign: 'center',
   },

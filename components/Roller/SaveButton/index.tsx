@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
+import * as Crypto from 'expo-crypto'
 import { useRouter } from 'expo-router'
 import { IconButton } from 'react-native-paper'
 
-import SaveRollDialog from '../SaveRollDialog'
+import SaveRollDialog from './SaveRollDialog'
 import useAppContext from '~context/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
@@ -37,12 +38,13 @@ export default function SaveButton({
       ...rolls,
       {
         ...currentRoll,
+        uuid: Crypto.randomUUID(),
         title,
         persisted: true,
       },
     ])
     router.push('/myRolls')
-    setSnackbarConfig({ children: 'Roll saved!' })
+    setSnackbarConfig({ children: 'Roll saved!', duration: 1500 })
   }
 
   return (

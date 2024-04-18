@@ -18,7 +18,7 @@ export const defaultConfig: RollConfig = {
 }
 
 export const defaultRoll: Roll = {
-  uuid: Crypto.randomUUID(),
+  uuid: 'UNSAVED-ROLL',
   title: '',
   persisted: false,
   config: defaultConfig,
