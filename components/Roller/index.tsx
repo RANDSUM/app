@@ -3,7 +3,7 @@ import { useState } from 'react'
 import * as Crypto from 'expo-crypto'
 import { roll, RollResult } from 'randsum'
 import { Keyboard, StyleSheet, View } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, Icon } from 'react-native-paper'
 
 import DicePoolDisplay from './DicePoolDisplay'
 import RollButton from './RollButton'
@@ -14,12 +14,14 @@ import { SetCurrentRollOptions, SetDicePools, SetRollConfig } from './types'
 import { randomDieSide } from '../../utils'
 import { defaultRoll, defaultRollOptions } from '~constants'
 import HapticService from '~services/HapticService'
+import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
 
 type Props = {
   savedRoll?: Roll
 }
 export default function Roller(props: Props) {
+  const theme = useAppTheme()
   const [lastRollResults, setLastRollResults] = useState<RollResult<number>[]>()
   const [currentRoll, setCurrentRoll] = useState<Roll>(
     props.savedRoll || defaultRoll
@@ -90,9 +92,10 @@ export default function Roller(props: Props) {
       return newPools
     })
 
-    const nextPoolId = Object.keys(dicePools).filter(
+    const nextPoolList = Object.keys(dicePools).filter(
       (id) => id !== currentDicePoolId
-    )[0]
+    )
+    const nextPoolId = nextPoolList[nextPoolList.length - 1]
 
     setCurrentDicePoolId(nextPoolId)
   }
@@ -136,14 +139,25 @@ export default function Roller(props: Props) {
           />
           <View style={styles.row}>
             <Button mode="text" disabled={disableRemove} onPress={removeDie}>
-              Remove {currentDicePoolOptions.quantity}D
-              {currentDicePoolOptions.sides}
+              <Icon
+                source="minus-circle-outline"
+                size={40}
+                color={theme.colors.primary}
+              />
             </Button>
             <Button mode="text" disabled={disableAdd} onPress={addDie}>
-              Add Die
+              <Icon
+                source="plus-circle-outline"
+                size={40}
+                color={theme.colors.primary}
+              />
             </Button>
             <Button mode="text" disabled={disableAdd} onPress={duplicateDie}>
-              Duplicate Die
+              <Icon
+                source="plus-circle-multiple-outline"
+                size={40}
+                color={theme.colors.primary}
+              />
             </Button>
           </View>
         </View>
