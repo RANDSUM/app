@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     minHeight: 120,
     width: 175,
-    padding: 20,
     fontSize: 55,
   },
   diceRow: {

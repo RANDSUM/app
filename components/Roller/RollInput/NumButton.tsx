@@ -26,7 +26,7 @@ export default function NumButton({
         },
         labelStyle,
       ]}
-      mode="contained"
+      mode="contained-tonal"
       disabled={disabled}
       onPress={onPress}
     >
