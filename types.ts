@@ -10,8 +10,9 @@ export type Roll = {
     [key: string]: RollOptions
   }
   title: string
-  config?: RollConfig
+  config: RollConfig
   uuid: string
+  persisted: boolean
 }
 
 export type SnackbarConfig = Pick<

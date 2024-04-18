@@ -7,13 +7,14 @@ import useAppTheme from '~theme/useAppTheme'
 
 export default function RollSpecific() {
   const { rollId } = useLocalSearchParams()
-  const { savedRolls } = useAppContext()
+  const { setSnackbarConfig, savedRolls } = useAppContext()
   const theme = useAppTheme()
 
   const savedRoll = savedRolls.find((r) => r.uuid === rollId)
 
   if (!savedRoll) {
-    return <Redirect href="/" />
+    setSnackbarConfig({ children: 'Roll not found' })
+    return <Redirect href="/myRolls" />
   }
   return (
     <>

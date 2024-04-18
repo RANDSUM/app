@@ -6,20 +6,19 @@ type Props = {
   visible: boolean
   onAccept: () => void
   onDismiss: () => void
-  savedRoll: Roll | undefined
+  currentRoll: Roll
 }
 
 export default function DeleteSavedRollDialog({
   onDismiss,
   onAccept,
   visible,
-  savedRoll,
+  currentRoll,
 }: Props) {
-  if (!savedRoll) return null
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>
-        <Dialog.Title>{`Delete "${savedRoll.title}"?`}</Dialog.Title>
+        <Dialog.Title>{`Delete "${currentRoll.title}"?`}</Dialog.Title>
         <Dialog.Actions>
           <Button onPress={onDismiss}>Cancel</Button>
           <Button onPress={onAccept}>Delete</Button>

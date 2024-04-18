@@ -16,10 +16,11 @@ import {
 } from 'react-native-paper'
 
 import useAppTheme from '~theme/useAppTheme'
+import { Roll } from '~types'
 
 type Props = {
   visible: boolean
-  title?: string | undefined
+  currentRoll: Roll
   onDismiss: () => void
   rollResults: RollResult[] | undefined
   rollAgain: () => void
@@ -33,7 +34,7 @@ export default function ResultModal({
   rollResults,
   rollAgain,
   visible,
-  title,
+  currentRoll: { title, config },
   preventAutoDismiss = false,
 }: Props) {
   const theme = useAppTheme()
@@ -81,6 +82,24 @@ export default function ResultModal({
     return { title: rollDescription, value: rollsDescription }
   })
 
+  const MainDisplay = () => {
+    const textDisplay = config.showRolls ? (
+      <Text style={styles.rollResult} variant="headlineLarge">
+        {rollResults.flatMap((result) => result.rolls).join(', ')}
+      </Text>
+    ) : (
+      <Text style={styles.totalResult} variant="displayLarge">
+        {new Intl.NumberFormat().format(combinedTotal)}
+      </Text>
+    )
+
+    return isLoading ? (
+      <ActivityIndicator size="large" style={{ height: 85 }} />
+    ) : (
+      textDisplay
+    )
+  }
+
   return (
     <Portal>
       <Modal
@@ -98,7 +117,7 @@ export default function ResultModal({
             titleStyle={{ textAlign: 'center' }}
             subtitleStyle={{ textAlign: 'center' }}
           />
-          <Card.Content>
+          <Card.Content style={{ paddingHorizontal: 30 }}>
             {shouldCountdown && (
               <View style={{ position: 'absolute', right: 10, top: -60 }}>
                 <CircularProgress
@@ -114,13 +133,7 @@ export default function ResultModal({
                 />
               </View>
             )}
-            {isLoading ? (
-              <ActivityIndicator size="large" style={{ height: 85 }} />
-            ) : (
-              <Text style={styles.result} variant="displayLarge">
-                {new Intl.NumberFormat().format(combinedTotal)}
-              </Text>
-            )}
+            <MainDisplay />
             <Collapsible collapsed={isCollapsed}>
               <View style={styles.dieGroupContainer}>
                 {parsedRollOptionsGroup.map(({ title, value }, index) => {
@@ -182,9 +195,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
   },
-  result: {
+  totalResult: {
     textAlign: 'center',
     fontSize: 78,
     lineHeight: 85,
+  },
+  rollResult: {
+    textAlign: 'left',
   },
 })

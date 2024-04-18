@@ -16,16 +16,11 @@ export default function NumButton({
 }: ButtonProps) {
   return (
     <Button
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
       labelStyle={[
         {
-          width: 120,
           justifyContent: 'center',
           alignItems: 'center',
-          lineHeight: 55,
+          lineHeight: Platform.select({ web: undefined, android: 55, ios: 55 }),
           height: Platform.select({ web: 35, ios: 55, android: 55 }),
           fontSize: 50,
         },

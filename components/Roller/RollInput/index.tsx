@@ -9,11 +9,11 @@ import { dieSides } from '~constants'
 import useAppTheme from '~theme/useAppTheme'
 
 type Props = {
-  currentRollOptions: RollOptions
+  currentDicePoolOptions: RollOptions
   setCurrentRollOptions: Dispatch<SetStateAction<RollOptions>>
 }
 export default function RollInput({
-  currentRollOptions,
+  currentDicePoolOptions,
   setCurrentRollOptions,
 }: Props) {
   const theme = useAppTheme()
@@ -30,8 +30,8 @@ export default function RollInput({
     }))
 
   const disableSidesUp =
-    currentRollOptions.sides === dieSides[dieSides.length - 1]
-  const disableSidesDown = currentRollOptions.sides === dieSides[0]
+    currentDicePoolOptions.sides === dieSides[dieSides.length - 1]
+  const disableSidesDown = currentDicePoolOptions.sides === dieSides[0]
 
   const increaseQuantity = () =>
     setCurrentRollOptions((o) => ({
@@ -43,7 +43,7 @@ export default function RollInput({
       ...o,
       quantity: Number(o.quantity) - 1 || 1,
     }))
-  const quantityDownDisabled = Number(currentRollOptions.quantity) <= 1
+  const quantityDownDisabled = Number(currentDicePoolOptions.quantity) <= 1
 
   return (
     <View style={styles.diceRow}>
@@ -57,12 +57,12 @@ export default function RollInput({
           label=""
           keyboardType="numeric"
           numberOfLines={1}
-          value={String(currentRollOptions.quantity)}
+          value={String(currentDicePoolOptions.quantity)}
           onChangeText={(num) =>
             setCurrentRollOptions((o) => ({
               ...o,
               quantity: isNaN(Number(num))
-                ? currentRollOptions.quantity
+                ? currentDicePoolOptions.quantity
                 : Number(num),
             }))
           }
@@ -78,16 +78,14 @@ export default function RollInput({
           label="+"
           disabled={disableSidesUp}
           onPress={increaseSides}
-          labelStyle={{ fontSize: 20 }}
         />
         <View style={styles.num}>
-          <Text variant="displayLarge">D{currentRollOptions.sides}</Text>
+          <Text variant="displayLarge">D{currentDicePoolOptions.sides}</Text>
         </View>
         <NumButton
           label="-"
           disabled={disableSidesDown}
           onPress={decreaseSides}
-          labelStyle={{ fontSize: 20 }}
         />
       </View>
     </View>

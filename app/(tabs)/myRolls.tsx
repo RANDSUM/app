@@ -9,7 +9,6 @@ import useAppTheme from '~theme/useAppTheme'
 export default function MyRolls() {
   const { savedRolls } = useAppContext()
   const theme = useAppTheme()
-  console.log(savedRolls)
   return (
     <Container header>
       <FlatList

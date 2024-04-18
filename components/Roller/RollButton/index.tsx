@@ -6,7 +6,7 @@ import ResultModal from '~components/ResultModal'
 
 type Props = {
   coreRoll: () => void
-} & Pick<ComponentProps<typeof ResultModal>, 'title' | 'rollResults'>
+} & Pick<ComponentProps<typeof ResultModal>, 'currentRoll' | 'rollResults'>
 
 export default function RollButton({ coreRoll, ...props }: Props) {
   const [showResultModal, setShowResultModal] = useState(false)
@@ -16,7 +16,12 @@ export default function RollButton({ coreRoll, ...props }: Props) {
   }
   return (
     <>
-      <Button style={{ width: '100%' }} mode="contained" onPress={rollDie}>
+      <Button
+        style={{ width: '100%' }}
+        labelStyle={{ lineHeight: 55, fontSize: 30 }}
+        mode="contained"
+        onPress={rollDie}
+      >
         Roll
       </Button>
       <ResultModal

@@ -9,7 +9,7 @@ type Props = {
   onPress: (index: string) => void
 }
 
-export default function RollOptionsGroupDisplay({
+export default function DicePoolDisplay({
   dicePools,
   onPress,
   currentDicePoolId,
@@ -43,7 +43,7 @@ export default function RollOptionsGroupDisplay({
 const styles = StyleSheet.create({
   container: {
     minHeight: 80,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   wrapRow: {
     flexDirection: 'row',
