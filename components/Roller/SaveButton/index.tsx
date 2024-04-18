@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useRouter } from 'expo-router'
-import { Button, Icon, IconButton } from 'react-native-paper'
+import { IconButton } from 'react-native-paper'
 
 import SaveRollDialog from '../SaveRollDialog'
 import useAppContext from '~context/useAppContext'
