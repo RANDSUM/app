@@ -9,30 +9,42 @@ import { dieSides } from '~constants'
 import useAppTheme from '~theme/useAppTheme'
 
 type Props = {
-  rollOptions: RollOptions
-  setRollOptions: Dispatch<SetStateAction<RollOptions>>
+  currentRollOptions: RollOptions
+  setCurrentRollOptions: Dispatch<SetStateAction<RollOptions>>
 }
-export default function RollInput({ rollOptions, setRollOptions }: Props) {
+export default function RollInput({
+  currentRollOptions,
+  setCurrentRollOptions,
+}: Props) {
   const theme = useAppTheme()
 
   const increaseSides = () =>
-    setRollOptions((o) => ({
+    setCurrentRollOptions((o) => ({
       ...o,
       sides: dieSides[dieSides.indexOf(Number(o.sides)) + 1] || dieSides[0],
     }))
   const decreaseSides = () =>
-    setRollOptions((o) => ({
+    setCurrentRollOptions((o) => ({
       ...o,
       sides: dieSides[dieSides.indexOf(Number(o.sides)) - 1] || dieSides[0],
     }))
-  const disableSidesUp = rollOptions.sides === dieSides[dieSides.length - 1]
-  const disableSidesDown = rollOptions.sides === dieSides[0]
+
+  const disableSidesUp =
+    currentRollOptions.sides === dieSides[dieSides.length - 1]
+  const disableSidesDown = currentRollOptions.sides === dieSides[0]
 
   const increaseQuantity = () =>
-    setRollOptions((o) => ({ ...o, quantity: Number(o.quantity) + 1 || 1 }))
+    setCurrentRollOptions((o) => ({
+      ...o,
+      quantity: Number(o.quantity) + 1 || 1,
+    }))
   const decreaseQuantity = () =>
-    setRollOptions((o) => ({ ...o, quantity: Number(o.quantity) - 1 || 1 }))
-  const quantityDownDisabled = Number(rollOptions.quantity) <= 1
+    setCurrentRollOptions((o) => ({
+      ...o,
+      quantity: Number(o.quantity) - 1 || 1,
+    }))
+  const quantityDownDisabled = Number(currentRollOptions.quantity) <= 1
+
   return (
     <View style={styles.diceRow}>
       <View style={styles.numContainer}>
@@ -45,11 +57,13 @@ export default function RollInput({ rollOptions, setRollOptions }: Props) {
           label=""
           keyboardType="numeric"
           numberOfLines={1}
-          value={String(rollOptions.quantity)}
+          value={String(currentRollOptions.quantity)}
           onChangeText={(num) =>
-            setRollOptions((o) => ({
+            setCurrentRollOptions((o) => ({
               ...o,
-              quantity: isNaN(Number(num)) ? rollOptions.quantity : Number(num),
+              quantity: isNaN(Number(num))
+                ? currentRollOptions.quantity
+                : Number(num),
             }))
           }
         />
@@ -64,14 +78,16 @@ export default function RollInput({ rollOptions, setRollOptions }: Props) {
           label="+"
           disabled={disableSidesUp}
           onPress={increaseSides}
+          labelStyle={{ fontSize: 20 }}
         />
         <View style={styles.num}>
-          <Text variant="displayLarge">D{rollOptions.sides}</Text>
+          <Text variant="displayLarge">D{currentRollOptions.sides}</Text>
         </View>
         <NumButton
           label="-"
           disabled={disableSidesDown}
           onPress={decreaseSides}
+          labelStyle={{ fontSize: 20 }}
         />
       </View>
     </View>
@@ -97,5 +113,6 @@ const styles = StyleSheet.create({
   diceRow: {
     flexDirection: 'row',
     justifyContent: 'center',
+    gap: 10,
   },
 })

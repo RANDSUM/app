@@ -91,7 +91,7 @@ export default function ResultModal({
         }}
         style={[styles.modalStyle]}
       >
-        <Card style={{ backgroundColor: theme.colors.background }}>
+        <Card mode="contained">
           <Card.Title
             title={title || 'Roll Result'}
             subtitle={rollsDescription}
@@ -136,7 +136,7 @@ export default function ResultModal({
               </View>
             </Collapsible>
           </Card.Content>
-          <Card.Actions>
+          <Card.Actions style={styles.buttonRow}>
             <Button
               mode="text"
               disabled={isLoading}
@@ -163,6 +163,10 @@ export default function ResultModal({
   )
 }
 const styles = StyleSheet.create({
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   modalStyle: {
     margin: 20,
   },

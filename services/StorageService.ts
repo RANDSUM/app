@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { SavedRoll } from '~types'
+import { Roll } from '~types'
 
 enum StorageKeys {
   savedRolls = 'savedRolls',
@@ -11,7 +11,7 @@ async function getSavedRolls() {
   return rawTotals ? JSON.parse(rawTotals) : []
 }
 
-async function setSavedRolls(savedRolls: SavedRoll[]) {
+async function setSavedRolls(savedRolls: Roll[]) {
   await AsyncStorage.setItem(StorageKeys.savedRolls, JSON.stringify(savedRolls))
 }
 

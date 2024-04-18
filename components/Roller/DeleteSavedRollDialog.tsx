@@ -1,12 +1,12 @@
 import { Portal, Button, Dialog } from 'react-native-paper'
 
-import { SavedRoll } from '~types'
+import { Roll } from '~types'
 
 type Props = {
   visible: boolean
   onAccept: () => void
   onDismiss: () => void
-  savedRoll: SavedRoll | undefined
+  savedRoll: Roll | undefined
 }
 
 export default function DeleteSavedRollDialog({

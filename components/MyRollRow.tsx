@@ -8,23 +8,26 @@ import { Text, Button, Icon } from 'react-native-paper'
 import ResultModal from './ResultModal'
 import useAppContext from '~context/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
-import { SavedRoll } from '~types'
+import { Roll } from '~types'
 
-export default function MyRollRow({
-  savedRoll: { title, rolls, uuid },
-}: {
-  savedRoll: SavedRoll
-}) {
+export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
+  console.log(JSON.stringify(savedRoll, null, 2))
+  const { dicePools, title, uuid } = savedRoll
   const theme = useAppTheme()
   const { setSnackbarConfig } = useAppContext()
   const [resultModalIsVisible, setResultModalIsVisible] = useState(false)
   const [lastRolls, setLastRolls] = useState<RollResult<number>[]>()
-  const description = rolls
-    .map(({ sides, quantity }) => `${quantity}D${sides}`)
+
+  const dicePoolList = Object.entries(dicePools || {})
+
+  const description = dicePoolList
+    .map(([, { quantity, sides }]) => {
+      return `${quantity}D${sides}`
+    })
     .join('+')
 
   const coreRoll = () => {
-    const result = rolls.map((group) => roll(group))
+    const result = dicePoolList.map(([, pool]) => roll(pool))
     setLastRolls(result)
     return result
   }

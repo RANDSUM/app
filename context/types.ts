@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from 'react'
 
-import { SavedRoll, SnackbarConfig } from '~types'
+import { Roll, SnackbarConfig } from '~types'
 
 export type AppState = {
-  savedRolls: SavedRoll[]
-  setSavedRolls: Dispatch<SetStateAction<SavedRoll[]>>
+  savedRolls: Roll[]
+  setSavedRolls: Dispatch<SetStateAction<Roll[]>>
   removeSavedRoll: (uuid: string) => void
   hydrated: boolean
   setSnackbarConfig: (config: SnackbarConfig) => void
