@@ -30,9 +30,11 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
   }
 
   const rollDie = () => {
-    setSnackbarConfig({
-      children: `Rolling ...`,
-    })
+    if (!savedRoll.config.showRolls) {
+      setSnackbarConfig({
+        children: `Rolling ...`,
+      })
+    }
     const result = coreRoll()
     const combinedTotal = result.reduce((prev, current) => {
       return prev + current.total
@@ -42,15 +44,18 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
       setResultModalIsVisible(true)
       return
     }
-    setSnackbarConfig({
-      children: `Rolled "${title}": ${combinedTotal}`,
-      action: {
-        label: 'View Details',
-        onPress: () => {
-          setResultModalIsVisible(true)
+
+    setTimeout(() => {
+      setSnackbarConfig({
+        children: `Rolled "${title}": ${combinedTotal}`,
+        action: {
+          label: 'View Details',
+          onPress: () => {
+            setResultModalIsVisible(true)
+          },
         },
-      },
-    })
+      })
+    }, 300)
   }
 
   return (
