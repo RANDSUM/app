@@ -1,15 +1,28 @@
 import { ComponentProps, useState } from 'react'
 
+import { RollResult, roll } from 'randsum'
+import { Keyboard } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import ResultModal from '~components/ResultModal'
+import HapticService from '~services/HapticService'
 
-type Props = {
-  coreRoll: () => void
-} & Pick<ComponentProps<typeof ResultModal>, 'currentRoll' | 'rollResults'>
+type Props = Pick<ComponentProps<typeof ResultModal>, 'currentRoll'>
 
-export default function RollButton({ coreRoll, ...props }: Props) {
+export default function RollButton({ currentRoll }: Props) {
   const [showResultModal, setShowResultModal] = useState(false)
+  const [lastRollResults, setLastRollResults] = useState<RollResult<number>[]>()
+
+  const dicePoolsList = Object.values(currentRoll.dicePools)
+  const coreRoll = () => {
+    const rolls = dicePoolsList.map((pool) => {
+      return roll(pool)
+    })
+    setLastRollResults(rolls)
+    HapticService.notifyVibrate()
+    Keyboard.dismiss()
+  }
+
   const rollDie = () => {
     coreRoll()
     setShowResultModal(true)
@@ -25,7 +38,8 @@ export default function RollButton({ coreRoll, ...props }: Props) {
         Roll
       </Button>
       <ResultModal
-        {...props}
+        rollResults={lastRollResults}
+        currentRoll={currentRoll}
         rollAgain={coreRoll}
         onDismiss={() => setShowResultModal(false)}
         visible={showResultModal}

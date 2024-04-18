@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useRouter } from 'expo-router'
-import { Button, Icon } from 'react-native-paper'
+import { Button, Icon, IconButton } from 'react-native-paper'
 
 import SaveRollDialog from '../SaveRollDialog'
 import useAppContext from '~context/useAppContext'
@@ -48,21 +48,20 @@ export default function SaveButton({
   return (
     <>
       {isSavedRoll ? (
-        <Button mode="text" disabled={!isDirty} onPress={saveChanges}>
-          <Icon
-            source="content-save-outline"
-            size={30}
-            color={!isDirty ? theme.colors.secondary : theme.colors.primary}
-          />
-        </Button>
+        <IconButton
+          icon="content-save-outline"
+          size={40}
+          iconColor={!isDirty ? theme.colors.secondary : theme.colors.primary}
+          disabled={!isDirty}
+          onPress={saveChanges}
+        />
       ) : (
-        <Button mode="text" onPress={() => setSaveDialogIsVisible(true)}>
-          <Icon
-            source="content-save-outline"
-            size={30}
-            color={theme.colors.primary}
-          />
-        </Button>
+        <IconButton
+          icon="content-save-outline"
+          size={40}
+          iconColor={theme.colors.primary}
+          onPress={() => setSaveDialogIsVisible(true)}
+        />
       )}
       <SaveRollDialog
         visible={saveDialogIsVisible}

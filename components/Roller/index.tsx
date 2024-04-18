@@ -1,19 +1,17 @@
 import { useState } from 'react'
 
 import * as Crypto from 'expo-crypto'
-import { roll, RollResult } from 'randsum'
-import { Keyboard, StyleSheet, View } from 'react-native'
-import { Button, Icon } from 'react-native-paper'
+import { StyleSheet, View } from 'react-native'
+import { IconButton } from 'react-native-paper'
 
 import DicePoolDisplay from './DicePoolDisplay'
 import RollButton from './RollButton'
 import RollConfigButton from './RollConfigButton'
 import RollInput from './RollInput'
 import SaveButton from './SaveButton'
-import { SetCurrentRollOptions, SetDicePools, SetRollConfig } from './types'
+import { SetDicePools, SetRollConfig } from './types'
 import { randomDieSide } from '../../utils'
 import { defaultRoll, defaultRollOptions } from '~constants'
-import HapticService from '~services/HapticService'
 import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
 
@@ -22,7 +20,6 @@ type Props = {
 }
 export default function Roller(props: Props) {
   const theme = useAppTheme()
-  const [lastRollResults, setLastRollResults] = useState<RollResult<number>[]>()
   const [currentRoll, setCurrentRoll] = useState<Roll>(
     props.savedRoll || defaultRoll
   )
@@ -50,22 +47,6 @@ export default function Roller(props: Props) {
   }
 
   const currentDicePoolOptions = dicePools[currentDicePoolId]
-  const setCurrentRollOptions: SetCurrentRollOptions = (arg) => {
-    setDicePools((pools) => ({
-      ...pools,
-      [currentDicePoolId]:
-        arg instanceof Function ? arg(currentDicePoolOptions) : arg,
-    }))
-  }
-
-  const coreRoll = () => {
-    const rolls = dicePoolsList.map((pool) => {
-      return roll(pool)
-    })
-    setLastRollResults(rolls)
-    HapticService.notifyVibrate()
-    Keyboard.dismiss()
-  }
 
   const addDie = () => {
     setDicePools((pools) => ({
@@ -122,14 +103,16 @@ export default function Roller(props: Props) {
         </View>
         <RollInput
           currentDicePoolOptions={currentDicePoolOptions}
-          setCurrentRollOptions={setCurrentRollOptions}
+          setCurrentRollOptions={(arg) => {
+            setDicePools((pools) => ({
+              ...pools,
+              [currentDicePoolId]:
+                arg instanceof Function ? arg(currentDicePoolOptions) : arg,
+            }))
+          }}
         />
         <View style={styles.row}>
-          <RollButton
-            coreRoll={coreRoll}
-            currentRoll={currentRoll}
-            rollResults={lastRollResults}
-          />
+          <RollButton currentRoll={currentRoll} />
         </View>
         <View style={styles.collection}>
           <DicePoolDisplay
@@ -138,27 +121,27 @@ export default function Roller(props: Props) {
             onPress={setCurrentDicePoolId}
           />
           <View style={styles.row}>
-            <Button mode="text" disabled={disableRemove} onPress={removeDie}>
-              <Icon
-                source="minus-circle-outline"
-                size={40}
-                color={theme.colors.primary}
-              />
-            </Button>
-            <Button mode="text" disabled={disableAdd} onPress={addDie}>
-              <Icon
-                source="plus-circle-outline"
-                size={40}
-                color={theme.colors.primary}
-              />
-            </Button>
-            <Button mode="text" disabled={disableAdd} onPress={duplicateDie}>
-              <Icon
-                source="plus-circle-multiple-outline"
-                size={40}
-                color={theme.colors.primary}
-              />
-            </Button>
+            <IconButton
+              icon="plus-circle-outline"
+              size={40}
+              iconColor={theme.colors.primary}
+              disabled={disableAdd}
+              onPress={addDie}
+            />
+            <IconButton
+              icon="plus-circle-multiple-outline"
+              size={40}
+              iconColor={theme.colors.primary}
+              disabled={disableAdd}
+              onPress={duplicateDie}
+            />
+            <IconButton
+              icon="close-circle-outline"
+              size={40}
+              iconColor={theme.colors.error}
+              disabled={disableRemove}
+              onPress={removeDie}
+            />
           </View>
         </View>
       </View>
@@ -167,6 +150,11 @@ export default function Roller(props: Props) {
 }
 
 const styles = StyleSheet.create({
+  dieIcon: {
+    backgroundColor: 'red',
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

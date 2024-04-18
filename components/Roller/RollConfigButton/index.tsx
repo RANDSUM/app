@@ -1,6 +1,6 @@
 import { ComponentProps, useState } from 'react'
 
-import { Button, Icon } from 'react-native-paper'
+import { IconButton } from 'react-native-paper'
 
 import RollConfigModal from './RollConfigModal'
 import useAppTheme from '~theme/useAppTheme'
@@ -15,9 +15,12 @@ export default function RollConfigButton(
   const [showConfigModal, setShowConfigModal] = useState(false)
   return (
     <>
-      <Button mode="text" onPress={() => setShowConfigModal(true)}>
-        <Icon source="cog" size={30} color={theme.colors.primary} />
-      </Button>
+      <IconButton
+        icon="cog"
+        iconColor={theme.colors.primary}
+        size={40}
+        onPress={() => setShowConfigModal(true)}
+      />
       <RollConfigModal
         {...props}
         onDismiss={() => setShowConfigModal(false)}
