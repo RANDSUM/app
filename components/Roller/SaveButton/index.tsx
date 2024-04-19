@@ -21,7 +21,9 @@ export default function SaveButton() {
 
   const saveChanges = () => {
     setSavedRolls((rolls) => {
-      return rolls.map((roll) => (roll.uuid === roll.uuid ? roll : roll))
+      return rolls.map((thisRoll) =>
+        thisRoll.uuid === roll.uuid ? roll : thisRoll
+      )
     })
     setSnackbarConfig({ children: 'Changes saved!' })
   }
