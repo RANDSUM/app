@@ -16,8 +16,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
   })
 
   const removeSavedRoll = (uuid: string) => {
+    router.replace('/myRolls')
     setSavedRolls((rolls) => rolls.filter((r) => r.uuid !== uuid))
-    router.push('/myRolls')
     setSnackbarConfig({ children: 'Roll deleted' })
   }
 
