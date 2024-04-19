@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Randsum",
-    "slug": "Randsum",
+    "slug": "randsumapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/ios/icon.png",
