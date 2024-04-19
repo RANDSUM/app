@@ -21,7 +21,10 @@ export default function MyRolls() {
         )}
         contentContainerStyle={[
           styles.contentContainerStyle,
-          { backgroundColor: theme.colors.background },
+          {
+            backgroundColor: theme.colors.background,
+            justifyContent: savedRolls.length === 0 ? 'center' : 'flex-start',
+          },
         ]}
         renderItem={({ item: savedRoll }) => (
           <MyRollRow savedRoll={savedRoll} />
@@ -34,7 +37,6 @@ export default function MyRolls() {
 const styles = StyleSheet.create({
   contentContainerStyle: {
     flex: 1,
-    justifyContent: 'center',
   },
   text: {
     textAlign: 'center',
