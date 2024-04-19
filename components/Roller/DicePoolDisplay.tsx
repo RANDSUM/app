@@ -2,10 +2,8 @@ import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
 import useRollerContext from '~context/RollerContext/useRollerContext'
-import useAppTheme from '~theme/useAppTheme'
 
 export default function DicePoolDisplay() {
-  const theme = useAppTheme()
   const { setCurrentDicePoolId, dicePools, currentDicePoolId } =
     useRollerContext()
   return (
