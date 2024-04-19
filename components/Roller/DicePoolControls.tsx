@@ -90,6 +90,7 @@ export default function DicePoolControls() {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+    width: '100%',
     justifyContent: 'space-between',
     gap: 10,
   },

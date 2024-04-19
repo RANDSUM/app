@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   collection: {
-    justifyContent: 'center',
-    alignItems: 'center',
     gap: 10,
   },
 })
