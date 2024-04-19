@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
 import { Divider, Text } from 'react-native-paper'
 
 import Container from '~components/Container'
@@ -15,10 +15,9 @@ export default function MyRolls() {
         data={savedRolls}
         keyExtractor={({ uuid }) => uuid}
         ItemSeparatorComponent={Divider}
+        style={{ backgroundColor: 'blue' }}
         ListEmptyComponent={() => (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.text}>No Saved Rolls</Text>
-          </View>
+          <Text style={styles.text}>No Saved Rolls</Text>
         )}
         contentContainerStyle={[
           styles.contentContainerStyle,
@@ -33,12 +32,11 @@ export default function MyRolls() {
 }
 
 const styles = StyleSheet.create({
-  contentContainerStyle: {},
-  text: {
-    textAlign: 'center',
-  },
-  emptyContainer: {
+  contentContainerStyle: {
     flex: 1,
     justifyContent: 'center',
+  },
+  text: {
+    textAlign: 'center',
   },
 })
