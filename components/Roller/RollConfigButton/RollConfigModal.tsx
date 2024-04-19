@@ -56,7 +56,7 @@ export default function RollConfigModal({
           <Card>
             <Card.Title title={`Configure ${currentRoll.title}`} />
             <Card.Content style={{ flexDirection: 'row' }}>
-              <View>
+              <View style={styles.input}>
                 <Switch onChange={toggleShowRolls} value={showRolls} />
                 <Text>Show Rolls instead of Total</Text>
               </View>
@@ -87,6 +87,9 @@ export default function RollConfigModal({
   )
 }
 const styles = StyleSheet.create({
+  input: {
+    flexDirection: 'row',
+  },
   modalStyle: {
     margin: 20,
   },
