@@ -2,9 +2,9 @@ import * as Crypto from 'expo-crypto'
 import { StyleSheet, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
+import useRollerContext from './RollerContext/useRollerContext'
 import { randomDieSide } from '../../utils'
 import { defaultRollOptions } from '~constants'
-import useRollerContext from '~context/RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function DicePoolControls() {

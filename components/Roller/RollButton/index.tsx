@@ -4,8 +4,8 @@ import { RollResult, roll as randsumRoll } from 'randsum'
 import { Keyboard } from 'react-native'
 import { Button } from 'react-native-paper'
 
+import useRollerContext from '../RollerContext/useRollerContext'
 import ResultModal from '~components/ResultModal'
-import useRollerContext from '~context/RollerContext/useRollerContext'
 import HapticService from '~services/HapticService'
 
 export default function RollButton() {

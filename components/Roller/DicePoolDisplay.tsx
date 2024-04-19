@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
-import useRollerContext from '~context/RollerContext/useRollerContext'
+import useRollerContext from './RollerContext/useRollerContext'
 
 export default function DicePoolDisplay() {
   const { setCurrentDicePoolId, dicePools, currentDicePoolId } =

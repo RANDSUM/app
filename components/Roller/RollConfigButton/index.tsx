@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { IconButton } from 'react-native-paper'
 
 import RollConfigModal from './RollConfigModal'
-import useRollerContext from '~context/RollerContext/useRollerContext'
+import useRollerContext from '~components/Roller/RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function RollConfigButton() {

@@ -4,9 +4,9 @@ import DicePoolControls from './DicePoolControls'
 import DicePoolDisplay from './DicePoolDisplay'
 import RollButton from './RollButton'
 import RollConfigButton from './RollConfigButton'
+import RollerProvider from './RollerContext/RollerProvider'
 import RollInput from './RollInput'
 import SaveButton from './SaveButton'
-import RollerProvider from '~context/RollerContext/RollerProvider'
 import { Roll } from '~types'
 
 type Props = {

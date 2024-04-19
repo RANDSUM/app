@@ -2,8 +2,8 @@ import { View, StyleSheet } from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
 
 import NumButton from './NumButton'
+import useRollerContext from '../RollerContext/useRollerContext'
 import { dieSides } from '~constants'
-import useRollerContext from '~context/RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function RollInput() {
