@@ -7,6 +7,7 @@ import { Text, Button } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
 import useAppContext from '~context/AppContext/useAppContext'
+import HapticService from '~services/HapticService'
 import { Roll } from '~types'
 
 export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
@@ -36,6 +37,7 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
       })
     }
     const result = coreRoll()
+    HapticService.notifyVibrate()
     const combinedTotal = result.reduce((prev, current) => {
       return prev + current.total
     }, 0)
