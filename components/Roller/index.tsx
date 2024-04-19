@@ -32,11 +32,6 @@ export default function Roller(props: Props) {
 }
 
 const styles = StyleSheet.create({
-  dieIcon: {
-    backgroundColor: 'red',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
