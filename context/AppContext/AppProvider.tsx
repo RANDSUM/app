@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from 'react'
 
-import { useRouter } from 'expo-router'
+import { SplashScreen, useRouter } from 'expo-router'
 import { Snackbar } from 'react-native-paper'
 
 import AppStateContext from './AppContext'
@@ -35,6 +35,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
         console.error('Error hydrating data:', error)
       } finally {
         setHydrated(true)
+        SplashScreen.hideAsync()
       }
     }
     hydrateData()
