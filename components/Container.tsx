@@ -4,7 +4,7 @@ import { ViewStyle, View } from 'react-native'
 import { ActivityIndicator, Portal } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import useAppContext from '~context/useAppContext'
+import useAppContext from '~context/AppContext/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 
 type Props = PropsWithChildren<{

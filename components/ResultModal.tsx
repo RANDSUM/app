@@ -20,7 +20,7 @@ import { Roll } from '~types'
 
 type Props = {
   visible: boolean
-  currentRoll: Roll
+  roll: Roll
   onDismiss: () => void
   rollResults: RollResult[] | undefined
   rollAgain: () => void
@@ -34,7 +34,7 @@ export default function ResultModal({
   rollResults,
   rollAgain,
   visible,
-  currentRoll: { title, config },
+  roll: { title, config },
   preventAutoDismiss = false,
 }: Props) {
   const theme = useAppTheme()

@@ -1,24 +1,31 @@
 import { useState } from 'react'
 
 import { useRouter } from 'expo-router'
-import { StyleSheet, Switch, View } from 'react-native'
-import { Modal, Portal, Card, Button, Text } from 'react-native-paper'
+import { StyleSheet, View } from 'react-native'
+import {
+  Modal,
+  Portal,
+  Card,
+  Button,
+  Text,
+  RadioButton,
+} from 'react-native-paper'
 
 import DeleteSavedRollDialog from '../DeleteSavedRollDialog'
 import { SetRollConfig } from '../types'
-import useAppContext from '~context/useAppContext'
+import useAppContext from '~context/AppContext/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
 
 type Props = {
-  currentRoll: Roll
+  roll: Roll
   visible: boolean
   onDismiss: () => void
   onChange: SetRollConfig
 }
 
 export default function RollConfigModal({
-  currentRoll,
+  roll,
   onDismiss,
   onChange,
   visible,
@@ -29,17 +36,17 @@ export default function RollConfigModal({
   const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
 
   const deleteSavedRoll = () => {
-    if (!currentRoll) return
-    removeSavedRoll(currentRoll.uuid)
+    if (!roll) return
+    removeSavedRoll(roll.uuid)
     router.push('/myRolls')
     setSnackbarConfig({ children: 'Roll deleted' })
   }
 
-  const showRolls = currentRoll.config.showRolls
+  const showRolls = roll.config.showRolls
 
   const toggleShowRolls = () => {
     const newConfig = {
-      ...currentRoll.config,
+      ...roll.config,
       showRolls: !showRolls,
     }
     onChange(newConfig)
@@ -54,16 +61,30 @@ export default function RollConfigModal({
           style={[styles.modalStyle]}
         >
           <Card>
-            <Card.Title title={`Configure ${currentRoll.title}`} />
+            <Card.Title title={`Configure ${roll.title || 'Roll'}`} />
             <Card.Content style={{ flexDirection: 'row' }}>
-              <View style={styles.input}>
-                <Switch onChange={toggleShowRolls} value={showRolls} />
-                <Text>Show Rolls instead of Total</Text>
+              <View>
+                <Text variant="titleSmall">Roll Totals</Text>
+                <RadioButton.Group
+                  onValueChange={toggleShowRolls}
+                  value={showRolls ? 'showRolls' : 'total'}
+                >
+                  <RadioButton.Item
+                    labelVariant="bodySmall"
+                    label="Show Roll Total (9)"
+                    value="total"
+                  />
+                  <RadioButton.Item
+                    labelVariant="bodySmall"
+                    label="Show Rolls (1, 5, 3)"
+                    value="showRolls"
+                  />
+                </RadioButton.Group>
               </View>
             </Card.Content>
             <Card.Actions>
               <Button onPress={onDismiss}>Close</Button>
-              {currentRoll.persisted ? (
+              {roll.persisted ? (
                 <Button
                   onPress={() => setDeleteDialogIsVisible(true)}
                   style={{
@@ -78,7 +99,7 @@ export default function RollConfigModal({
         </Modal>
       </Portal>
       <DeleteSavedRollDialog
-        currentRoll={currentRoll}
+        roll={roll}
         visible={deleteDialogIsVisible}
         onAccept={deleteSavedRoll}
         onDismiss={() => setDeleteDialogIsVisible(false)}
@@ -87,9 +108,6 @@ export default function RollConfigModal({
   )
 }
 const styles = StyleSheet.create({
-  input: {
-    flexDirection: 'row',
-  },
   modalStyle: {
     margin: 20,
   },

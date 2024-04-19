@@ -1,29 +1,21 @@
 import * as Crypto from 'expo-crypto'
-import { RollOptions } from 'randsum'
 import { StyleSheet, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
-import { SetDicePools } from './types'
 import { randomDieSide } from '../../utils'
 import { defaultRollOptions } from '~constants'
+import useRollerContext from '~context/RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
 
-type Props = {
-  setDicePools: SetDicePools
-  dicePools: { [key: string]: RollOptions }
-  currentDicePoolId: string
-  currentDicePoolOptions: RollOptions
-  setCurrentDicePoolId: (id: string) => void
-}
-
-export default function DicePoolControls({
-  setDicePools,
-  currentDicePoolOptions,
-  dicePools,
-  currentDicePoolId,
-  setCurrentDicePoolId,
-}: Props) {
+export default function DicePoolControls() {
   const theme = useAppTheme()
+  const {
+    currentDicePoolOptions,
+    dicePools,
+    currentDicePoolId,
+    setCurrentDicePoolId,
+    setDicePools,
+  } = useRollerContext()
   const dicePoolsList = Object.values(dicePools)
 
   const addDie = () => {

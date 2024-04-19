@@ -1,19 +1,11 @@
 import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
-import { Roll } from '~types'
+import useRollerContext from '~context/RollerContext/useRollerContext'
 
-type Props = {
-  dicePools: Roll['dicePools']
-  currentDicePoolId: string
-  onPress: (index: string) => void
-}
-
-export default function DicePoolDisplay({
-  dicePools,
-  onPress,
-  currentDicePoolId,
-}: Props) {
+export default function DicePoolDisplay() {
+  const { setCurrentDicePoolId, dicePools, currentDicePoolId } =
+    useRollerContext()
   return (
     <View style={styles.container}>
       <View style={styles.wrapRow}>
@@ -28,7 +20,7 @@ export default function DicePoolDisplay({
                 key={id}
                 showSelectedOverlay
                 showSelectedCheck={false}
-                onPress={() => onPress(id)}
+                onPress={() => setCurrentDicePoolId(id)}
               >
                 {display}
               </Chip>

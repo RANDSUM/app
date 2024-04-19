@@ -1,22 +1,15 @@
-import { Dispatch, SetStateAction } from 'react'
-
-import { RollOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Text } from 'react-native-paper'
 
 import NumButton from './NumButton'
 import { dieSides } from '~constants'
+import useRollerContext from '~context/RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
 
-type Props = {
-  currentDicePoolOptions: RollOptions
-  setCurrentDicePoolOptions: Dispatch<SetStateAction<RollOptions>>
-}
-export default function RollInput({
-  currentDicePoolOptions,
-  setCurrentDicePoolOptions,
-}: Props) {
+export default function RollInput() {
   const theme = useAppTheme()
+  const { currentDicePoolOptions, setCurrentDicePoolOptions } =
+    useRollerContext()
 
   const increaseSides = () =>
     setCurrentDicePoolOptions((o) => ({

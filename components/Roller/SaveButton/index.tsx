@@ -5,32 +5,23 @@ import { useRouter } from 'expo-router'
 import { IconButton } from 'react-native-paper'
 
 import SaveRollDialog from './SaveRollDialog'
-import useAppContext from '~context/useAppContext'
+import useAppContext from '~context/AppContext/useAppContext'
+import useRollerContext from '~context/RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
-import { Roll } from '~types'
 
-type Props = {
-  isSavedRoll: boolean
-  isDirty: boolean
-  currentRoll: Roll
-  resetRoll: () => void
-}
-export default function SaveButton({
-  isSavedRoll,
-  isDirty,
-  currentRoll,
-  resetRoll,
-}: Props) {
+export default function SaveButton() {
   const theme = useAppTheme()
   const router = useRouter()
+  const { roll, isDirty, resetRoll } = useRollerContext()
+
+  const isSavedRoll = roll.persisted
+
   const { setSavedRolls, setSnackbarConfig } = useAppContext()
   const [saveDialogIsVisible, setSaveDialogIsVisible] = useState(false)
 
   const saveChanges = () => {
     setSavedRolls((rolls) => {
-      return rolls.map((roll) =>
-        roll.uuid === currentRoll.uuid ? currentRoll : roll
-      )
+      return rolls.map((roll) => (roll.uuid === roll.uuid ? roll : roll))
     })
     setSnackbarConfig({ children: 'Changes saved!' })
   }
@@ -39,7 +30,7 @@ export default function SaveButton({
     setSavedRolls((rolls) => [
       ...rolls,
       {
-        ...currentRoll,
+        ...roll,
         uuid: Crypto.randomUUID(),
         title,
         persisted: true,

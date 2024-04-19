@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
-import useAppContext from '~context/useAppContext'
+import useAppContext from '~context/AppContext/useAppContext'
 import { Roll } from '~types'
 
 export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
@@ -81,7 +81,7 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
         onDismiss={() => setResultModalIsVisible(false)}
         preventAutoDismiss
         rollResults={lastRolls}
-        currentRoll={savedRoll}
+        roll={savedRoll}
       />
     </>
   )

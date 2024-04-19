@@ -2,7 +2,7 @@ import { Redirect, Stack, useLocalSearchParams } from 'expo-router'
 
 import Container from '~components/Container'
 import Roller from '~components/Roller'
-import useAppContext from '~context/useAppContext'
+import useAppContext from '~context/AppContext/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function RollSpecific() {

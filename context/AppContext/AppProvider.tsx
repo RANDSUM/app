@@ -3,12 +3,11 @@ import { PropsWithChildren, useEffect, useState } from 'react'
 import { Snackbar } from 'react-native-paper'
 
 import AppStateContext from './AppContext'
-import initialState from './initialState'
 import StorageService from '~services/StorageService'
-import { SnackbarConfig } from '~types'
+import { Roll, SnackbarConfig } from '~types'
 
 export default function AppProvider({ children }: PropsWithChildren) {
-  const [savedRolls, setSavedRolls] = useState(initialState.savedRolls)
+  const [savedRolls, setSavedRolls] = useState<Roll[]>([])
   const [snackbarConfig, setSnackbarConfig] = useState<SnackbarConfig>({
     children: undefined,
     duration: 3_000,
@@ -21,7 +20,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
   const setSnackbarText = (text: string | undefined) =>
     setSnackbarConfig((c) => ({ ...c, children: text }))
 
-  const [hydrated, setHydrated] = useState(initialState.hydrated)
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
     const hydrateData = async () => {

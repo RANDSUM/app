@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 
-import AppProvider from '~context/AppProvider'
+import AppProvider from '~context/AppContext/AppProvider'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function RootLayout() {

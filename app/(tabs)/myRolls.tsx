@@ -3,7 +3,7 @@ import { Divider, Text } from 'react-native-paper'
 
 import Container from '~components/Container'
 import MyRollRow from '~components/MyRollRow'
-import useAppContext from '~context/useAppContext'
+import useAppContext from '~context/AppContext/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function MyRolls() {
