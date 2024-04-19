@@ -57,6 +57,10 @@ export default function Roller(props: Props) {
     JSON.stringify(currentRoll) !==
     JSON.stringify(props.savedRoll ? props.savedRoll.dicePools : defaultRoll)
 
+  const resetRoll = () => {
+    setCurrentRoll(defaultRoll)
+    setCurrentDicePoolId(Object.entries(defaultRoll.dicePools)[0][0])
+  }
   return (
     <>
       <View style={styles.container}>
@@ -69,6 +73,7 @@ export default function Roller(props: Props) {
             isSavedRoll={currentRoll.persisted}
             isDirty={isDirty}
             currentRoll={currentRoll}
+            resetRoll={resetRoll}
           />
         </View>
         <RollInput

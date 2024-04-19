@@ -1,5 +1,5 @@
 {
-  "name": "randsumapp",
+  "name": "Randsum",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",

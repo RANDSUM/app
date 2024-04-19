@@ -13,11 +13,13 @@ type Props = {
   isSavedRoll: boolean
   isDirty: boolean
   currentRoll: Roll
+  resetRoll: () => void
 }
 export default function SaveButton({
   isSavedRoll,
   isDirty,
   currentRoll,
+  resetRoll,
 }: Props) {
   const theme = useAppTheme()
   const router = useRouter()
@@ -43,6 +45,7 @@ export default function SaveButton({
         persisted: true,
       },
     ])
+    resetRoll()
     router.push('/myRolls')
     setSnackbarConfig({ children: 'Roll saved!', duration: 1500 })
   }
