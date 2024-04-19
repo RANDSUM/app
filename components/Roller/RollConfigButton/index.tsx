@@ -20,7 +20,7 @@ export default function RollConfigButton() {
       />
       <RollConfigModal
         roll={roll}
-        onChange={setRollConfig}
+        setRollConfig={setRollConfig}
         onDismiss={() => setShowConfigModal(false)}
         visible={showConfigModal}
       />
