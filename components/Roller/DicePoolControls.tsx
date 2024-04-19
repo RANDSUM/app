@@ -69,6 +69,14 @@ export default function DicePoolControls() {
         onPress={duplicateDie}
       />
       <IconButton
+        icon="dots-vertical-circle-outline"
+        size={40}
+        disabled
+        onPress={() => {
+          console.log('Modifiers')
+        }}
+      />
+      <IconButton
         icon="close-circle-outline"
         size={40}
         iconColor={theme.colors.error}

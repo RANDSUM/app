@@ -21,12 +21,10 @@ export default function Roller(props: Props) {
           <SaveButton />
         </View>
         <RollInput />
-        <View style={styles.row}>
-          <RollButton />
-        </View>
         <View style={styles.collection}>
           <DicePoolDisplay />
           <DicePoolControls />
+          <RollButton />
         </View>
       </View>
     </RollerProvider>
@@ -47,10 +45,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    marginHorizontal: 10,
+    margin: 10,
   },
   collection: {
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
