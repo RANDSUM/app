@@ -1,7 +1,10 @@
+import { useState } from 'react'
+
 import * as Crypto from 'expo-crypto'
 import { StyleSheet, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
 
+import DieModiferModal from './DieModifierModal'
 import useRollerContext from './RollerContext/useRollerContext'
 import { randomDieSide } from '../../utils'
 import { defaultRollOptions } from '~constants'
@@ -15,7 +18,10 @@ export default function DicePoolControls() {
     currentDicePoolId,
     setCurrentDicePoolId,
     setDicePools,
+    setCurrentDicePoolOptions,
+    roll,
   } = useRollerContext()
+  const [showModifierModal, setShowModifierModal] = useState(false)
   const dicePoolsList = Object.values(dicePools)
 
   const addDie = () => {
@@ -53,37 +59,42 @@ export default function DicePoolControls() {
   const disableAdd = dicePoolsList.length >= 8
 
   return (
-    <View style={styles.row}>
-      <IconButton
-        icon="plus-circle-outline"
-        size={40}
-        iconColor={theme.colors.primary}
-        disabled={disableAdd}
-        onPress={addDie}
+    <>
+      <View style={styles.row}>
+        <IconButton
+          icon="plus-circle-outline"
+          size={40}
+          iconColor={theme.colors.primary}
+          disabled={disableAdd}
+          onPress={addDie}
+        />
+        <IconButton
+          icon="plus-circle-multiple-outline"
+          size={40}
+          iconColor={theme.colors.primary}
+          disabled={disableAdd}
+          onPress={duplicateDie}
+        />
+        <IconButton
+          icon="dots-vertical-circle-outline"
+          size={40}
+          onPress={() => setShowModifierModal(true)}
+        />
+        <IconButton
+          icon="close-circle-outline"
+          size={40}
+          iconColor={theme.colors.error}
+          disabled={disableRemove}
+          onPress={removeDie}
+        />
+      </View>
+      <DieModiferModal
+        visible={showModifierModal}
+        onDismiss={() => setShowModifierModal(false)}
+        roll={roll}
+        setCurrentDicePoolOptions={setCurrentDicePoolOptions}
       />
-      <IconButton
-        icon="plus-circle-multiple-outline"
-        size={40}
-        iconColor={theme.colors.primary}
-        disabled={disableAdd}
-        onPress={duplicateDie}
-      />
-      <IconButton
-        icon="dots-vertical-circle-outline"
-        size={40}
-        disabled
-        onPress={() => {
-          console.log('Modifiers')
-        }}
-      />
-      <IconButton
-        icon="close-circle-outline"
-        size={40}
-        iconColor={theme.colors.error}
-        disabled={disableRemove}
-        onPress={removeDie}
-      />
-    </View>
+    </>
   )
 }
 
