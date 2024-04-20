@@ -51,6 +51,7 @@ export default function SaveButton() {
           size={40}
           iconColor={!isDirty ? theme.colors.secondary : theme.colors.primary}
           disabled={!isDirty}
+          style={{ flex: 1 }}
           onPress={saveChanges}
         />
       ) : (
@@ -58,6 +59,7 @@ export default function SaveButton() {
           icon="content-save-outline"
           size={40}
           iconColor={theme.colors.primary}
+          style={{ flex: 1 }}
           onPress={() => setSaveDialogIsVisible(true)}
         />
       )}

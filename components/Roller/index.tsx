@@ -2,9 +2,11 @@ import { StyleSheet, View } from 'react-native'
 
 import DicePoolControls from './DicePoolControls'
 import DicePoolDisplay from './DicePoolDisplay'
+import ModifierDisplay from './ModifierDisplay'
 import RollButton from './RollButton'
 import RollConfigButton from './RollConfigButton'
 import RollerProvider from './RollerContext/RollerProvider'
+import RollHeader from './RollHeader'
 import RollInput from './RollInput'
 import SaveButton from './SaveButton'
 import { Roll } from '~types'
@@ -15,14 +17,16 @@ type Props = {
 export default function Roller(props: Props) {
   return (
     <RollerProvider {...props}>
+      {props.savedRoll && <RollHeader />}
       <View style={styles.container}>
         <View style={styles.row}>
           <RollConfigButton />
+          <DicePoolDisplay />
           <SaveButton />
         </View>
         <RollInput />
         <View style={styles.collection}>
-          <DicePoolDisplay />
+          <ModifierDisplay />
           <DicePoolControls />
           <RollButton />
         </View>

@@ -12,15 +12,7 @@ import useAppTheme from '~theme/useAppTheme'
 
 export default function DicePoolControls() {
   const theme = useAppTheme()
-  const {
-    currentDicePoolOptions,
-    dicePools,
-    currentDicePoolId,
-    setCurrentDicePoolId,
-    setDicePools,
-    setCurrentDicePoolOptions,
-    roll,
-  } = useRollerContext()
+  const { currentDicePoolOptions, dicePools, setDicePools } = useRollerContext()
   const [showModifierModal, setShowModifierModal] = useState(false)
   const dicePoolsList = Object.values(dicePools)
 
@@ -41,22 +33,7 @@ export default function DicePoolControls() {
     }))
   }
 
-  const removeDie = () => {
-    if (dicePoolsList.length <= 1) return
-
-    setDicePools((pools) => {
-      const newPools = { ...pools }
-      delete newPools[currentDicePoolId]
-      return newPools
-    })
-
-    setCurrentDicePoolId(
-      Object.keys(dicePools).filter((id) => id !== currentDicePoolId)[0]
-    )
-  }
-
-  const disableRemove = dicePoolsList.length <= 1
-  const disableAdd = dicePoolsList.length >= 8
+  const disableAdd = dicePoolsList.length >= 6
 
   return (
     <>
@@ -78,21 +55,13 @@ export default function DicePoolControls() {
         <IconButton
           icon="dots-vertical-circle-outline"
           size={40}
+          iconColor={theme.colors.primary}
           onPress={() => setShowModifierModal(true)}
-        />
-        <IconButton
-          icon="close-circle-outline"
-          size={40}
-          iconColor={theme.colors.error}
-          disabled={disableRemove}
-          onPress={removeDie}
         />
       </View>
       <DieModiferModal
         visible={showModifierModal}
         onDismiss={() => setShowModifierModal(false)}
-        roll={roll}
-        setCurrentDicePoolOptions={setCurrentDicePoolOptions}
       />
     </>
   )

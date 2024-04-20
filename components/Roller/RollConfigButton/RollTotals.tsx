@@ -1,18 +1,15 @@
 import { View } from 'react-native'
 import { Text, Switch } from 'react-native-paper'
 
-import { SetRollConfig } from '../types'
-import { RollConfig } from '~types'
+import useRollerContext from '../RollerContext/useRollerContext'
 
-type Props = {
-  rollConfig: RollConfig
-  setRollConfig: SetRollConfig
-}
-export default function RollTotals({ rollConfig, setRollConfig }: Props) {
+export default function RollTotals() {
+  const { setRollConfig, roll } = useRollerContext()
+
   const toggleShowRolls = () => {
     const newConfig = {
-      ...rollConfig,
-      showRolls: !rollConfig.showRolls,
+      ...roll.config,
+      showRolls: !roll.config.showRolls,
     }
     setRollConfig(newConfig)
   }
@@ -26,7 +23,7 @@ export default function RollTotals({ rollConfig, setRollConfig }: Props) {
         width: '100%',
       }}
     >
-      <Switch value={rollConfig.showRolls} onValueChange={toggleShowRolls} />
+      <Switch value={roll.config.showRolls} onValueChange={toggleShowRolls} />
       <Text variant="labelMedium">
         Show Individual Rolls instead of Roll Totals
       </Text>
