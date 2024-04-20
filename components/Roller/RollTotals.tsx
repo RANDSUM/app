@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import { Text, Switch } from 'react-native-paper'
 
-import useRollerContext from '../RollerContext/useRollerContext'
+import useRollerContext from './RollerContext/useRollerContext'
 
 export default function RollTotals() {
   const { setRollConfig, roll } = useRollerContext()

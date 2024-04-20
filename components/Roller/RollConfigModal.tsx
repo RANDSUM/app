@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Modal, Portal, Card } from 'react-native-paper'
 
+import DeleteSavedRollDialog from './DeleteSavedRollDialog'
+import useRollerContext from './RollerContext/useRollerContext'
 import RollTotals from './RollTotals'
-import DeleteSavedRollDialog from '../DeleteSavedRollDialog'
-import useRollerContext from '../RollerContext/useRollerContext'
 import useAppContext from '~context/AppContext/useAppContext'
 
 type Props = {
