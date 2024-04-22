@@ -62,7 +62,7 @@ export default function DicePoolDisplay() {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
-    minHeight: 80,
+    minHeight: 120,
     flex: 7,
   },
   wrapRow: {

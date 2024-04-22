@@ -47,9 +47,10 @@ export default function SaveButton() {
     <>
       {isSavedRoll ? (
         <IconButton
-          icon="content-save-outline"
+          icon={
+            !isDirty ? 'content-save-alert-outline' : 'content-save-outline'
+          }
           size={40}
-          iconColor={!isDirty ? theme.colors.secondary : theme.colors.primary}
           disabled={!isDirty}
           style={{ flex: 1 }}
           onPress={saveChanges}

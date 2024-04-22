@@ -1,10 +1,13 @@
 import { Stack, Tabs } from 'expo-router'
 import { Icon } from 'react-native-paper'
 
+import useAppContext from '~context/AppContext/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function TabsLayout() {
   const theme = useAppTheme()
+  const { savedRolls } = useAppContext()
+
   return (
     <>
       <Stack.Screen
@@ -16,6 +19,7 @@ export default function TabsLayout() {
         screenOptions={{
           tabBarActiveTintColor: theme.colors.primary,
           tabBarStyle: {
+            display: savedRolls.length === 0 ? 'none' : 'flex',
             backgroundColor: theme.colors.surface,
             borderTopColor: theme.colors.secondary,
           },
