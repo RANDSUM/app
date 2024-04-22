@@ -36,7 +36,7 @@ export default function RollConfigModal({ onDismiss, visible }: Props) {
       </Portal>
       <DeleteSavedRollDialog
         visible={deleteDialogIsVisible}
-        onAccept={() => roll && removeSavedRoll(roll.uuid)}
+        onAccept={() => removeSavedRoll(roll.uuid)}
         onDismiss={() => setDeleteDialogIsVisible(false)}
       />
     </>
