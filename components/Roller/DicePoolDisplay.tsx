@@ -3,72 +3,97 @@ import { Chip } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
 import RollModifierModel from '~models/RollModifierModel'
+import useAppTheme from '~theme/useAppTheme'
 
 export default function DicePoolDisplay() {
-  const { setCurrentDicePoolId, dicePools, setDicePools, currentDicePoolId } =
-    useRollerContext()
-
-  const removeDie = (deletedId: string) => {
-    setDicePools((pools) => {
-      const newPools = { ...pools }
-      delete newPools[deletedId]
-      return newPools
-    })
-
-    if (currentDicePoolId === deletedId) {
-      setCurrentDicePoolId(
-        Object.keys(dicePools).filter((id) => id !== deletedId)[0]
-      )
-    }
-  }
+  const {
+    setCurrentDicePoolId,
+    dicePools,
+    currentDicePoolId,
+    addDieToPool,
+    removeDieFromPool,
+  } = useRollerContext()
+  const theme = useAppTheme()
 
   const dicePoolsList = Object.entries(dicePools)
+  const displaySets = [[], [], [], [], [], []].map((set, index) => {
+    return dicePoolsList[index] ? dicePoolsList[index] : set
+  })
 
   return (
     <View style={styles.container}>
       <View style={styles.wrapRow}>
-        {dicePoolsList.length <= 1
-          ? null
-          : dicePoolsList.map(([id, { sides, quantity, modifiers }]) => {
-              const showModifier = RollModifierModel.hasModifiers(modifiers)
-              const display = `${quantity}D${sides}${showModifier ? '*' : ''}`
+        {displaySets.map(([id, roll], index) => {
+          if (!id) {
+            const isFirst = index === dicePoolsList.length
+            return (
+              <Chip
+                selected={id === currentDicePoolId}
+                key={'empty-dice-pool-' + index}
+                mode="outlined"
+                showSelectedOverlay
+                showSelectedCheck={false}
+                onPress={addDieToPool}
+                style={[
+                  styles.chip,
+                  {
+                    backgroundColor: isFirst ? theme.colors.primary : undefined,
+                  },
+                ]}
+                disabled={!isFirst}
+                textStyle={{
+                  padding: 0,
+                  color: isFirst ? theme.colors.onPrimary : undefined,
+                }}
+              >
+                {index === dicePoolsList.length ? 'Add' : ''}
+              </Chip>
+            )
+          }
 
-              return (
-                <Chip
-                  selected={id === currentDicePoolId}
-                  key={id}
-                  closeIcon="close"
-                  onClose={
-                    Object.keys(dicePools).length > 1
-                      ? () => removeDie(id)
-                      : undefined
-                  }
-                  mode="outlined"
-                  showSelectedOverlay
-                  showSelectedCheck={false}
-                  style={{ width: 95 }}
-                  textStyle={{ padding: 0, textAlign: 'center' }}
-                  onPress={() => setCurrentDicePoolId(id)}
-                >
-                  {display}
-                </Chip>
-              )
-            })}
+          const { sides, quantity, modifiers } = roll
+          const showModifier = RollModifierModel.hasModifiers(modifiers)
+          const display = `${quantity}D${sides}${showModifier ? '*' : ''}`
+
+          return (
+            <Chip
+              selected={id === currentDicePoolId}
+              key={id}
+              closeIcon="close"
+              onClose={
+                Object.keys(dicePools).length > 1
+                  ? () => removeDieFromPool(id)
+                  : undefined
+              }
+              mode="outlined"
+              showSelectedOverlay
+              showSelectedCheck={false}
+              style={styles.chip}
+              textStyle={{ padding: 0, textAlign: 'center' }}
+              onPress={() => setCurrentDicePoolId(id)}
+            >
+              {display}
+            </Chip>
+          )
+        })}
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  chip: {
+    minWidth: 100,
+    height: 34,
+  },
   container: {
     justifyContent: 'flex-start',
-    minHeight: 120,
-    flex: 7,
+    alignItems: 'center',
   },
   wrapRow: {
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 5,
+    gap: 10,
   },
 })

@@ -4,6 +4,8 @@ import { defaultRoll } from '~constants'
 const initialState: RollerState = {
   isDirty: false,
   resetRoll: () => {},
+  addDieToPool: () => {},
+  removeDieFromPool: () => {},
   roll: defaultRoll,
   currentDicePoolOptions:
     defaultRoll.dicePools[Object.keys(defaultRoll.dicePools)[0]],

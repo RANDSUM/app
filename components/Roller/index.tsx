@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 
-import DicePoolControls from './DicePoolControls'
+import AddModifiersButton from './AddModifiersButton'
 import DicePoolDisplay from './DicePoolDisplay'
 import ModifierDisplay from './ModifierDisplay'
 import RollButton from './RollButton'
@@ -21,14 +21,16 @@ export default function Roller(props: Props) {
       <View style={styles.container}>
         <View style={styles.row}>
           <RollConfigButton />
-          <DicePoolDisplay />
           <SaveButton />
         </View>
-        <RollInput />
         <View style={styles.collection}>
+          <RollInput />
           <ModifierDisplay />
-          <DicePoolControls />
+        </View>
+        <View style={styles.collection}>
+          <DicePoolDisplay />
           <RollButton />
+          <AddModifiersButton />
         </View>
       </View>
     </RollerProvider>
@@ -47,6 +49,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   collection: {
-    gap: 10,
+    gap: 15,
   },
 })

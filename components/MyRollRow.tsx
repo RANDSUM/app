@@ -6,13 +6,11 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
-import useAppContext from '~context/AppContext/useAppContext'
 import HapticService from '~services/HapticService'
 import { Roll } from '~types'
 
 export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
   const { dicePools, title, uuid } = savedRoll
-  const { setSnackbarConfig } = useAppContext()
   const [resultModalIsVisible, setResultModalIsVisible] = useState(false)
   const [lastRolls, setLastRolls] = useState<RollResult<number>[]>()
 
@@ -27,37 +25,12 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
   const coreRoll = () => {
     const result = dicePoolList.map(([, pool]) => roll(pool))
     setLastRolls(result)
-    return result
   }
 
   const rollDie = () => {
-    if (!savedRoll.config.showRolls) {
-      setSnackbarConfig({
-        children: `Rolling ...`,
-      })
-    }
-    const result = coreRoll()
+    coreRoll()
     HapticService.notifyVibrate()
-    const combinedTotal = result.reduce((prev, current) => {
-      return prev + current.total
-    }, 0)
-
-    if (savedRoll.config.showRolls) {
-      setResultModalIsVisible(true)
-      return
-    }
-
-    setTimeout(() => {
-      setSnackbarConfig({
-        children: `Rolled "${title}": ${combinedTotal}`,
-        action: {
-          label: 'View Details',
-          onPress: () => {
-            setResultModalIsVisible(true)
-          },
-        },
-      })
-    }, 300)
+    setResultModalIsVisible(true)
   }
 
   return (
@@ -78,10 +51,10 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
         </Button>
       </View>
       <ResultModal
+        duration={3_000}
         rollAgain={coreRoll}
         visible={resultModalIsVisible}
         onDismiss={() => setResultModalIsVisible(false)}
-        preventAutoDismiss
         rollResults={lastRolls}
         roll={savedRoll}
       />

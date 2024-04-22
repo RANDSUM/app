@@ -13,8 +13,7 @@ export default function RollConfigButton() {
       <IconButton
         icon="cog"
         iconColor={theme.colors.primary}
-        size={40}
-        style={{ flex: 1 }}
+        size={30}
         onPress={() => setShowConfigModal(true)}
       />
       <RollConfigModal

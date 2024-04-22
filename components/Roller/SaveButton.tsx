@@ -49,17 +49,15 @@ export default function SaveButton() {
           icon={
             !isDirty ? 'content-save-alert-outline' : 'content-save-outline'
           }
-          size={40}
+          size={30}
           disabled={!isDirty}
-          style={{ flex: 1 }}
           onPress={saveChanges}
         />
       ) : (
         <IconButton
           icon="content-save-outline"
-          size={40}
+          size={30}
           iconColor={theme.colors.primary}
-          style={{ flex: 1 }}
           onPress={() => setSaveDialogIsVisible(true)}
         />
       )}

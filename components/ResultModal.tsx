@@ -15,6 +15,7 @@ import {
   ActivityIndicator,
 } from 'react-native-paper'
 
+import RollModifierModel from '~models/RollModifierModel'
 import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
 
@@ -25,6 +26,7 @@ type Props = {
   rollResults: RollResult[] | undefined
   rollAgain: () => void
   preventAutoDismiss?: boolean
+  duration?: number
 }
 
 const DURATION = 10_000
@@ -35,6 +37,7 @@ export default function ResultModal({
   rollAgain,
   visible,
   roll: { title, config },
+  duration = DURATION,
   preventAutoDismiss = false,
 }: Props) {
   const theme = useAppTheme()
@@ -55,7 +58,7 @@ export default function ResultModal({
         onDismiss()
         setIsCollapsed(true)
       }
-    }, DURATION)
+    }, duration)
 
     return () => clearInterval(interval)
   }, [combinedTotal, shouldCountdown])
@@ -66,8 +69,16 @@ export default function ResultModal({
     .map((rollResult) => {
       const sides = rollResult.rollParameters.diceOptions[0].sides
       const quantity = rollResult.rollParameters.diceOptions[0].quantity
+      const mods = RollModifierModel.hasModifiers(
+        rollResult.rollParameters.modifiers
+      )
+        ? RollModifierModel.formatModifierNotation(
+            rollResult.rollParameters.modifiers
+          )
+        : ''
 
-      return `${quantity}D${sides}`
+      const result = `${quantity}D${sides}${mods}`
+      return mods ? `(${result})` : result
     })
     .join(' + ')
 
@@ -127,7 +138,7 @@ export default function ResultModal({
                   inActiveStrokeOpacity={0}
                   initialValue={100}
                   value={isLoading ? 100 : 0}
-                  duration={DURATION}
+                  duration={duration}
                   radius={15}
                   activeStrokeWidth={2}
                 />

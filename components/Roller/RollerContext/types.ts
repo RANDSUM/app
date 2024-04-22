@@ -12,6 +12,8 @@ import { Roll } from '~types'
 export type RollerState = {
   isDirty: boolean
   resetRoll: () => void
+  addDieToPool: () => void
+  removeDieFromPool: (id: string) => void
   roll: Roll
   dicePools: Roll['dicePools']
   currentDicePoolOptions: RollOptions
