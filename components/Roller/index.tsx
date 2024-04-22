@@ -11,10 +11,7 @@ import RollInput from './RollInput'
 import SaveButton from './SaveButton'
 import { Roll } from '~types'
 
-type Props = {
-  savedRoll?: Roll
-}
-export default function Roller(props: Props) {
+export default function Roller(props: { savedRoll?: Roll }) {
   return (
     <RollerProvider {...props}>
       {props.savedRoll && <RollHeader />}
