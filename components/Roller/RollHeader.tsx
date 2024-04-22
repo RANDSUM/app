@@ -13,6 +13,7 @@ function RollHeader() {
   const { roll } = useRollerContext()
   const theme = useAppTheme()
   const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
+
   return (
     <>
       <Stack.Screen
@@ -25,7 +26,6 @@ function RollHeader() {
           headerRight: () => (
             <IconButton
               icon="delete-forever"
-              size={40}
               iconColor={theme.colors.onPrimary}
               onPress={() => setDeleteDialogIsVisible(true)}
             />
@@ -37,7 +37,9 @@ function RollHeader() {
       />
       <DeleteSavedRollDialog
         visible={deleteDialogIsVisible}
-        onAccept={() => roll && removeSavedRoll(roll.uuid)}
+        onAccept={() => {
+          removeSavedRoll(roll.uuid)
+        }}
         onDismiss={() => setDeleteDialogIsVisible(false)}
       />
     </>

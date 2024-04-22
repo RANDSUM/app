@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import * as Crypto from 'expo-crypto'
-import { useRouter } from 'expo-router'
+import { router } from 'expo-router'
 import { IconButton } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
@@ -11,7 +11,6 @@ import useAppTheme from '~theme/useAppTheme'
 
 export default function SaveButton() {
   const theme = useAppTheme()
-  const router = useRouter()
   const { roll, isDirty, resetRoll } = useRollerContext()
 
   const isSavedRoll = roll.persisted
