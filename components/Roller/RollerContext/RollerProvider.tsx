@@ -9,13 +9,10 @@ import { SetDicePools, SetRollConfig } from '~components/Roller/types'
 import { defaultRoll, defaultRollOptions } from '~constants'
 import { Roll } from '~types'
 
-type Props = {
+type Props = PropsWithChildren<{
   savedRoll?: Roll
-}
-export default function RollerProvider({
-  children,
-  savedRoll,
-}: PropsWithChildren<Props>) {
+}>
+export default function RollerProvider({ children, savedRoll }: Props) {
   const [roll, setRoll] = useState<Roll>(savedRoll || defaultRoll)
 
   const [currentDicePoolId, setCurrentDicePoolId] = useState(
@@ -67,8 +64,6 @@ export default function RollerProvider({
         sides: randomDieSide(),
       },
     }))
-
-    setCurrentDicePoolId(newId)
   }
 
   const removeDieFromPool = (deletedId: string) => {
