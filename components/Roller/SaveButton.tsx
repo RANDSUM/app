@@ -7,10 +7,8 @@ import { IconButton } from 'react-native-paper'
 import useRollerContext from './RollerContext/useRollerContext'
 import SaveRollDialog from './SaveRollDialog'
 import useAppContext from '~context/AppContext/useAppContext'
-import useAppTheme from '~theme/useAppTheme'
 
 export default function SaveButton() {
-  const theme = useAppTheme()
   const { roll, isDirty, resetRoll } = useRollerContext()
 
   const isSavedRoll = roll.persisted
@@ -46,6 +44,7 @@ export default function SaveButton() {
     <>
       {isSavedRoll ? (
         <IconButton
+          mode="contained-tonal"
           icon={
             !isDirty ? 'content-save-alert-outline' : 'content-save-outline'
           }
@@ -57,7 +56,7 @@ export default function SaveButton() {
         <IconButton
           icon="content-save-outline"
           size={30}
-          iconColor={theme.colors.primary}
+          mode="contained-tonal"
           onPress={() => setSaveDialogIsVisible(true)}
         />
       )}
