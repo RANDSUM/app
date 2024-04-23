@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
+import RollModifierModel from '~models/RollModifierModel'
 import HapticService from '~services/HapticService'
 import { Roll } from '~types'
 
@@ -17,8 +18,8 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
   const dicePoolList = Object.entries(dicePools)
 
   const description = dicePoolList
-    .map(([, { quantity, sides }]) => {
-      return `${quantity}D${sides}`
+    .map(([, { quantity, sides, modifiers }]) => {
+      return `${quantity}D${sides}${RollModifierModel.formatModifierNotation(modifiers)}`
     })
     .join('+')
 
