@@ -10,15 +10,17 @@ import useAppTheme from '~theme/useAppTheme'
 
 function RollHeader() {
   const { removeSavedRoll } = useAppContext()
-  const { roll } = useRollerContext()
+  const { roll, isDirty } = useRollerContext()
   const theme = useAppTheme()
   const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
+
+  const title = isDirty ? `${roll.title}*` : roll.title
 
   return (
     <>
       <Stack.Screen
         options={{
-          title: roll.title,
+          title,
           headerTintColor: theme.colors.onPrimary,
           headerBackVisible: true,
           headerBackTitleVisible: false,

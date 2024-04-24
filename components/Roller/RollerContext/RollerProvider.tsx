@@ -1,19 +1,30 @@
-import { Dispatch, PropsWithChildren, SetStateAction, useState } from 'react'
+import {
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 
 import * as Crypto from 'expo-crypto'
+import { router } from 'expo-router'
 import { RollOptions } from 'randsum'
 
 import RollerStateContext from './RollerContext'
 import { randomDieSide } from '../../../utils'
 import { SetDicePools, SetRollConfig } from '~components/Roller/types'
 import { defaultRoll, defaultRollOptions } from '~constants'
+import useAppContext from '~context/AppContext/useAppContext'
 import { Roll } from '~types'
 
 type Props = PropsWithChildren<{
   savedRoll?: Roll
 }>
 export default function RollerProvider({ children, savedRoll }: Props) {
+  const { setSavedRolls, setSnackbarConfig } = useAppContext()
   const [roll, setRoll] = useState<Roll>(savedRoll || defaultRoll)
+
+  useEffect(() => {}, [])
 
   const [currentDicePoolId, setCurrentDicePoolId] = useState(
     Object.keys(roll.dicePools)[0]
@@ -79,10 +90,36 @@ export default function RollerProvider({ children, savedRoll }: Props) {
     }
   }
 
+  const saveChanges = () => {
+    setSavedRolls((rolls) => {
+      return rolls.map((thisRoll) =>
+        thisRoll.uuid === roll.uuid ? roll : thisRoll
+      )
+    })
+    setSnackbarConfig({ children: 'Changes saved!' })
+  }
+
+  const addToSavedRolls = (title: string) => {
+    setSavedRolls((rolls) => [
+      ...rolls,
+      {
+        ...roll,
+        uuid: Crypto.randomUUID(),
+        title,
+        persisted: true,
+      },
+    ])
+    resetRoll()
+    router.push('/myRolls')
+    setSnackbarConfig({ children: 'Roll saved!', duration: 1500 })
+  }
+
   return (
     <RollerStateContext.Provider
       value={{
         isDirty,
+        addToSavedRolls,
+        saveChanges,
         resetRoll,
         addDieToPool,
         removeDieFromPool,

@@ -11,6 +11,8 @@ import { Roll } from '~types'
 
 export type RollerState = {
   isDirty: boolean
+  addToSavedRolls: (title: string) => void
+  saveChanges: () => void
   resetRoll: () => void
   addDieToPool: () => void
   removeDieFromPool: (id: string) => void
