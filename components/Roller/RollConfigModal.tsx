@@ -35,7 +35,7 @@ export default function RollConfigModal({ onDismiss, visible }: Props) {
           visible={visible}
           onDismiss={onDismiss}
           dismissable
-          style={[styles.modalStyle]}
+          style={styles.modalStyle}
         >
           <Card>
             <Card.Title title={`Configure ${roll.title || 'Roll'}`} />

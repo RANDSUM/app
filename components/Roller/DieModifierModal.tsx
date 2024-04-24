@@ -36,11 +36,7 @@ export default function DieModiferModal({ onDismiss, visible }: Props) {
   const title = `Modify "${RollOptionsModel.title(currentDicePoolOptions, false)}"`
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        style={[styles.modalStyle]}
-      >
+      <Modal visible={visible} onDismiss={onDismiss} style={styles.modalStyle}>
         <Card>
           <Card.Title title={title} />
           <Card.Content>

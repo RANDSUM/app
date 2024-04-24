@@ -120,7 +120,7 @@ export default function ResultModal({
           onDismiss()
           setIsCollapsed(true)
         }}
-        style={[styles.modalStyle]}
+        style={styles.modalStyle}
       >
         <Card mode="contained">
           <Card.Title
