@@ -31,6 +31,7 @@ export default function DicePoolDisplay() {
                 selected={id === currentDicePoolId}
                 key={'empty-dice-pool-' + index}
                 mode="outlined"
+                icon={isFirst ? 'plus' : undefined}
                 showSelectedOverlay
                 showSelectedCheck={false}
                 onPress={addDieToPool}
@@ -43,6 +44,7 @@ export default function DicePoolDisplay() {
                 disabled={!isFirst}
                 textStyle={{
                   padding: 0,
+                  textAlign: 'center',
                   color: isFirst ? theme.colors.onPrimary : undefined,
                 }}
               >

@@ -1,7 +1,8 @@
 import { StyleSheet, View } from 'react-native'
-import { Modal, Portal, Card, Text, TextInput } from 'react-native-paper'
+import { Modal, Portal, Card, TextInput } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
+import RollOptionsModel from '~models/RollOptionsModel'
 
 type Props = {
   visible: boolean
@@ -31,6 +32,8 @@ export default function DieModiferModal({ onDismiss, visible }: Props) {
       },
     }))
   }
+
+  const title = `Modify "${RollOptionsModel.title(currentDicePoolOptions, false)}"`
   return (
     <Portal>
       <Modal
@@ -39,9 +42,8 @@ export default function DieModiferModal({ onDismiss, visible }: Props) {
         style={[styles.modalStyle]}
       >
         <Card>
-          <Card.Title title="Modify this Dice Pool" />
-          <Card.Content style={{ flexDirection: 'column' }}>
-            <Text>Option Modifiers</Text>
+          <Card.Title title={title} />
+          <Card.Content>
             <View style={{ flexDirection: 'row' }}>
               <TextInput
                 label="Add"

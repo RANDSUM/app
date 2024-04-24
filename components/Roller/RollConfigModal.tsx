@@ -1,8 +1,7 @@
-import { StyleSheet } from 'react-native'
-import { Modal, Portal, Card } from 'react-native-paper'
+import { StyleSheet, View } from 'react-native'
+import { Modal, Portal, Card, Switch, Text } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
-import RollTotals from './RollTotals'
 
 type Props = {
   visible: boolean
@@ -10,7 +9,13 @@ type Props = {
 }
 
 export default function RollConfigModal({ onDismiss, visible }: Props) {
-  const { roll } = useRollerContext()
+  const { roll, setRollConfig } = useRollerContext()
+  const toggleShowRolls = () => {
+    setRollConfig((c) => ({
+      ...c,
+      showRolls: !c.showRolls,
+    }))
+  }
 
   return (
     <>
@@ -18,12 +23,28 @@ export default function RollConfigModal({ onDismiss, visible }: Props) {
         <Modal
           visible={visible}
           onDismiss={onDismiss}
+          dismissable
           style={[styles.modalStyle]}
         >
           <Card>
             <Card.Title title={`Configure ${roll.title || 'Roll'}`} />
             <Card.Content style={{ flexDirection: 'row' }}>
-              <RollTotals />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
+                <Switch
+                  value={roll.config.showRolls}
+                  onValueChange={toggleShowRolls}
+                />
+                <Text variant="labelMedium">
+                  Show Individual Rolls instead of Roll Totals
+                </Text>
+              </View>
             </Card.Content>
           </Card>
         </Modal>

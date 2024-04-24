@@ -47,8 +47,7 @@ export default function RollerProvider({ children, savedRoll }: Props) {
   }
 
   const isDirty =
-    JSON.stringify(roll) !==
-    JSON.stringify(savedRoll ? savedRoll.dicePools : defaultRoll)
+    JSON.stringify(roll) !== JSON.stringify(savedRoll ? savedRoll : defaultRoll)
 
   const resetRoll = () => {
     setRoll(defaultRoll)

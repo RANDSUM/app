@@ -10,7 +10,7 @@ export default function RollConfigButton() {
     <>
       <IconButton
         icon="cog"
-        mode="contained-tonal"
+        mode="contained"
         size={30}
         onPress={() => setShowConfigModal(true)}
       />

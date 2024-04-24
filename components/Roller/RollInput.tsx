@@ -1,9 +1,10 @@
 import { View, StyleSheet } from 'react-native'
-import { TextInput, Text } from 'react-native-paper'
+import { TextInput, Icon } from 'react-native-paper'
 
 import NumButton from './NumButton'
 import useRollerContext from './RollerContext/useRollerContext'
 import { dieSides } from '~constants'
+import RollOptionsModel from '~models/RollOptionsModel'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function RollInput() {
@@ -47,6 +48,7 @@ export default function RollInput() {
           underlineColor="transparent"
           activeUnderlineColor="transparent"
           maxFontSizeMultiplier={1}
+          contentStyle={{ height: 100 }}
           label=""
           keyboardType="numeric"
           numberOfLines={1}
@@ -73,7 +75,10 @@ export default function RollInput() {
           onPress={increaseSides}
         />
         <View style={styles.num}>
-          <Text variant="displayLarge">D{currentDicePoolOptions.sides}</Text>
+          <Icon
+            source={RollOptionsModel.icon(currentDicePoolOptions)}
+            size={165}
+          />
         </View>
         <NumButton
           label="-"
@@ -85,7 +90,13 @@ export default function RollInput() {
   )
 }
 
+const fontSize = 80
 const styles = StyleSheet.create({
+  text: {
+    fontSize,
+    lineHeight: fontSize,
+    paddingTop: 20,
+  },
   numContainer: {
     flexDirection: 'column',
     alignContent: 'center',
@@ -96,9 +107,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 120,
-    width: 175,
-    fontSize: 55,
+    minHeight: 180,
+    width: 190,
+    fontSize,
+    lineHeight: fontSize + 20,
   },
   diceRow: {
     flexDirection: 'row',

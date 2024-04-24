@@ -40,26 +40,18 @@ export default function SaveButton() {
     setSnackbarConfig({ children: 'Roll saved!', duration: 1500 })
   }
 
+  const disabled = isSavedRoll && !isDirty
+  const onPress = isSavedRoll ? saveChanges : () => setSaveDialogIsVisible(true)
+
   return (
     <>
-      {isSavedRoll ? (
-        <IconButton
-          mode="contained-tonal"
-          icon={
-            !isDirty ? 'content-save-alert-outline' : 'content-save-outline'
-          }
-          size={30}
-          disabled={!isDirty}
-          onPress={saveChanges}
-        />
-      ) : (
-        <IconButton
-          icon="content-save-outline"
-          size={30}
-          mode="contained-tonal"
-          onPress={() => setSaveDialogIsVisible(true)}
-        />
-      )}
+      <IconButton
+        mode="contained"
+        icon="content-save-outline"
+        size={30}
+        disabled={disabled}
+        onPress={onPress}
+      />
       <SaveRollDialog
         visible={saveDialogIsVisible}
         onDismiss={() => setSaveDialogIsVisible(false)}

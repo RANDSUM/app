@@ -16,6 +16,7 @@ import {
 } from 'react-native-paper'
 
 import RollModifierModel from '~models/RollModifierModel'
+import RollOptionsModel from '~models/RollOptionsModel'
 import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
 
@@ -83,11 +84,11 @@ export default function ResultModal({
     .join(' + ')
 
   const parsedRollOptionsGroup = rollResults.map((rollResult) => {
-    const sides = rollResult.rollParameters.diceOptions[0].sides
-    const quantity = rollResult.rollParameters.diceOptions[0].quantity
     const rolls = rollResult.rolls
 
-    const rollDescription = `${quantity}D${sides} `
+    const rollDescription = RollOptionsModel.title(
+      rollResult.rollParameters.diceOptions[0]
+    )
 
     const rollsDescription = `[${rolls.join(', ')}]`
     return { title: rollDescription, value: rollsDescription }

@@ -21,13 +21,13 @@ export default function Roller(props: { savedRoll?: Roll }) {
           <SaveButton />
         </View>
         <View style={styles.collection}>
+          <AddModifiersButton />
           <RollInput />
           <ModifierDisplay />
         </View>
         <View style={styles.collection}>
           <DicePoolDisplay />
           <RollButton />
-          <AddModifiersButton />
         </View>
       </View>
     </RollerProvider>
