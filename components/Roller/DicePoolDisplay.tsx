@@ -23,32 +23,32 @@ export default function DicePoolDisplay() {
   return (
     <View style={styles.container}>
       <View style={styles.wrapRow}>
-        {displaySets.map(([id, roll], index) => {
+        {displaySets.map(([id, roll], index, arr) => {
           if (!id) {
-            const isFirst = index === dicePoolsList.length
+            const isLast = index === arr.length - 1
             return (
               <Chip
                 selected={id === currentDicePoolId}
                 key={'empty-dice-pool-' + index}
                 mode="outlined"
-                icon={isFirst ? 'plus' : undefined}
+                icon={isLast ? 'plus' : undefined}
                 showSelectedOverlay
                 showSelectedCheck={false}
                 onPress={addDieToPool}
                 style={[
                   styles.chip,
                   {
-                    backgroundColor: isFirst ? theme.colors.primary : undefined,
+                    backgroundColor: isLast ? theme.colors.primary : undefined,
                   },
                 ]}
-                disabled={!isFirst}
+                disabled={!isLast}
                 textStyle={{
                   padding: 0,
                   textAlign: 'center',
-                  color: isFirst ? theme.colors.onPrimary : undefined,
+                  color: isLast ? theme.colors.onPrimary : undefined,
                 }}
               >
-                {index === dicePoolsList.length ? 'Add' : ''}
+                {isLast ? 'Add' : ''}
               </Chip>
             )
           }

@@ -4,14 +4,13 @@ import Container from '~components/Container'
 import Roller from '~components/Roller'
 import useAppContext from '~context/AppContext/useAppContext'
 
-export default function RollSpecific() {
+export default function SpecificRoll() {
   const { rollId } = useLocalSearchParams()
-  const { setSnackbarConfig, savedRolls } = useAppContext()
+  const { savedRolls } = useAppContext()
 
   const savedRoll = savedRolls.find((r) => r.uuid === rollId)
 
   if (!savedRoll) {
-    setSnackbarConfig({ children: 'Roll not found' })
     return <Redirect href="/myRolls" />
   }
   return (
