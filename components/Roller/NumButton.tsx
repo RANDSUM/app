@@ -6,12 +6,14 @@ type ButtonProps = {
   label: string
   disabled?: boolean
   labelStyle?: StyleProp<TextStyle>
+  accessibilityLabel: string
 }
 
 export default function NumButton({
   onPress,
   label,
   disabled,
+  accessibilityLabel,
   labelStyle,
 }: ButtonProps) {
   return (
@@ -29,6 +31,7 @@ export default function NumButton({
       mode="contained-tonal"
       disabled={disabled}
       onPress={onPress}
+      accessibilityLabel={accessibilityLabel}
     >
       {label}
     </Button>

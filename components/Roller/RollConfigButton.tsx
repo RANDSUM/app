@@ -10,6 +10,7 @@ export default function RollConfigButton() {
     <>
       <IconButton
         icon="cog"
+        accessibilityLabel="Configure Roll"
         mode="contained"
         size={30}
         onPress={() => setShowConfigModal(true)}

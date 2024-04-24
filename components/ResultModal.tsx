@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { RollResult } from 'randsum'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ScrollView } from 'react-native'
 import CircularProgress, {
   ProgressRef,
 } from 'react-native-circular-progress-indicator'
@@ -130,36 +130,38 @@ export default function ResultModal({
             subtitleStyle={{ textAlign: 'center' }}
           />
           <Card.Content style={{ paddingHorizontal: 30 }}>
-            {shouldCountdown && (
-              <View style={{ position: 'absolute', right: 10, top: -60 }}>
-                <CircularProgress
-                  activeStrokeColor={theme.colors.primary}
-                  ref={progressRef}
-                  progressValueStyle={{ display: 'none' }}
-                  inActiveStrokeOpacity={0}
-                  initialValue={100}
-                  value={isLoading ? 100 : 0}
-                  duration={duration}
-                  radius={15}
-                  activeStrokeWidth={2}
-                />
-              </View>
-            )}
-            <MainDisplay />
-            <Collapsible collapsed={isCollapsed}>
-              <View style={styles.dieGroupContainer}>
-                {parsedRollOptionsGroup.map(({ title, value }, index) => {
-                  return (
-                    <View key={title + index} style={styles.dieGroupRow}>
-                      <Text style={[styles.text, { fontWeight: '800' }]}>
-                        {title}
-                      </Text>
-                      <Text style={styles.text}>{value}</Text>
-                    </View>
-                  )
-                })}
-              </View>
-            </Collapsible>
+            <ScrollView>
+              {shouldCountdown && (
+                <View style={{ position: 'absolute', right: 10, top: -60 }}>
+                  <CircularProgress
+                    activeStrokeColor={theme.colors.primary}
+                    ref={progressRef}
+                    progressValueStyle={{ display: 'none' }}
+                    inActiveStrokeOpacity={0}
+                    initialValue={100}
+                    value={isLoading ? 100 : 0}
+                    duration={duration}
+                    radius={15}
+                    activeStrokeWidth={2}
+                  />
+                </View>
+              )}
+              <MainDisplay />
+              <Collapsible collapsed={isCollapsed}>
+                <View style={styles.dieGroupContainer}>
+                  {parsedRollOptionsGroup.map(({ title, value }, index) => {
+                    return (
+                      <View key={title + index} style={styles.dieGroupRow}>
+                        <Text style={[styles.text, { fontWeight: '800' }]}>
+                          {title}
+                        </Text>
+                        <Text style={styles.text}>{value}</Text>
+                      </View>
+                    )
+                  })}
+                </View>
+              </Collapsible>
+            </ScrollView>
           </Card.Content>
           <Card.Actions style={styles.buttonRow}>
             <Button

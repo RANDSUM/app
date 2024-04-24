@@ -7,6 +7,7 @@ import { dieSides } from '~constants'
 import RollOptionsModel from '~models/RollOptionsModel'
 import useAppTheme from '~theme/useAppTheme'
 
+const MAX_QUANTITY = 999
 export default function RollInput() {
   const theme = useAppTheme()
   const { currentDicePoolOptions, setCurrentDicePoolOptions } =
@@ -38,11 +39,18 @@ export default function RollInput() {
       quantity: Number(o.quantity) - 1 || 1,
     }))
   const quantityDownDisabled = Number(currentDicePoolOptions.quantity) <= 1
+  const quantityUpDisabled =
+    Number(currentDicePoolOptions.quantity) >= MAX_QUANTITY
 
   return (
     <View style={styles.diceRow}>
       <View style={styles.numContainer}>
-        <NumButton label="+" onPress={increaseQuantity} />
+        <NumButton
+          label="+"
+          accessibilityLabel="Increase Dice Quantity"
+          onPress={increaseQuantity}
+          disabled={quantityUpDisabled}
+        />
         <TextInput
           style={[styles.num, { backgroundColor: theme.colors.background }]}
           underlineColor="transparent"
@@ -58,12 +66,15 @@ export default function RollInput() {
               ...o,
               quantity: isNaN(Number(num))
                 ? currentDicePoolOptions.quantity
-                : Number(num),
+                : Number(num) > MAX_QUANTITY
+                  ? 999
+                  : Number(num),
             }))
           }
         />
         <NumButton
           label="-"
+          accessibilityLabel="Decrease Dice Quantity"
           disabled={quantityDownDisabled}
           onPress={decreaseQuantity}
         />
@@ -71,6 +82,7 @@ export default function RollInput() {
       <View style={styles.numContainer}>
         <NumButton
           label="+"
+          accessibilityLabel="Increase Dice Sides"
           disabled={disableSidesUp}
           onPress={increaseSides}
         />
@@ -82,6 +94,7 @@ export default function RollInput() {
         </View>
         <NumButton
           label="-"
+          accessibilityLabel="Decrease Dice Sides"
           disabled={disableSidesDown}
           onPress={decreaseSides}
         />
