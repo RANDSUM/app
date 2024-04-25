@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { Icon, Text } from 'react-native-paper'
+import { Button, Icon, Text } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
 import RollModifierModel from '~models/RollModifierModel'
@@ -7,10 +7,14 @@ import RollModifierModel from '~models/RollModifierModel'
 export default function ModifierDisplay() {
   const {
     currentDicePoolOptions: { modifiers },
+    setCurrentDicePoolOptions,
   } = useRollerContext()
 
   const formattedModifiers =
     RollModifierModel.formatModifiersForDisplay(modifiers)
+
+  const clearModifiers = () =>
+    setCurrentDicePoolOptions((o) => ({ ...o, modifiers: {} }))
 
   const components = formattedModifiers
     .map((modifier, i, list) => [
@@ -24,7 +28,7 @@ export default function ModifierDisplay() {
     .flat()
 
   return (
-    <View style={{ height: 90, justifyContent: 'center' }}>
+    <View style={{ height: 90, justifyContent: 'center', gap: 10 }}>
       <View
         style={{
           flexDirection: 'row',
@@ -35,6 +39,11 @@ export default function ModifierDisplay() {
       >
         {components}
       </View>
+      {components.length > 0 && (
+        <Button mode="text" onPress={clearModifiers}>
+          Clear Modifiers
+        </Button>
+      )}
     </View>
   )
 }
