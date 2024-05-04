@@ -1,18 +1,17 @@
-import {
-  Dispatch,
-  PropsWithChildren,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { PropsWithChildren, useEffect, useState } from 'react'
 
 import * as Crypto from 'expo-crypto'
 import { router } from 'expo-router'
-import { DicePoolParameters, parseRollArguments } from 'randsum'
+import { parameterizeRollArgument, parseRollArguments } from 'randsum'
 
 import RollerStateContext from './RollerContext'
 import { randomDieSide } from '../../../utils'
-import { SetDicePools, SetRollConfig } from '~components/Roller/types'
+import {
+  SetDicePools,
+  SetRollConfig,
+  SetRollOptions,
+  SetRollParameters,
+} from '~components/Roller/types'
 import { defaultRoll } from '~constants'
 import useAppContext from '~context/AppContext/useAppContext'
 import { Roll } from '~types'
@@ -47,14 +46,21 @@ export default function RollerProvider({ children, savedRoll }: Props) {
   }
 
   const currentDicePoolParameters = roll.dicePools[currentDicePoolId]
-  const setCurrentDicePoolParameters: Dispatch<
-    SetStateAction<DicePoolParameters<number> | DicePoolParameters<string>>
-  > = (arg) => {
+  const setCurrentDicePoolParameters: SetRollParameters = (arg) => {
     setDicePools((pools) => ({
       ...pools,
       [currentDicePoolId]:
         arg instanceof Function ? arg(currentDicePoolParameters) : arg,
     }))
+  }
+
+  const currentDicePoolOptions = currentDicePoolParameters.options
+
+  const setCurrentDicePoolOptions: SetRollOptions = (arg) => {
+    const newOptions =
+      arg instanceof Function ? arg(currentDicePoolOptions) : arg
+    const newParams = parameterizeRollArgument(newOptions)
+    setCurrentDicePoolParameters(newParams)
   }
 
   const isDirty =
@@ -123,7 +129,8 @@ export default function RollerProvider({ children, savedRoll }: Props) {
         dicePools: roll.dicePools,
         roll,
         currentDicePoolParameters,
-        setCurrentDicePoolParameters,
+        currentDicePoolOptions,
+        setCurrentDicePoolOptions,
         setRollConfig,
         setDicePools,
         currentDicePoolId,

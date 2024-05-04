@@ -1,4 +1,4 @@
-import { DicePoolOptions, parseRollArguments } from 'randsum'
+import { DicePoolOptions } from 'randsum'
 import { StyleSheet, View } from 'react-native'
 import { Modal, Portal, Card, TextInput } from 'react-native-paper'
 
@@ -10,42 +10,36 @@ type Props = {
 }
 
 export default function DieModiferModal({ onDismiss, visible }: Props) {
-  const { currentDicePoolParameters, setCurrentDicePoolParameters } =
+  const { currentDicePoolParameters, setCurrentDicePoolOptions } =
     useRollerContext()
 
   const changePlus = (value: string) => {
-    setCurrentDicePoolParameters((oldParams) => {
-      const newOptions = {
-        ...oldParams.options,
-        modifiers: {
-          ...oldParams.options.modifiers,
-          plus: Number(value) || 0,
-        },
-      }
-
-      return Object.values(
-        parseRollArguments(newOptions as DicePoolOptions<number>).dicePools
-      )[0]
-    })
+    setCurrentDicePoolOptions(
+      (oldParams) =>
+        ({
+          ...oldParams,
+          modifiers: {
+            ...oldParams.modifiers,
+            plus: Number(value) || 0,
+          },
+        }) as DicePoolOptions<number>
+    )
   }
 
   const changeMinus = (value: string) => {
-    setCurrentDicePoolParameters((oldParams) => {
-      const newOptions = {
-        ...oldParams.options,
-        modifiers: {
-          ...oldParams.options.modifiers,
-          minus: Number(value) || 0,
-        },
-      }
-      return Object.values(
-        parseRollArguments(newOptions as DicePoolOptions<number>).dicePools
-      )[0]
-    })
+    setCurrentDicePoolOptions(
+      (oldParams) =>
+        ({
+          ...oldParams,
+          modifiers: {
+            ...oldParams.modifiers,
+            minus: Number(value) || 0,
+          },
+        }) as DicePoolOptions<number>
+    )
   }
 
   const title = `Modify "${currentDicePoolParameters}"`
-  console.log('currentDicePoolParameters', currentDicePoolParameters)
   return (
     <Portal>
       <Modal visible={visible} onDismiss={onDismiss} style={styles.modalStyle}>

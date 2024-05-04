@@ -1,5 +1,5 @@
 import { RollerState } from './types'
-import { defaultRoll } from '~constants'
+import { defaultDicePoolOptions, defaultRoll } from '~constants'
 
 const initialState: RollerState = {
   isDirty: false,
@@ -9,11 +9,12 @@ const initialState: RollerState = {
   saveChanges: () => {},
   removeDieFromPool: () => {},
   roll: defaultRoll,
+  currentDicePoolOptions: defaultDicePoolOptions,
   currentDicePoolParameters:
     defaultRoll.dicePools[Object.keys(defaultRoll.dicePools)[0]],
   dicePools: defaultRoll.dicePools,
   currentDicePoolId: Object.keys(defaultRoll.dicePools)[0],
-  setCurrentDicePoolParameters: () => {},
+  setCurrentDicePoolOptions: () => {},
   setRollConfig: () => {},
   setDicePools: () => {},
   setCurrentDicePoolId: () => {},
