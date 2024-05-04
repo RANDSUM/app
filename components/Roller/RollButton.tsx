@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { RollResult, roll as randsumRoll } from 'randsum'
+import { RollResult, generateRollResult } from 'randsum'
 import { Keyboard } from 'react-native'
 import { Button } from 'react-native-paper'
 
@@ -11,14 +11,10 @@ import HapticService from '~services/HapticService'
 export default function RollButton() {
   const { roll } = useRollerContext()
   const [showResultModal, setShowResultModal] = useState(false)
-  const [lastRollResults, setLastRollResults] = useState<RollResult<number>[]>()
+  const [lastRollResult, setLastRollResult] = useState<RollResult>()
 
-  const dicePoolsList = Object.values(roll.dicePools)
   const coreRoll = () => {
-    const rolls = dicePoolsList.map((pool) => {
-      return randsumRoll(pool)
-    })
-    setLastRollResults(rolls)
+    setLastRollResult(generateRollResult({ dicePools: roll.dicePools }))
     HapticService.notifyVibrate()
     Keyboard.dismiss()
   }
@@ -38,7 +34,7 @@ export default function RollButton() {
         Roll
       </Button>
       <ResultModal
-        rollResults={lastRollResults}
+        rollResult={lastRollResult}
         roll={roll}
         rollAgain={coreRoll}
         onDismiss={() => setShowResultModal(false)}

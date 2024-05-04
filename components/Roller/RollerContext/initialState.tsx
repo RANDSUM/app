@@ -5,6 +5,8 @@ const initialState: RollerState = {
   isDirty: false,
   resetRoll: () => {},
   addDieToPool: () => {},
+  addToSavedRolls: () => {},
+  saveChanges: () => {},
   removeDieFromPool: () => {},
   roll: defaultRoll,
   currentDicePoolParameters:

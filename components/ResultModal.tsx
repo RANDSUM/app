@@ -63,7 +63,9 @@ export default function ResultModal({
   if (combinedTotal === undefined || !rollResult) return null
 
   const rollsDescription = Object.values(rollResult.dicePools)
-    .map(({ notation }) => notation)
+    .map(({ notation }, _i, list) =>
+      list.length > 1 ? `(${notation})` : notation
+    )
     .join(' + ')
 
   const MainDisplay = () => {
@@ -123,13 +125,14 @@ export default function ResultModal({
                 <View style={styles.dieGroupContainer}>
                   {Object.keys(rollResult.dicePools).map((key) => {
                     const rolls = rollResult.rawRolls[key]
+                    console.log(JSON.stringify(rollResult, null, 2))
                     const dicePool = rollResult.dicePools[key]
                     return (
                       <View key={key} style={styles.dieGroupRow}>
                         <Text style={[styles.text, { fontWeight: '800' }]}>
                           {`[${dicePool.notation}]`}
                         </Text>
-                        <Text style={styles.text}>{rolls}</Text>
+                        <Text style={styles.text}>{rolls.join(', ')}</Text>
                       </View>
                     )
                   })}

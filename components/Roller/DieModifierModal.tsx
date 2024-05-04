@@ -49,6 +49,7 @@ export default function DieModiferModal({ onDismiss, visible }: Props) {
   }
 
   const title = `Modify "${currentDicePoolParameters}"`
+  console.log('currentDicePoolParameters', currentDicePoolParameters)
   return (
     <Portal>
       <Modal visible={visible} onDismiss={onDismiss} style={styles.modalStyle}>
