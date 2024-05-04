@@ -1,14 +1,11 @@
-import { RollOptions } from 'randsum'
+import { RollParameters } from 'randsum'
 import { SnackbarProps } from 'react-native-paper'
 
 export type RollConfig = {
   showRolls: boolean
 }
 
-export type Roll = {
-  dicePools: {
-    [key: string]: RollOptions
-  }
+export type Roll = RollParameters & {
   title: string
   config: RollConfig
   uuid: string

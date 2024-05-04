@@ -1,8 +1,12 @@
+import {
+  DicePoolOptions,
+  DicePoolParameters,
+  parseRollArguments,
+} from 'randsum'
 import { StyleSheet, View } from 'react-native'
 import { Modal, Portal, Card, TextInput } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
-import RollOptionsModel from '~models/RollOptionsModel'
 
 type Props = {
   visible: boolean
@@ -10,30 +14,41 @@ type Props = {
 }
 
 export default function DieModiferModal({ onDismiss, visible }: Props) {
-  const { currentDicePoolOptions, setCurrentDicePoolOptions } =
+  const { currentDicePoolParameters, setCurrentDicePoolParameters } =
     useRollerContext()
 
   const changePlus = (value: string) => {
-    setCurrentDicePoolOptions((options) => ({
-      ...options,
-      modifiers: {
-        ...options.modifiers,
-        plus: Number(value) || 0,
-      },
-    }))
+    setCurrentDicePoolParameters((oldParams) => {
+      const newOptions = {
+        ...oldParams.options,
+        modifiers: {
+          ...oldParams.options.modifiers,
+          plus: Number(value) || 0,
+        },
+      }
+
+      return Object.values(
+        parseRollArguments(newOptions as DicePoolOptions<number>).dicePools
+      )[0]
+    })
   }
 
   const changeMinus = (value: string) => {
-    setCurrentDicePoolOptions((options) => ({
-      ...options,
-      modifiers: {
-        ...options.modifiers,
-        minus: Number(value) || 0,
-      },
-    }))
+    setCurrentDicePoolParameters((oldParams) => {
+      const newOptions = {
+        ...oldParams.options,
+        modifiers: {
+          ...oldParams.options.modifiers,
+          minus: Number(value) || 0,
+        },
+      }
+      return Object.values(
+        parseRollArguments(newOptions as DicePoolOptions<number>).dicePools
+      )[0]
+    })
   }
 
-  const title = `Modify "${RollOptionsModel.title(currentDicePoolOptions, false)}"`
+  const title = `Modify "${currentDicePoolParameters}"`
   return (
     <Portal>
       <Modal visible={visible} onDismiss={onDismiss} style={styles.modalStyle}>
@@ -46,7 +61,7 @@ export default function DieModiferModal({ onDismiss, visible }: Props) {
                 keyboardType="numeric"
                 style={{ flex: 1 }}
                 value={String(
-                  Number(currentDicePoolOptions.modifiers?.plus) || 0
+                  Number(currentDicePoolParameters.options.modifiers?.plus) || 0
                 )}
                 onChangeText={changePlus}
               />
@@ -55,7 +70,8 @@ export default function DieModiferModal({ onDismiss, visible }: Props) {
                 keyboardType="numeric"
                 style={{ flex: 1 }}
                 value={String(
-                  Number(currentDicePoolOptions.modifiers?.minus) || 0
+                  Number(currentDicePoolParameters.options.modifiers?.minus) ||
+                    0
                 )}
                 onChangeText={changeMinus}
               />

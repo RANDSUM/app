@@ -2,21 +2,17 @@ import { View } from 'react-native'
 import { Button, Icon, Text } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
-import RollModifierModel from '~models/RollModifierModel'
 
 export default function ModifierDisplay() {
   const {
-    currentDicePoolOptions: { modifiers },
-    setCurrentDicePoolOptions,
+    currentDicePoolParameters: { description },
+    setCurrentDicePoolParameters,
   } = useRollerContext()
 
-  const formattedModifiers =
-    RollModifierModel.formatModifiersForDisplay(modifiers)
-
   const clearModifiers = () =>
-    setCurrentDicePoolOptions((o) => ({ ...o, modifiers: {} }))
+    setCurrentDicePoolParameters((o) => ({ ...o, modifiers: {} }))
 
-  const components = formattedModifiers
+  const components = description
     .map((modifier, i, list) => [
       <Text variant="labelMedium" key={`${modifier}-mod`}>
         {modifier}

@@ -1,16 +1,24 @@
 import * as Crypto from 'expo-crypto'
-import { RollOptions } from 'randsum'
+import { DicePoolOptions, DicePoolParameters, dieFactory } from 'randsum'
 
 import { Roll, RollConfig } from '~types'
 
 export const dieSides = [4, 6, 8, 10, 12, 20, 100]
-export const defaultRollOptions: RollOptions = {
+export const defaultDicePoolOptions: DicePoolOptions<number> = {
   quantity: 1,
   sides: 20,
 }
 
+export const defaultDicePoolParameters: DicePoolParameters<number> = {
+  die: dieFactory(20),
+  argument: undefined,
+  options: defaultDicePoolOptions,
+  notation: '1d20',
+  description: ['Roll 1 20-sided die'],
+}
+
 export const defaultDicePools: Roll['dicePools'] = {
-  [Crypto.randomUUID()]: defaultRollOptions,
+  [Crypto.randomUUID()]: defaultDicePoolParameters,
 }
 
 export const defaultConfig: RollConfig = {

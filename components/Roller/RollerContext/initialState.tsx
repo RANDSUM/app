@@ -7,11 +7,11 @@ const initialState: RollerState = {
   addDieToPool: () => {},
   removeDieFromPool: () => {},
   roll: defaultRoll,
-  currentDicePoolOptions:
+  currentDicePoolParameters:
     defaultRoll.dicePools[Object.keys(defaultRoll.dicePools)[0]],
   dicePools: defaultRoll.dicePools,
   currentDicePoolId: Object.keys(defaultRoll.dicePools)[0],
-  setCurrentDicePoolOptions: () => {},
+  setCurrentDicePoolParameters: () => {},
   setRollConfig: () => {},
   setDicePools: () => {},
   setCurrentDicePoolId: () => {},

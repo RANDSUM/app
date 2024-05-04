@@ -8,12 +8,12 @@ import {
 
 import * as Crypto from 'expo-crypto'
 import { router } from 'expo-router'
-import { RollOptions } from 'randsum'
+import { DicePoolParameters, parseRollArguments } from 'randsum'
 
 import RollerStateContext from './RollerContext'
 import { randomDieSide } from '../../../utils'
 import { SetDicePools, SetRollConfig } from '~components/Roller/types'
-import { defaultRoll, defaultRollOptions } from '~constants'
+import { defaultRoll } from '~constants'
 import useAppContext from '~context/AppContext/useAppContext'
 import { Roll } from '~types'
 
@@ -46,14 +46,14 @@ export default function RollerProvider({ children, savedRoll }: Props) {
     }))
   }
 
-  const currentDicePoolOptions = roll.dicePools[currentDicePoolId]
-  const setCurrentDicePoolOptions: Dispatch<SetStateAction<RollOptions>> = (
-    arg
-  ) => {
+  const currentDicePoolParameters = roll.dicePools[currentDicePoolId]
+  const setCurrentDicePoolParameters: Dispatch<
+    SetStateAction<DicePoolParameters<number> | DicePoolParameters<string>>
+  > = (arg) => {
     setDicePools((pools) => ({
       ...pools,
       [currentDicePoolId]:
-        arg instanceof Function ? arg(currentDicePoolOptions) : arg,
+        arg instanceof Function ? arg(currentDicePoolParameters) : arg,
     }))
   }
 
@@ -66,13 +66,10 @@ export default function RollerProvider({ children, savedRoll }: Props) {
   }
 
   const addDieToPool = () => {
-    const newId = Crypto.randomUUID()
+    const newDicePools = parseRollArguments(randomDieSide()).dicePools
     setDicePools((pools) => ({
       ...pools,
-      [newId]: {
-        ...defaultRollOptions,
-        sides: randomDieSide(),
-      },
+      ...newDicePools,
     }))
   }
 
@@ -125,8 +122,8 @@ export default function RollerProvider({ children, savedRoll }: Props) {
         removeDieFromPool,
         dicePools: roll.dicePools,
         roll,
-        currentDicePoolOptions,
-        setCurrentDicePoolOptions,
+        currentDicePoolParameters,
+        setCurrentDicePoolParameters,
         setRollConfig,
         setDicePools,
         currentDicePoolId,

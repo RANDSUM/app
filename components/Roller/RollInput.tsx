@@ -10,37 +10,37 @@ import useAppTheme from '~theme/useAppTheme'
 const MAX_QUANTITY = 999
 export default function RollInput() {
   const theme = useAppTheme()
-  const { currentDicePoolOptions, setCurrentDicePoolOptions } =
+  const { currentDicePoolParameters, setCurrentDicePoolParameters } =
     useRollerContext()
 
   const increaseSides = () =>
-    setCurrentDicePoolOptions((o) => ({
+    setCurrentDicePoolParameters((o) => ({
       ...o,
       sides: dieSides[dieSides.indexOf(Number(o.sides)) + 1] || dieSides[0],
     }))
   const decreaseSides = () =>
-    setCurrentDicePoolOptions((o) => ({
+    setCurrentDicePoolParameters((o) => ({
       ...o,
       sides: dieSides[dieSides.indexOf(Number(o.sides)) - 1] || dieSides[0],
     }))
 
   const disableSidesUp =
-    currentDicePoolOptions.sides === dieSides[dieSides.length - 1]
-  const disableSidesDown = currentDicePoolOptions.sides === dieSides[0]
+    currentDicePoolParameters.sides === dieSides[dieSides.length - 1]
+  const disableSidesDown = currentDicePoolParameters.sides === dieSides[0]
 
   const increaseQuantity = () =>
-    setCurrentDicePoolOptions((o) => ({
+    setCurrentDicePoolParameters((o) => ({
       ...o,
       quantity: Number(o.quantity) + 1 || 1,
     }))
   const decreaseQuantity = () =>
-    setCurrentDicePoolOptions((o) => ({
+    setCurrentDicePoolParameters((o) => ({
       ...o,
       quantity: Number(o.quantity) - 1 || 1,
     }))
-  const quantityDownDisabled = Number(currentDicePoolOptions.quantity) <= 1
+  const quantityDownDisabled = Number(currentDicePoolParameters.quantity) <= 1
   const quantityUpDisabled =
-    Number(currentDicePoolOptions.quantity) >= MAX_QUANTITY
+    Number(currentDicePoolParameters.quantity) >= MAX_QUANTITY
 
   return (
     <View style={styles.diceRow}>
@@ -60,12 +60,12 @@ export default function RollInput() {
           label=""
           keyboardType="numeric"
           numberOfLines={1}
-          value={String(currentDicePoolOptions.quantity)}
+          value={String(currentDicePoolParameters.quantity)}
           onChangeText={(num) =>
-            setCurrentDicePoolOptions((o) => ({
+            setCurrentDicePoolParameters((o) => ({
               ...o,
               quantity: isNaN(Number(num))
-                ? currentDicePoolOptions.quantity
+                ? currentDicePoolParameters.quantity
                 : Number(num) > MAX_QUANTITY
                   ? 999
                   : Number(num),
@@ -88,7 +88,7 @@ export default function RollInput() {
         />
         <View style={styles.num}>
           <Icon
-            source={RollOptionsModel.icon(currentDicePoolOptions)}
+            source={RollOptionsModel.icon(currentDicePoolParameters)}
             size={165}
           />
         </View>

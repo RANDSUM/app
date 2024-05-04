@@ -15,8 +15,6 @@ import {
   ActivityIndicator,
 } from 'react-native-paper'
 
-import RollModifierModel from '~models/RollModifierModel'
-import RollOptionsModel from '~models/RollOptionsModel'
 import useAppTheme from '~theme/useAppTheme'
 import { Roll } from '~types'
 
@@ -24,7 +22,7 @@ type Props = {
   visible: boolean
   roll: Roll
   onDismiss: () => void
-  rollResults: RollResult[] | undefined
+  rollResult: RollResult | undefined
   rollAgain: () => void
   preventAutoDismiss?: boolean
   duration?: number
@@ -34,7 +32,7 @@ const DURATION = 10_000
 
 export default function ResultModal({
   onDismiss,
-  rollResults,
+  rollResult,
   rollAgain,
   visible,
   roll: { title, config },
@@ -45,11 +43,9 @@ export default function ResultModal({
   const progressRef = useRef<ProgressRef>(null)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [showLoading, setShowLoading] = useState(false)
-  const combinedTotal = rollResults?.reduce((prev, current) => {
-    return prev + current.total
-  }, 0)
+  const combinedTotal = rollResult?.total
 
-  const isLoading = !rollResults || showLoading
+  const isLoading = !rollResult || showLoading
 
   const shouldCountdown = isCollapsed && !preventAutoDismiss
   useEffect(() => {
@@ -64,40 +60,16 @@ export default function ResultModal({
     return () => clearInterval(interval)
   }, [combinedTotal, shouldCountdown])
 
-  if (combinedTotal === undefined || !rollResults) return null
+  if (combinedTotal === undefined || !rollResult) return null
 
-  const rollsDescription = rollResults
-    .map((rollResult) => {
-      const sides = rollResult.rollParameters.diceOptions[0].sides
-      const quantity = rollResult.rollParameters.diceOptions[0].quantity
-      const mods = RollModifierModel.hasModifiers(
-        rollResult.rollParameters.modifiers
-      )
-        ? RollModifierModel.formatModifierNotation(
-            rollResult.rollParameters.modifiers
-          )
-        : ''
-
-      const result = `${quantity}D${sides}${mods}`
-      return mods ? `(${result})` : result
-    })
+  const rollsDescription = Object.values(rollResult.dicePools)
+    .map(({ notation }) => notation)
     .join(' + ')
-
-  const parsedRollOptionsGroup = rollResults.map((rollResult) => {
-    const rolls = rollResult.rolls
-
-    const rollDescription = RollOptionsModel.title(
-      rollResult.rollParameters.diceOptions[0]
-    )
-
-    const rollsDescription = `[${rolls.join(', ')}]`
-    return { title: rollDescription, value: rollsDescription }
-  })
 
   const MainDisplay = () => {
     const textDisplay = config.showRolls ? (
       <Text style={styles.rollResult} variant="headlineLarge">
-        {rollResults.flatMap((result) => result.rolls).join(', ')}
+        {rollResult.result.join(', ')}
       </Text>
     ) : (
       <Text style={styles.totalResult} variant="displayLarge">
@@ -149,13 +121,15 @@ export default function ResultModal({
               <MainDisplay />
               <Collapsible collapsed={isCollapsed}>
                 <View style={styles.dieGroupContainer}>
-                  {parsedRollOptionsGroup.map(({ title, value }, index) => {
+                  {Object.keys(rollResult.dicePools).map((key) => {
+                    const rolls = rollResult.rawRolls[key]
+                    const dicePool = rollResult.dicePools[key]
                     return (
-                      <View key={title + index} style={styles.dieGroupRow}>
+                      <View key={key} style={styles.dieGroupRow}>
                         <Text style={[styles.text, { fontWeight: '800' }]}>
-                          {title}
+                          {`[${dicePool.notation}]`}
                         </Text>
-                        <Text style={styles.text}>{value}</Text>
+                        <Text style={styles.text}>{rolls}</Text>
                       </View>
                     )
                   })}

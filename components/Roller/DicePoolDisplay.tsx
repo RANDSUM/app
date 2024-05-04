@@ -2,7 +2,6 @@ import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
 import useRollerContext from './RollerContext/useRollerContext'
-import RollModifierModel from '~models/RollModifierModel'
 import useAppTheme from '~theme/useAppTheme'
 
 export default function DicePoolDisplay() {
@@ -53,8 +52,8 @@ export default function DicePoolDisplay() {
             )
           }
 
-          const { sides, quantity, modifiers } = roll
-          const showModifier = RollModifierModel.hasModifiers(modifiers)
+          const { sides, quantity, modifiers } = roll.options
+          const showModifier = modifiers && Object.keys(modifiers).length > 0
           const display = `${quantity}D${sides}${showModifier ? '*' : ''}`
 
           return (

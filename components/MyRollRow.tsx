@@ -1,27 +1,25 @@
 import { useState } from 'react'
 
 import { Link } from 'expo-router'
-import { RollResult, roll } from 'randsum'
+import { RollResult, generateRollResult } from 'randsum'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 
 import ResultModal from './ResultModal'
-import RollOptionsModel from '~models/RollOptionsModel'
 import HapticService from '~services/HapticService'
 import { Roll } from '~types'
 
 export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
   const { dicePools, title, uuid } = savedRoll
   const [resultModalIsVisible, setResultModalIsVisible] = useState(false)
-  const [lastRolls, setLastRolls] = useState<RollResult<number>[]>()
+  const [lastRoll, setLastRoll] = useState<RollResult>()
 
   const description = Object.values(dicePools)
-    .map((options) => RollOptionsModel.title(options))
+    .map(({ notation }) => notation)
     .join('+')
 
   const coreRoll = () => {
-    const result = Object.entries(dicePools).map(([, pool]) => roll(pool))
-    setLastRolls(result)
+    setLastRoll(generateRollResult({ dicePools }))
   }
 
   const rollDie = () => {
@@ -52,7 +50,7 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
         rollAgain={coreRoll}
         visible={resultModalIsVisible}
         onDismiss={() => setResultModalIsVisible(false)}
-        rollResults={lastRolls}
+        rollResult={lastRoll}
         roll={savedRoll}
       />
     </>
