@@ -1,8 +1,4 @@
-import {
-  DicePoolOptions,
-  DicePoolParameters,
-  parseRollArguments,
-} from 'randsum'
+import { DicePoolOptions, parseRollArguments } from 'randsum'
 import { StyleSheet, View } from 'react-native'
 import { Modal, Portal, Card, TextInput } from 'react-native-paper'
 
