@@ -1,3 +1,4 @@
+import { DicePoolOptions } from 'randsum'
 import { View } from 'react-native'
 import { Button, Icon, Text } from 'react-native-paper'
 
@@ -6,11 +7,13 @@ import useRollerContext from './RollerContext/useRollerContext'
 export default function ModifierDisplay() {
   const {
     currentDicePoolParameters: { description },
-    setCurrentDicePoolParameters,
+    setCurrentDicePoolOptions,
   } = useRollerContext()
 
   const clearModifiers = () =>
-    setCurrentDicePoolParameters((o) => ({ ...o, modifiers: {} }))
+    setCurrentDicePoolOptions(
+      (o) => ({ ...o, modifiers: {} }) as DicePoolOptions<number>
+    )
 
   const components = description
     .map((modifier, i, list) => [

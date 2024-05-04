@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 
-import { DicePoolParameters } from 'randsum'
+import { DicePoolOptions, DicePoolParameters } from 'randsum'
 
 import {
   SetDicePools,
@@ -18,11 +18,12 @@ export type RollerState = {
   removeDieFromPool: (id: string) => void
   roll: Roll
   dicePools: Roll['dicePools']
+  currentDicePoolId: string
   currentDicePoolParameters:
     | DicePoolParameters<number>
     | DicePoolParameters<string>
-  currentDicePoolId: string
-  setCurrentDicePoolParameters: SetRollOptions
+  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  setCurrentDicePoolOptions: SetRollOptions
   setRollConfig: SetRollConfig
   setDicePools: SetDicePools
   setCurrentDicePoolId: Dispatch<SetStateAction<string>>
