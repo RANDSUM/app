@@ -27,7 +27,7 @@
     "expo-updates": "~0.24.12",
     "randsum": "^4.1.0",
     "react": "18.2.0",
-    "react-native": "0.73.6",
+    "react-native": "0.74.1",
     "react-native-circular-progress-indicator": "^4.4.2",
     "react-native-collapsible": "^1.6.1",
     "react-native-gesture-handler": "~2.14.0",
