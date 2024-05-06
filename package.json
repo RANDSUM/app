@@ -43,7 +43,7 @@
     "use-event-callback": "^0.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "^7.24.5",
     "@types/react": "~18.2.45",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
