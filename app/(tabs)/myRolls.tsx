@@ -1,4 +1,3 @@
-import { Redirect } from 'expo-router'
 import { FlatList, StyleSheet } from 'react-native'
 import { Divider, Text } from 'react-native-paper'
 
@@ -10,9 +9,6 @@ import useAppTheme from '~theme/useAppTheme'
 export default function MyRolls() {
   const { savedRolls } = useAppContext()
   const theme = useAppTheme()
-  if (savedRolls.length === 0) {
-    return <Redirect href="/" />
-  }
 
   return (
     <Container header>
