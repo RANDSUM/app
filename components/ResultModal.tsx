@@ -5,7 +5,6 @@ import { View, StyleSheet, ScrollView } from 'react-native'
 import CircularProgress, {
   ProgressRef,
 } from 'react-native-circular-progress-indicator'
-import Collapsible from 'react-native-collapsible'
 import {
   Modal,
   Portal,
@@ -41,19 +40,17 @@ export default function ResultModal({
 }: Props) {
   const theme = useAppTheme()
   const progressRef = useRef<ProgressRef>(null)
-  const [isCollapsed, setIsCollapsed] = useState(true)
   const [showLoading, setShowLoading] = useState(false)
   const combinedTotal = rollResult?.total
 
   const isLoading = !rollResult || showLoading
 
-  const shouldCountdown = isCollapsed && !preventAutoDismiss
+  const shouldCountdown = !preventAutoDismiss
   useEffect(() => {
     progressRef.current?.reAnimate()
     const interval = setInterval(() => {
       if (shouldCountdown) {
         onDismiss()
-        setIsCollapsed(true)
       }
     }, duration)
 
@@ -92,7 +89,6 @@ export default function ResultModal({
         visible={visible}
         onDismiss={() => {
           onDismiss()
-          setIsCollapsed(true)
         }}
         style={styles.modalStyle}
       >
@@ -121,33 +117,23 @@ export default function ResultModal({
                 </View>
               )}
               <MainDisplay />
-              <Collapsible collapsed={isCollapsed}>
-                <View style={styles.dieGroupContainer}>
-                  {Object.keys(rollResult.dicePools).map((key) => {
-                    const rolls = rollResult.rawRolls[key]
-                    console.log(JSON.stringify(rollResult, null, 2))
-                    const dicePool = rollResult.dicePools[key]
-                    return (
-                      <View key={key} style={styles.dieGroupRow}>
-                        <Text style={[styles.text, { fontWeight: '800' }]}>
-                          {`[${dicePool.notation}]`}
-                        </Text>
-                        <Text style={styles.text}>{rolls.join(', ')}</Text>
-                      </View>
-                    )
-                  })}
-                </View>
-              </Collapsible>
+              <View style={styles.dieGroupContainer}>
+                {Object.keys(rollResult.dicePools).map((key) => {
+                  const rolls = rollResult.rawRolls[key]
+                  const dicePool = rollResult.dicePools[key]
+                  return (
+                    <View key={key} style={styles.dieGroupRow}>
+                      <Text style={[styles.text, { fontWeight: '800' }]}>
+                        {`[${dicePool.notation}]`}
+                      </Text>
+                      <Text style={styles.text}>{rolls.join(', ')}</Text>
+                    </View>
+                  )
+                })}
+              </View>
             </ScrollView>
           </Card.Content>
           <Card.Actions style={styles.buttonRow}>
-            <Button
-              mode="text"
-              disabled={isLoading}
-              onPress={() => setIsCollapsed((collapsed) => !collapsed)}
-            >
-              {isCollapsed ? 'Show Details' : 'Hide Details'}
-            </Button>
             <Button
               disabled={isLoading}
               onPress={() => {

@@ -1,21 +1,14 @@
-import { DicePoolOptions } from 'randsum'
+import { DicePoolParameters } from 'randsum'
 import { View } from 'react-native'
-import { Button, Icon, Text } from 'react-native-paper'
+import { Icon, Text } from 'react-native-paper'
 
-import useRollerContext from './RollerContext/useRollerContext'
-
-export default function ModifierDisplay() {
-  const {
-    currentDicePoolParameters: { description },
-    setCurrentDicePoolOptions,
-  } = useRollerContext()
-
-  const clearModifiers = () =>
-    setCurrentDicePoolOptions(
-      (o) => ({ ...o, modifiers: {} }) as DicePoolOptions<number>
-    )
-
-  const components = description
+type Props = {
+  currentDicePoolParameters:
+    | DicePoolParameters<number>
+    | DicePoolParameters<string>
+}
+export default function ModifierDisplay({ currentDicePoolParameters }: Props) {
+  const components = currentDicePoolParameters.description
     .map((modifier, i, list) => [
       <Text variant="labelMedium" key={`${modifier}-mod`}>
         {modifier}
@@ -27,7 +20,7 @@ export default function ModifierDisplay() {
     .flat()
 
   return (
-    <View style={{ height: 90, justifyContent: 'center', gap: 10 }}>
+    <View style={{ justifyContent: 'center', gap: 10 }}>
       <View
         style={{
           flexDirection: 'row',
@@ -38,11 +31,6 @@ export default function ModifierDisplay() {
       >
         {components}
       </View>
-      {components.length > 0 && (
-        <Button mode="text" onPress={clearModifiers}>
-          Clear Modifiers
-        </Button>
-      )}
     </View>
   )
 }

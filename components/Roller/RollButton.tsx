@@ -4,12 +4,15 @@ import { RollResult, generateRollResult } from 'randsum'
 import { Keyboard } from 'react-native'
 import { Button } from 'react-native-paper'
 
-import useRollerContext from './RollerContext/useRollerContext'
 import ResultModal from '~components/ResultModal'
 import HapticService from '~services/HapticService'
+import { Roll } from '~types'
 
-export default function RollButton() {
-  const { roll } = useRollerContext()
+type Props = {
+  roll: Roll
+}
+
+export default function RollButton({ roll }: Props) {
   const [showResultModal, setShowResultModal] = useState(false)
   const [lastRollResult, setLastRollResult] = useState<RollResult>()
 
