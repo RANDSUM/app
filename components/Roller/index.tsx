@@ -2,18 +2,23 @@ import { useEffect, useState } from 'react'
 
 import * as Crypto from 'expo-crypto'
 import { router } from 'expo-router'
-import { parameterizeRollArgument, parseRollArguments } from 'randsum'
-import { StyleSheet, View } from 'react-native'
+import {
+  RollResult,
+  generateRollResult,
+  parameterizeRollArgument,
+  parseRollArguments,
+} from 'randsum'
+import { Keyboard, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import ComplexRollInput from './ComplexRollInput'
 import DicePoolDisplay from './DicePoolDisplay'
 import ModifierDisplay from './ModifierDisplay'
-import RollButton from './RollButton'
 import RollHeader from './RollHeader'
 import SaveButton from './SaveButton'
 import SimpleRollInput from './SimpleRollInput'
 import { randomDieSide } from '../../utils'
+import ResultModal from '~components/ResultModal'
 import {
   SetDicePools,
   SetRollOptions,
@@ -22,6 +27,7 @@ import {
 import RollNotationReference from '~components/RollNotationReference'
 import { defaultRoll } from '~constants'
 import useAppContext from '~context/AppContext/useAppContext'
+import HapticService from '~services/HapticService'
 import { Roll } from '~types'
 
 enum RollerComplexity {
@@ -39,6 +45,7 @@ export default function Roller({ savedRoll }: Props) {
   )
   const { setSavedRolls, setSnackbarConfig } = useAppContext()
   const [roll, setRoll] = useState<Roll>(savedRoll || defaultRoll)
+  const [notationParseError, setNotationParseError] = useState(false)
 
   const [currentDicePoolId, setCurrentDicePoolId] = useState(
     Object.keys(roll.dicePools)[0]
@@ -145,6 +152,20 @@ export default function Roller({ savedRoll }: Props) {
       }))
     }
   }, [isSimple])
+
+  const [showResultModal, setShowResultModal] = useState(false)
+  const [lastRollResult, setLastRollResult] = useState<RollResult>()
+
+  const coreRoll = () => {
+    setLastRollResult(generateRollResult({ dicePools: roll.dicePools }))
+    HapticService.notifyVibrate()
+    Keyboard.dismiss()
+  }
+
+  const rollDie = () => {
+    coreRoll()
+    setShowResultModal(true)
+  }
   return (
     <>
       {savedRoll && <RollHeader isDirty={isDirty} roll={roll} />}
@@ -168,12 +189,15 @@ export default function Roller({ savedRoll }: Props) {
             />
           ) : (
             <ComplexRollInput
+              notationParseError={notationParseError}
+              setNotationParseError={setNotationParseError}
               currentDicePoolOptions={currentDicePoolOptions}
               setCurrentDicePoolOptions={setCurrentDicePoolOptions}
             />
           )}
           <ModifierDisplay
             currentDicePoolParameters={currentDicePoolParameters}
+            error={isSimple ? false : notationParseError}
           />
           {!isSimple && <RollNotationReference />}
         </View>
@@ -185,9 +209,25 @@ export default function Roller({ savedRoll }: Props) {
             addDieToPool={addDieToPool}
             removeDieFromPool={removeDieFromPool}
           />
-          <RollButton roll={roll} />
+
+          <Button
+            style={{ width: '100%' }}
+            labelStyle={{ lineHeight: 55, fontSize: 30 }}
+            mode="contained"
+            onPress={rollDie}
+          >
+            Roll
+          </Button>
         </View>
       </View>
+      <ResultModal
+        rollResult={lastRollResult}
+        roll={roll}
+        rollAgain={coreRoll}
+        onDismiss={() => setShowResultModal(false)}
+        visible={showResultModal}
+        preventAutoDismiss
+      />
     </>
   )
 }
