@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import * as Crypto from 'expo-crypto'
 import { router } from 'expo-router'
@@ -137,6 +137,14 @@ export default function Roller({ savedRoll }: Props) {
 
   const isSimple = complexity === RollerComplexity.Simple
 
+  useEffect(() => {
+    if (isSimple) {
+      setCurrentDicePoolOptions((o) => ({
+        ...o,
+        modifiers: undefined,
+      }))
+    }
+  }, [isSimple])
   return (
     <>
       {savedRoll && <RollHeader isDirty={isDirty} roll={roll} />}

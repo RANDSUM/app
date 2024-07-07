@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { DicePoolOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Icon } from 'react-native-paper'
@@ -62,13 +60,6 @@ export default function SimpleRollInput({
   const quantityDownDisabled = Number(currentDicePoolOptions.quantity) <= 1
   const quantityUpDisabled =
     Number(currentDicePoolOptions.quantity) >= MAX_QUANTITY
-
-  useEffect(() => {
-    setCurrentDicePoolOptions((o) => ({
-      ...o,
-      modifiers: undefined,
-    }))
-  }, [])
 
   return (
     <View style={styles.diceRow}>
