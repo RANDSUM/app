@@ -28,7 +28,6 @@
     "react-native",
     "@typescript-eslint",
     "jest",
-    "testing-library",
     "no-only-tests",
     "sort-keys-fix",
     "prettier"

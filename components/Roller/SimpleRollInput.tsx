@@ -1,17 +1,23 @@
+import { DicePoolOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Icon } from 'react-native-paper'
 
 import NumButton from './NumButton'
-import useRollerContext from './RollerContext/useRollerContext'
+import { SetRollOptions } from './types'
 import { dieSides } from '~constants'
 import RollOptionsModel from '~models/RollOptionsModel'
 import useAppTheme from '~theme/useAppTheme'
 
 const MAX_QUANTITY = 999
-export default function RollInput() {
+type Props = {
+  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  setCurrentDicePoolOptions: SetRollOptions
+}
+export default function SimpleRollInput({
+  currentDicePoolOptions,
+  setCurrentDicePoolOptions,
+}: Props) {
   const theme = useAppTheme()
-  const { currentDicePoolOptions, setCurrentDicePoolOptions } =
-    useRollerContext()
 
   const increaseSides = () =>
     setCurrentDicePoolOptions((o) => ({
@@ -47,7 +53,7 @@ export default function RollInput() {
       quantity: isNaN(Number(num))
         ? currentDicePoolOptions.quantity
         : Number(num) > MAX_QUANTITY
-          ? 999
+          ? MAX_QUANTITY
           : Number(num),
     }))
 

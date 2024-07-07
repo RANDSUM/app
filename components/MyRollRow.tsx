@@ -14,7 +14,7 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
   const [resultModalIsVisible, setResultModalIsVisible] = useState(false)
   const [lastRoll, setLastRoll] = useState<RollResult>()
 
-  const description = Object.values(dicePools)
+  const notation = Object.values(dicePools)
     .map(({ notation }) => notation)
     .join('+')
 
@@ -36,7 +36,7 @@ export default function MyRollRow({ savedRoll }: { savedRoll: Roll }) {
             <View style={styles.textContainer}>
               <Text variant="titleMedium">{title}</Text>
               <Text variant="bodySmall" numberOfLines={1}>
-                {description}
+                {notation}
               </Text>
             </View>
           </Pressable>

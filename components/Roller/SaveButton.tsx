@@ -1,13 +1,22 @@
 import { useState } from 'react'
 
-import { IconButton } from 'react-native-paper'
+import { Button } from 'react-native-paper'
 
-import useRollerContext from './RollerContext/useRollerContext'
 import SaveRollDialog from './SaveRollDialog'
+import { Roll } from '~types'
 
-export default function SaveButton() {
-  const { roll, isDirty, saveChanges, addToSavedRolls } = useRollerContext()
-
+type Props = {
+  roll: Roll
+  isDirty: boolean
+  saveChanges: () => void
+  addToSavedRolls: (title: string) => void
+}
+export default function SaveButton({
+  roll,
+  isDirty,
+  saveChanges,
+  addToSavedRolls,
+}: Props) {
   const isSavedRoll = roll.persisted
 
   const [saveDialogIsVisible, setSaveDialogIsVisible] = useState(false)
@@ -17,13 +26,14 @@ export default function SaveButton() {
 
   return (
     <>
-      <IconButton
-        mode="contained"
+      <Button
         icon="content-save-outline"
-        size={30}
         disabled={disabled}
         onPress={onPress}
-      />
+        contentStyle={{ flexDirection: 'row-reverse' }}
+      >
+        Save Roll
+      </Button>
       <SaveRollDialog
         visible={saveDialogIsVisible}
         onDismiss={() => setSaveDialogIsVisible(false)}

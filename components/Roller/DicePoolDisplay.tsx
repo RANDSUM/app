@@ -1,17 +1,25 @@
+import { DicePoolParameters } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
-import useRollerContext from './RollerContext/useRollerContext'
 import useAppTheme from '~theme/useAppTheme'
 
-export default function DicePoolDisplay() {
-  const {
-    setCurrentDicePoolId,
-    dicePools,
-    currentDicePoolId,
-    addDieToPool,
-    removeDieFromPool,
-  } = useRollerContext()
+type Props = {
+  currentDicePoolId: string
+  setCurrentDicePoolId: React.Dispatch<React.SetStateAction<string>>
+  dicePools: {
+    [key: string]: DicePoolParameters<string> | DicePoolParameters<number>
+  }
+  addDieToPool: () => void
+  removeDieFromPool: (id: string) => void
+}
+export default function DicePoolDisplay({
+  setCurrentDicePoolId,
+  dicePools,
+  currentDicePoolId,
+  addDieToPool,
+  removeDieFromPool,
+}: Props) {
   const theme = useAppTheme()
 
   const dicePoolsList = Object.entries(dicePools)

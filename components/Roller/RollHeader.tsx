@@ -4,13 +4,17 @@ import { Stack } from 'expo-router'
 import { IconButton } from 'react-native-paper'
 
 import DeleteSavedRollDialog from './DeleteSavedRollDialog'
-import useRollerContext from './RollerContext/useRollerContext'
 import useAppContext from '~context/AppContext/useAppContext'
 import useAppTheme from '~theme/useAppTheme'
+import { Roll } from '~types'
 
-function RollHeader() {
+type Props = {
+  isDirty: boolean
+  roll: Roll
+}
+
+function RollHeader({ isDirty, roll }: Props) {
   const { removeSavedRoll } = useAppContext()
-  const { roll, isDirty } = useRollerContext()
   const theme = useAppTheme()
   const [deleteDialogIsVisible, setDeleteDialogIsVisible] = useState(false)
 
@@ -38,6 +42,7 @@ function RollHeader() {
         }}
       />
       <DeleteSavedRollDialog
+        roll={roll}
         visible={deleteDialogIsVisible}
         onAccept={() => {
           removeSavedRoll(roll.uuid)

@@ -1,19 +1,20 @@
 import { Portal, Button, Dialog } from 'react-native-paper'
 
-import useRollerContext from './RollerContext/useRollerContext'
+import { Roll } from '~types'
 
 type Props = {
   visible: boolean
   onAccept: () => void
   onDismiss: () => void
+  roll: Roll
 }
 
 export default function DeleteSavedRollDialog({
   onDismiss,
   onAccept,
   visible,
+  roll,
 }: Props) {
-  const { roll } = useRollerContext()
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>
