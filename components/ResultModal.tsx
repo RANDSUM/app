@@ -68,7 +68,7 @@ export default function ResultModal({
   const MainDisplay = () => {
     const textDisplay = config.showRolls ? (
       <Text style={styles.rollResult} variant="headlineLarge">
-        {rollResult.result.join(', ')}
+        {rollResult.result.flat().join(', ')}
       </Text>
     ) : (
       <Text style={styles.totalResult} variant="displayLarge">
@@ -119,7 +119,7 @@ export default function ResultModal({
               <MainDisplay />
               <View style={styles.dieGroupContainer}>
                 {Object.keys(rollResult.dicePools).map((key) => {
-                  const rolls = rollResult.rawRolls[key]
+                  const rolls = rollResult.modifiedRolls[key].rolls
                   const dicePool = rollResult.dicePools[key]
                   return (
                     <View key={key} style={styles.dieGroupRow}>

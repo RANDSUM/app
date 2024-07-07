@@ -41,7 +41,7 @@ type Props = {
 
 export default function Roller({ savedRoll }: Props) {
   const [complexity, setComplexity] = useState<RollerComplexity>(
-    RollerComplexity.Simple
+    savedRoll ? RollerComplexity.Advanced : RollerComplexity.Simple
   )
   const { setSavedRolls, setSnackbarConfig } = useAppContext()
   const [roll, setRoll] = useState<Roll>(savedRoll || defaultRoll)
@@ -151,7 +151,7 @@ export default function Roller({ savedRoll }: Props) {
         modifiers: undefined,
       }))
     }
-  }, [isSimple])
+  }, [isSimple, savedRoll])
 
   const [showResultModal, setShowResultModal] = useState(false)
   const [lastRollResult, setLastRollResult] = useState<RollResult>()
@@ -171,7 +171,7 @@ export default function Roller({ savedRoll }: Props) {
       {savedRoll && <RollHeader isDirty={isDirty} roll={roll} />}
       <View style={styles.container}>
         <View style={styles.row}>
-          <Button icon="cog" onPress={toggleComplexity}>
+          <Button disabled={!!savedRoll} icon="cog" onPress={toggleComplexity}>
             {isSimple ? 'Switch to Advanced Mode' : 'Switch to Simple Mode'}
           </Button>
           <SaveButton
