@@ -24,7 +24,7 @@
     "expo-router": "~3.5.17",
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.18",
-    "randsum": "^4.3.1",
+    "randsum": "^4.4.0",
     "react": "18.2.0",
     "react-native": "0.74.3",
     "react-native-circular-progress-indicator": "^4.4.2",
@@ -39,7 +39,8 @@
     "react-native-swipeable-list": "^0.1.2",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.6",
-    "use-event-callback": "^0.1.0"
+    "use-event-callback": "^0.1.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -47,8 +48,8 @@
     "@eslint/js": "^9.6.0",
     "@types/react": "~18.2.79",
     "eslint": "^9.6.0",
-    "eslint-plugin-react": "^7.34.3",
     "globals": "^15.8.0",
+    "eslint-plugin-react": "^7.34.3",
     "prettier": "^3.3.2",
     "typescript": "~5.3.3",
     "typescript-eslint": "^7.15.0"

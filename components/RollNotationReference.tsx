@@ -43,12 +43,12 @@ const notationReference = [
   },
   {
     label: 'Cap',
-    notation: 'C<N | C>N',
+    notation: 'C{<N, >N}',
     description:
       'Reduce all values above or below a certain value to that value',
-    example: '4d6C<2C>5',
+    example: '4d6C{<2, >5}',
     exampleDescription:
-      'Roll 4d6 and cap any values lower than 2 ot 2, and greater than 5 to 5.',
+      'Roll 4d6 and cap any values lower than 2 to 2, and greater than 5 to 5.',
   },
   {
     label: 'Reroll',
@@ -103,18 +103,11 @@ export default function RollNotationReference() {
   return (
     <View style={styles.container}>
       {pasrseNotationReference.map((group, index) => {
-        const isEven = index % 2 === 0
         return (
           <View key={`row-${index}`} style={styles.row}>
             {group.map((item, itemIndex) => {
-              const isFirst = itemIndex === 0
-              const outlined = isEven ? isFirst : !isFirst
               return (
-                <Cell
-                  key={`reference-${item.label}-${itemIndex}`}
-                  mode={outlined ? 'outlined' : 'outlined'}
-                  {...item}
-                />
+                <Cell key={`reference-${item.label}-${itemIndex}`} {...item} />
               )
             })}
           </View>
@@ -125,7 +118,6 @@ export default function RollNotationReference() {
 }
 
 type Props = {
-  mode: 'outlined' | 'flat'
   label: string
   description: string
   notation: string
@@ -133,7 +125,7 @@ type Props = {
   exampleDescription: string
 }
 
-function Cell({ mode, label, notation, example, exampleDescription }: Props) {
+function Cell({ label, notation, example, exampleDescription }: Props) {
   const theme = useAppTheme()
   const cellStyle = StyleSheet.create({
     container: {
@@ -151,10 +143,8 @@ function Cell({ mode, label, notation, example, exampleDescription }: Props) {
       backgroundColor: theme.colors.primary,
     },
     text: {
-      textAlign: 'center',
       alignContent: 'flex-start',
       height: '100%',
-      width: '100%',
       gap: 5,
     },
     bold: {
@@ -166,31 +156,31 @@ function Cell({ mode, label, notation, example, exampleDescription }: Props) {
     outlinedText: {
       color: theme.colors.onBackground,
     },
+    key: {
+      backgroundColor: theme.colors.primary,
+      color: theme.colors.onPrimary,
+    },
     flatText: {
       color: theme.colors.onPrimary,
     },
   })
-  const containerStyle =
-    mode === 'outlined' ? cellStyle.outlined : cellStyle.flat
-
-  const textStyle =
-    mode === 'outlined' ? cellStyle.outlinedText : cellStyle.flatText
 
   return (
-    <View style={[cellStyle.container, containerStyle]}>
+    <View style={[cellStyle.container]}>
       <View style={[styles.row]}>
+        <Text variant="labelLarge" style={[cellStyle.text, cellStyle.bold]}>
+          {label}:{' '}
+        </Text>
         <Text
           variant="labelLarge"
-          style={[cellStyle.text, cellStyle.bold, textStyle]}
+          style={[cellStyle.text, cellStyle.bold, cellStyle.key]}
         >
-          {label} - {notation}
+          {' '}
+          {notation}{' '}
         </Text>
       </View>
       <View style={[styles.row]}>
-        <Text
-          variant="labelSmall"
-          style={[cellStyle.text, cellStyle.italic, textStyle]}
-        >
+        <Text variant="labelSmall" style={[cellStyle.text, cellStyle.italic]}>
           {example} - {exampleDescription}
         </Text>
       </View>
@@ -203,7 +193,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   row: {
+    alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row',
-    textAlign: 'center',
+    width: '100%',
   },
 })

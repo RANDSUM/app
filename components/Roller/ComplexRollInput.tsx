@@ -15,6 +15,7 @@ const optionsToNotation = (
 
 type Props = {
   currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  currentDicePoolId: string
   setCurrentDicePoolOptions: SetRollOptions
   notationParseError: boolean
   setNotationParseError: (error: boolean) => void
@@ -22,10 +23,12 @@ type Props = {
 
 export default function ComplexRollInput({
   currentDicePoolOptions,
+  currentDicePoolId,
   setCurrentDicePoolOptions,
   notationParseError,
   setNotationParseError,
 }: Props) {
+  const [loading, setLoading] = useState(false)
   const [text, setText] = useState<string>(
     optionsToNotation(currentDicePoolOptions)
   )
@@ -39,16 +42,24 @@ export default function ComplexRollInput({
     }
   }, [text])
 
+  useEffect(() => {
+    setLoading(true)
+    setText(optionsToNotation(currentDicePoolOptions))
+    setLoading(false)
+  }, [currentDicePoolId])
+
   return (
-    <TextInput
-      textAlign="center"
-      dense
-      mode="outlined"
-      contentStyle={styles.input}
-      onChangeText={setText}
-      error={!!notationParseError}
-      value={text}
-    />
+    !loading && (
+      <TextInput
+        textAlign="center"
+        dense
+        mode="outlined"
+        contentStyle={styles.input}
+        onChangeText={setText}
+        error={!!notationParseError}
+        value={text}
+      />
+    )
   )
 }
 

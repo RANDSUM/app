@@ -190,6 +190,7 @@ export default function Roller({ savedRoll }: Props) {
           ) : (
             <ComplexRollInput
               notationParseError={notationParseError}
+              currentDicePoolId={currentDicePoolId}
               setNotationParseError={setNotationParseError}
               currentDicePoolOptions={currentDicePoolOptions}
               setCurrentDicePoolOptions={setCurrentDicePoolOptions}
