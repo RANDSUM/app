@@ -27,9 +27,6 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Generate Expo Route Types
-        run: npx expo customize tsconfig.json
-
       - name: Check types
         run: npm run ts:check
 
