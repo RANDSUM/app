@@ -182,13 +182,13 @@ function Cell({ label, notation, example, exampleDescription }: Props) {
       </View>
       <View style={[styles.row]}>
         <Text
-          variant="labelSmall"
+          variant="labelMedium"
           style={[cellStyle.text, cellStyle.italic, cellStyle.key]}
         >
           {' '}
           {example}{' '}
         </Text>
-        <Text variant="labelSmall" style={[cellStyle.text, cellStyle.italic]}>
+        <Text variant="labelMedium" style={[cellStyle.text, cellStyle.italic]}>
           : {exampleDescription}
         </Text>
       </View>

@@ -60,9 +60,7 @@ export default function ResultModal({
   if (combinedTotal === undefined || !rollResult) return null
 
   const rollsDescription = Object.values(rollResult.dicePools)
-    .map(({ notation }, _i, list) =>
-      list.length > 1 ? `(${notation})` : notation
-    )
+    .map(({ notation }) => notation)
     .join(' + ')
 
   const MainDisplay = () => {
@@ -81,6 +79,11 @@ export default function ResultModal({
     ) : (
       textDisplay
     )
+  }
+
+  const keyStyle = {
+    backgroundColor: theme.colors.primary,
+    color: theme.colors.onPrimary,
   }
 
   return (
@@ -119,14 +122,30 @@ export default function ResultModal({
               <MainDisplay />
               <View style={styles.dieGroupContainer}>
                 {Object.keys(rollResult.dicePools).map((key) => {
-                  const rolls = rollResult.modifiedRolls[key].rolls
+                  const modifiedRolls = rollResult.modifiedRolls[key].rolls
+                  const rawRolls = rollResult.rawRolls[key]
+                  const isModified =
+                    !!rollResult.dicePools[key].options.modifiers
+
                   const dicePool = rollResult.dicePools[key]
+
                   return (
                     <View key={key} style={styles.dieGroupRow}>
-                      <Text style={[styles.text, { fontWeight: '800' }]}>
-                        {`[${dicePool.notation}]`}
+                      <Text style={keyStyle} variant="labelLarge">
+                        {' '}
+                        {dicePool.notation}{' '}
                       </Text>
-                      <Text style={styles.text}>{rolls.join(', ')}</Text>
+                      <Text variant="labelSmall">{rawRolls.join(', ')}</Text>
+                      {isModified && (
+                        <>
+                          <Text variant="labelMedium">
+                            (After applying modifiers)
+                          </Text>
+                          <Text variant="labelSmall">
+                            {modifiedRolls.join(', ')}
+                          </Text>
+                        </>
+                      )}
                     </View>
                   )
                 })}
@@ -164,13 +183,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   dieGroupContainer: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   dieGroupRow: {
-    paddingTop: 10,
+    padding: 10,
+    flex: 1,
     textAlign: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    minHeight: 100,
   },
   totalResult: {
     textAlign: 'center',

@@ -1,4 +1,4 @@
-import { DicePoolOptions } from 'randsum'
+import { DicePoolOptions, DicePoolParameters } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Icon } from 'react-native-paper'
 
@@ -7,15 +7,18 @@ import { SetRollOptions } from './types'
 import { dieSides } from '~constants'
 import RollOptionsModel from '~models/RollOptionsModel'
 import useAppTheme from '~theme/useAppTheme'
+import ModifierDisplay from './ModifierDisplay'
 
 const MAX_QUANTITY = 999
 type Props = {
-  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
   setCurrentDicePoolOptions: SetRollOptions
+  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  description: string[]
 }
 export default function SimpleRollInput({
-  currentDicePoolOptions,
   setCurrentDicePoolOptions,
+  currentDicePoolOptions,
+  description,
 }: Props) {
   const theme = useAppTheme()
 
@@ -62,54 +65,57 @@ export default function SimpleRollInput({
     Number(currentDicePoolOptions.quantity) >= MAX_QUANTITY
 
   return (
-    <View style={styles.diceRow}>
-      <View style={styles.numContainer}>
-        <NumButton
-          label="+"
-          accessibilityLabel="Increase Dice Quantity"
-          onPress={increaseQuantity}
-          disabled={quantityUpDisabled}
-        />
-        <TextInput
-          style={[styles.num, { backgroundColor: theme.colors.background }]}
-          underlineColor="transparent"
-          activeUnderlineColor="transparent"
-          maxFontSizeMultiplier={1}
-          contentStyle={{ height: 100 }}
-          label=""
-          keyboardType="numeric"
-          numberOfLines={1}
-          value={String(currentDicePoolOptions.quantity)}
-          onChangeText={changeQuantity}
-        />
-        <NumButton
-          label="-"
-          accessibilityLabel="Decrease Dice Quantity"
-          disabled={quantityDownDisabled}
-          onPress={decreaseQuantity}
-        />
-      </View>
-      <View style={styles.numContainer}>
-        <NumButton
-          label="+"
-          accessibilityLabel="Increase Dice Sides"
-          disabled={disableSidesUp}
-          onPress={increaseSides}
-        />
-        <View style={styles.num}>
-          <Icon
-            source={RollOptionsModel.icon(currentDicePoolOptions)}
-            size={165}
+    <>
+      <View style={styles.diceRow}>
+        <View style={styles.numContainer}>
+          <NumButton
+            label="+"
+            accessibilityLabel="Increase Dice Quantity"
+            onPress={increaseQuantity}
+            disabled={quantityUpDisabled}
+          />
+          <TextInput
+            style={[styles.num, { backgroundColor: theme.colors.background }]}
+            underlineColor="transparent"
+            activeUnderlineColor="transparent"
+            maxFontSizeMultiplier={1}
+            contentStyle={{ height: 100 }}
+            label=""
+            keyboardType="numeric"
+            numberOfLines={1}
+            value={String(currentDicePoolOptions.quantity)}
+            onChangeText={changeQuantity}
+          />
+          <NumButton
+            label="-"
+            accessibilityLabel="Decrease Dice Quantity"
+            disabled={quantityDownDisabled}
+            onPress={decreaseQuantity}
           />
         </View>
-        <NumButton
-          label="-"
-          accessibilityLabel="Decrease Dice Sides"
-          disabled={disableSidesDown}
-          onPress={decreaseSides}
-        />
+        <View style={styles.numContainer}>
+          <NumButton
+            label="+"
+            accessibilityLabel="Increase Dice Sides"
+            disabled={disableSidesUp}
+            onPress={increaseSides}
+          />
+          <View style={styles.num}>
+            <Icon
+              source={RollOptionsModel.icon(currentDicePoolOptions)}
+              size={165}
+            />
+          </View>
+          <NumButton
+            label="-"
+            accessibilityLabel="Decrease Dice Sides"
+            disabled={disableSidesDown}
+            onPress={decreaseSides}
+          />
+        </View>
       </View>
-    </View>
+      <ModifierDisplay description={description} />
+    </>
   )
 }
 

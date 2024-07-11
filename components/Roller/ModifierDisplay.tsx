@@ -3,16 +3,11 @@ import { View } from 'react-native'
 import { Icon, Text } from 'react-native-paper'
 
 type Props = {
-  error: boolean
-  currentDicePoolParameters:
-    | DicePoolParameters<number>
-    | DicePoolParameters<string>
+  error?: boolean
+  description: string[]
 }
-export default function ModifierDisplay({
-  currentDicePoolParameters,
-  error,
-}: Props) {
-  const components = currentDicePoolParameters.description
+export default function ModifierDisplay({ description, error = false }: Props) {
+  const components = description
     .map((modifier, i, list) => [
       <Text variant="labelMedium" key={`${modifier}-mod`}>
         {modifier}

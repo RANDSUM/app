@@ -13,7 +13,6 @@ import { Button } from 'react-native-paper'
 
 import ComplexRollInput from './ComplexRollInput'
 import DicePoolDisplay from './DicePoolDisplay'
-import ModifierDisplay from './ModifierDisplay'
 import RollHeader from './RollHeader'
 import SaveButton from './SaveButton'
 import SimpleRollInput from './SimpleRollInput'
@@ -45,7 +44,6 @@ export default function Roller({ savedRoll }: Props) {
   )
   const { setSavedRolls, setSnackbarConfig } = useAppContext()
   const [roll, setRoll] = useState<Roll>(savedRoll || defaultRoll)
-  const [notationParseError, setNotationParseError] = useState(false)
 
   const [currentDicePoolId, setCurrentDicePoolId] = useState(
     Object.keys(roll.dicePools)[0]
@@ -61,7 +59,6 @@ export default function Roller({ savedRoll }: Props) {
 
   const currentDicePoolParameters = roll.dicePools[currentDicePoolId]
   const setCurrentDicePoolParameters: SetRollParameters = (arg) => {
-    console.log('set Current Params', arg)
     setDicePools((pools) => ({
       ...pools,
       [currentDicePoolId]:
@@ -74,9 +71,7 @@ export default function Roller({ savedRoll }: Props) {
   const setCurrentDicePoolOptions: SetRollOptions = (arg) => {
     const newOptions =
       arg instanceof Function ? arg(currentDicePoolOptions) : arg
-    console.log('set Current Options', newOptions)
     const newParams = parameterizeRollArgument(newOptions)
-    console.log('set Current Options (params)', newParams)
     setCurrentDicePoolParameters(newParams)
   }
 
@@ -184,23 +179,18 @@ export default function Roller({ savedRoll }: Props) {
         <View style={styles.collection}>
           {isSimple ? (
             <SimpleRollInput
-              currentDicePoolOptions={currentDicePoolOptions}
               setCurrentDicePoolOptions={setCurrentDicePoolOptions}
+              currentDicePoolOptions={currentDicePoolOptions}
+              description={currentDicePoolParameters.description}
             />
           ) : (
             <ComplexRollInput
-              notationParseError={notationParseError}
               currentDicePoolId={currentDicePoolId}
-              setNotationParseError={setNotationParseError}
               currentDicePoolOptions={currentDicePoolOptions}
+              description={currentDicePoolParameters.description}
               setCurrentDicePoolOptions={setCurrentDicePoolOptions}
             />
           )}
-          <ModifierDisplay
-            currentDicePoolParameters={currentDicePoolParameters}
-            error={isSimple ? false : notationParseError}
-          />
-          {!isSimple && <RollNotationReference />}
         </View>
         <View style={styles.collection}>
           <DicePoolDisplay

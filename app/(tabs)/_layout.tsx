@@ -45,6 +45,22 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
+          name="notation"
+          options={{
+            title: 'Reference',
+            headerTitle: 'RANDSUM Dice Notation Reference',
+            headerStyle: { backgroundColor: theme.colors.primary },
+            headerTitleStyle: { color: theme.colors.onPrimary },
+            tabBarIcon: ({ color, size }) => (
+              <Icon
+                source="text-box-multiple-outline"
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
           name="about"
           options={{
             title: 'About',

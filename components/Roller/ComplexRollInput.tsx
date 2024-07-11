@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react'
 
-import { DicePoolOptions, roll, validateDiceNotation } from 'randsum'
+import {
+  DicePoolOptions,
+  DicePoolParameters,
+  roll,
+  validateDiceNotation,
+} from 'randsum'
 import { StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
 import { SetRollOptions } from './types'
+import RollNotationReference from '~components/RollNotationReference'
+import ModifierDisplay from './ModifierDisplay'
 
 const optionsToNotation = (
   options: DicePoolOptions<number> | DicePoolOptions<string>
@@ -14,24 +21,23 @@ const optionsToNotation = (
 }
 
 type Props = {
-  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
   currentDicePoolId: string
   setCurrentDicePoolOptions: SetRollOptions
-  notationParseError: boolean
-  setNotationParseError: (error: boolean) => void
+  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  description: string[]
 }
 
 export default function ComplexRollInput({
-  currentDicePoolOptions,
   currentDicePoolId,
   setCurrentDicePoolOptions,
-  notationParseError,
-  setNotationParseError,
+  currentDicePoolOptions,
+  description,
 }: Props) {
   const [loading, setLoading] = useState(false)
   const [text, setText] = useState<string>(
     optionsToNotation(currentDicePoolOptions)
   )
+  const [notationParseError, setNotationParseError] = useState(false)
   useEffect(() => {
     const validationResult = validateDiceNotation(text)
     if (validationResult.valid && validationResult.digested) {
@@ -50,15 +56,19 @@ export default function ComplexRollInput({
 
   return (
     !loading && (
-      <TextInput
-        textAlign="center"
-        dense
-        mode="outlined"
-        contentStyle={styles.input}
-        onChangeText={setText}
-        error={!!notationParseError}
-        value={text}
-      />
+      <>
+        <TextInput
+          textAlign="center"
+          dense
+          mode="outlined"
+          contentStyle={styles.input}
+          onChangeText={setText}
+          error={!!notationParseError}
+          value={text}
+        />
+        <ModifierDisplay description={description} error={notationParseError} />
+        <RollNotationReference />
+      </>
     )
   )
 }
