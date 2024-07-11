@@ -44,6 +44,17 @@ export default function TabsLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="about"
+          options={{
+            title: 'About',
+            headerStyle: { backgroundColor: theme.colors.primary },
+            headerTitleStyle: { color: theme.colors.onPrimary },
+            tabBarIcon: ({ color, size }) => (
+              <Icon source="information-outline" size={size} color={color} />
+            ),
+          }}
+        />
       </Tabs>
     </>
   )
