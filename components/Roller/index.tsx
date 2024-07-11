@@ -23,7 +23,6 @@ import {
   SetRollOptions,
   SetRollParameters,
 } from '~components/Roller/types'
-import RollNotationReference from '~components/RollNotationReference'
 import { defaultRoll } from '~constants'
 import useAppContext from '~context/AppContext/useAppContext'
 import HapticService from '~services/HapticService'

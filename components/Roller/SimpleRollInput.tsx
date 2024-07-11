@@ -1,4 +1,4 @@
-import { DicePoolOptions, DicePoolParameters } from 'randsum'
+import { DicePoolOptions } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { TextInput, Icon } from 'react-native-paper'
 

@@ -1,4 +1,3 @@
-import { DicePoolParameters } from 'randsum'
 import { View } from 'react-native'
 import { Icon, Text } from 'react-native-paper'
 

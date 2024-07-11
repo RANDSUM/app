@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import {
-  DicePoolOptions,
-  DicePoolParameters,
-  roll,
-  validateDiceNotation,
-} from 'randsum'
+import { DicePoolOptions, roll, validateDiceNotation } from 'randsum'
 import { StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
