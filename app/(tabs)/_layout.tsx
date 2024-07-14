@@ -7,7 +7,6 @@ import useAppTheme from '~theme/useAppTheme'
 export default function TabsLayout() {
   const theme = useAppTheme()
   const { savedRolls } = useAppContext()
-  console.log(savedRolls.length)
 
   return (
     <>
