@@ -1,10 +1,13 @@
 import { Stack, Tabs } from 'expo-router'
 import { Icon } from 'react-native-paper'
+import useAppContext from '~context/AppContext/useAppContext'
 
 import useAppTheme from '~theme/useAppTheme'
 
 export default function TabsLayout() {
   const theme = useAppTheme()
+  const { savedRolls } = useAppContext()
+  console.log(savedRolls.length)
 
   return (
     <>
@@ -37,7 +40,10 @@ export default function TabsLayout() {
           options={{
             title: 'My Rolls',
             headerTitle: 'My Saved Rolls',
-            headerStyle: { backgroundColor: theme.colors.primary },
+            headerStyle: {
+              backgroundColor: theme.colors.primary,
+            },
+            href: savedRolls.length > 0 ? '/savedRolls' : null,
             headerTitleStyle: { color: theme.colors.onPrimary },
             tabBarIcon: ({ color, size }) => (
               <Icon source="dice-multiple-outline" size={size} color={color} />
