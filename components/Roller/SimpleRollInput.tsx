@@ -12,7 +12,7 @@ import ModifierDisplay from './ModifierDisplay'
 const MAX_QUANTITY = 999
 type Props = {
   setCurrentDicePoolOptions: SetRollOptions
-  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  currentDicePoolOptions: DicePoolOptions
   description: string[]
 }
 export default function SimpleRollInput({

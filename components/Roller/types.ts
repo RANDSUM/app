@@ -6,14 +6,10 @@ import { RollConfig } from '~types'
 
 export type SetRollConfig = Dispatch<SetStateAction<RollConfig>>
 
-export type SetRollParameters = Dispatch<
-  SetStateAction<DicePoolParameters<number> | DicePoolParameters<string>>
->
+export type SetRollParameters = Dispatch<SetStateAction<DicePoolParameters>>
 export type SetDicePools = Dispatch<
   SetStateAction<{
-    [key: string]: DicePoolParameters<number> | DicePoolParameters<string>
+    [key: string]: DicePoolParameters
   }>
 >
-export type SetRollOptions = Dispatch<
-  SetStateAction<DicePoolOptions<number> | DicePoolOptions<string>>
->
+export type SetRollOptions = Dispatch<SetStateAction<DicePoolOptions>>

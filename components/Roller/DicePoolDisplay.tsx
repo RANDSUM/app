@@ -1,15 +1,12 @@
-import { DicePoolParameters } from 'randsum'
+import { RollParameters } from 'randsum'
 import { View, StyleSheet } from 'react-native'
 import { Chip } from 'react-native-paper'
 
 import useAppTheme from '~theme/useAppTheme'
 
-type Props = {
+type Props = RollParameters & {
   currentDicePoolId: string
   setCurrentDicePoolId: React.Dispatch<React.SetStateAction<string>>
-  dicePools: {
-    [key: string]: DicePoolParameters<string> | DicePoolParameters<number>
-  }
   addDieToPool: () => void
   removeDieFromPool: (id: string) => void
 }

@@ -1,6 +1,6 @@
 import { DicePoolOptions } from 'randsum'
 
-function icon({ sides }: DicePoolOptions<number> | DicePoolOptions<string>) {
+function icon({ sides }: DicePoolOptions) {
   if (Array.isArray(sides)) {
     return 'dice'
   }

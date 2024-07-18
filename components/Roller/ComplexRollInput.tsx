@@ -8,9 +8,7 @@ import { SetRollOptions } from './types'
 import RollNotationReference from '~components/RollNotationReference'
 import ModifierDisplay from './ModifierDisplay'
 
-const optionsToNotation = (
-  options: DicePoolOptions<number> | DicePoolOptions<string>
-) => {
+const optionsToNotation = (options: DicePoolOptions) => {
   const result = roll(options)
   return Object.values(result.dicePools)[0].notation
 }
@@ -18,7 +16,7 @@ const optionsToNotation = (
 type Props = {
   currentDicePoolId: string
   setCurrentDicePoolOptions: SetRollOptions
-  currentDicePoolOptions: DicePoolOptions<number> | DicePoolOptions<string>
+  currentDicePoolOptions: DicePoolOptions
   description: string[]
 }
 

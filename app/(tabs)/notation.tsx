@@ -5,9 +5,8 @@ import Container from '~components/Container'
 import ComplexRollInput from '~components/Roller/ComplexRollInput'
 
 export default function Notation() {
-  const [currentDicePoolOptions, setCurrentDicePoolOptions] = useState<
-    DicePoolOptions<number> | DicePoolOptions<string>
-  >({ sides: 20, quantity: 1 })
+  const [currentDicePoolOptions, setCurrentDicePoolOptions] =
+    useState<DicePoolOptions>({ sides: 20, quantity: 1 })
 
   const parameters = parameterizeRollArgument(currentDicePoolOptions)
 
