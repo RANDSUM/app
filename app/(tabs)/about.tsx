@@ -18,6 +18,7 @@ const randomDescription = () => {
       return "is my life's work. I have spent years thinking about this. I sincerely hope you enjoy it."
   }
 }
+
 export default function About() {
   const goToGithub = () => {
     const url = 'https://github.com/randsum'
