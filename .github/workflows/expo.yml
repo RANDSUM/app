@@ -1,8 +1,8 @@
-name: CI
+name: Expo Doctor
 on: [push]
 jobs:
   ci:
-    name: Compile Typescript
+    name: Doctor Checkup
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -24,17 +24,5 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: 📦 Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Check types
-        run: npm run ts:check
-
-      - name: Lint
-        run: npm run lint
-
-      # - name: Test
-      # run: npm run test
-
-      - name: Format
-        run: npm run format
+      - name: Expo Doctor
+        run: npx expo-doctor
