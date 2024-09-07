@@ -34,4 +34,4 @@ jobs:
         run: CI=true bun test
 
       - name: Build
-        run: bun run build
+        run: bun run build:web
