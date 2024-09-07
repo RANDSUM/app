@@ -24,5 +24,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: 📦 Install dependencies
+        run: npm install --legacy-peer-deps
+
       - name: Expo Doctor
         run: npx expo-doctor
