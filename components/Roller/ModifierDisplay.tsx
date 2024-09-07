@@ -1,11 +1,16 @@
 import { View } from 'react-native'
-import { Icon, Text } from 'react-native-paper'
+import { ActivityIndicator, Icon, Text } from 'react-native-paper'
 
 type Props = {
   error?: boolean
   description: string[]
+  loading?: boolean
 }
-export default function ModifierDisplay({ description, error = false }: Props) {
+export default function ModifierDisplay({
+  description,
+  loading = false,
+  error = false,
+}: Props) {
   const components = description
     .map((modifier, i, list) => [
       <Text variant="labelMedium" key={`${modifier}-mod`}>
@@ -27,14 +32,29 @@ export default function ModifierDisplay({ description, error = false }: Props) {
           flexWrap: 'wrap',
         }}
       >
-        {error ? (
-          <Text variant="labelMedium">
-            There is an error with your notation. Check it and try again.
-          </Text>
-        ) : (
-          components
-        )}
+        <Content loading={loading} error={error} components={components} />
       </View>
     </View>
   )
+}
+
+type ContentProps = {
+  loading: boolean
+  error: boolean
+  components: (JSX.Element | null)[]
+}
+const Content = ({ loading, error, components }: ContentProps) => {
+  if (loading) {
+    return <ActivityIndicator size="small" />
+  }
+
+  if (error) {
+    return (
+      <Text variant="labelMedium">
+        There is an error with your notation. Check it and try again.
+      </Text>
+    )
+  }
+
+  return components
 }

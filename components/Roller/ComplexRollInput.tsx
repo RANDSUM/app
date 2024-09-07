@@ -26,11 +26,13 @@ export default function ComplexRollInput({
   description,
 }: Props) {
   const [loading, setLoading] = useState(false)
+  const [textLoading, setTextLoading] = useState(0)
   const [text, setText] = useState<string>(
     parseRollArgument(currentDicePoolOptions).notation
   )
   const [notationParseError, setNotationParseError] = useState(false)
   useEffect(() => {
+    setTextLoading((i) => i + 1)
     const validationResult = validateDiceNotation(text)
     if (validationResult.valid && validationResult.digested) {
       setNotationParseError(false)
@@ -38,6 +40,7 @@ export default function ComplexRollInput({
     } else {
       setNotationParseError(true)
     }
+    setTimeout(() => setTextLoading((i) => i - 1), 800)
   }, [text])
 
   useEffect(() => {
@@ -58,7 +61,11 @@ export default function ComplexRollInput({
           error={!!notationParseError}
           value={text}
         />
-        <ModifierDisplay description={description} error={notationParseError} />
+        <ModifierDisplay
+          loading={textLoading > 0}
+          description={description}
+          error={notationParseError}
+        />
         <RollNotationReference />
       </>
     )

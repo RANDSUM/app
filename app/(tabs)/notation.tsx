@@ -1,4 +1,4 @@
-import { DicePoolOptions, parameterizeRollArgument } from 'randsum'
+import { DicePoolOptions, parseRollArgument } from 'randsum'
 import { useState } from 'react'
 import { Text } from 'react-native-paper'
 import Container from '~components/Container'
@@ -8,7 +8,7 @@ export default function Notation() {
   const [currentDicePoolOptions, setCurrentDicePoolOptions] =
     useState<DicePoolOptions>({ sides: 20, quantity: 1 })
 
-  const parameters = parameterizeRollArgument(currentDicePoolOptions)
+  const parameters = parseRollArgument(currentDicePoolOptions)
 
   return (
     <Container header>

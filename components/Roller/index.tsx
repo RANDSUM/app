@@ -5,7 +5,7 @@ import { router } from 'expo-router'
 import {
   RollResult,
   generateRollResult,
-  parameterizeRollArgument,
+  parseRollArgument,
   parseRollArguments,
 } from 'randsum'
 import { Keyboard, StyleSheet, View } from 'react-native'
@@ -70,7 +70,7 @@ export default function Roller({ savedRoll }: Props) {
   const setCurrentDicePoolOptions: SetRollOptions = (arg) => {
     const newOptions =
       arg instanceof Function ? arg(currentDicePoolOptions) : arg
-    const newParams = parameterizeRollArgument(newOptions)
+    const newParams = parseRollArgument(newOptions)
     setCurrentDicePoolParameters(newParams)
   }
 
