@@ -7,34 +7,31 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ['21.5.0']
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macOS-latest]
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set timezone
-        uses: szenius/set-timezone@v1.2
+      - name: Use Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          timezoneLinux: 'America/New_York'
+          bun-version: latest
 
-      - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
+      - name: Install deps
+        run: bun install
 
-      - name: 📦 Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Check types
-        run: npm run ts:check
+      - name: TypeCheck
+        run: bun ts:check
 
       - name: Lint
-        run: npm run lint
-
-      # - name: Test
-      # run: npm run test
+        run: bun lint
 
       - name: Format
-        run: npm run format
+        run: bun format
+
+      - name: Test
+        run: CI=true bun test
+
+      - name: Build
+        run: bun run build
