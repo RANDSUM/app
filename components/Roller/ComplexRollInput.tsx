@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react'
 
-import { DicePoolOptions, roll, validateDiceNotation } from 'randsum'
+import {
+  DicePoolOptions,
+  parseRollArgument,
+  validateDiceNotation,
+} from 'randsum'
 import { StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 
 import { SetRollOptions } from './types'
 import RollNotationReference from '~components/RollNotationReference'
 import ModifierDisplay from './ModifierDisplay'
-
-const optionsToNotation = (options: DicePoolOptions) => {
-  const result = roll(options)
-  return Object.values(result.dicePools)[0].notation
-}
 
 type Props = {
   currentDicePoolId: string
@@ -28,7 +27,7 @@ export default function ComplexRollInput({
 }: Props) {
   const [loading, setLoading] = useState(false)
   const [text, setText] = useState<string>(
-    optionsToNotation(currentDicePoolOptions)
+    parseRollArgument(currentDicePoolOptions).notation
   )
   const [notationParseError, setNotationParseError] = useState(false)
   useEffect(() => {
@@ -43,7 +42,7 @@ export default function ComplexRollInput({
 
   useEffect(() => {
     setLoading(true)
-    setText(optionsToNotation(currentDicePoolOptions))
+    setText(parseRollArgument(currentDicePoolOptions).notation)
     setLoading(false)
   }, [currentDicePoolId])
 
