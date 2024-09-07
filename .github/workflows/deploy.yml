@@ -36,6 +36,8 @@ jobs:
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_DEPLOY_MESSAGE: 'Deploy from GitHub Actions'
           NETLIFY_DEPLOY_TO_PROD: true
+          install_command: 'echo skipping dependencies installation'
           build_directory: dist
-          build_command: bun run build:web
+          build_command: 'echo skipping redundant build command'
