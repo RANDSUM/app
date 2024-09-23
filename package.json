@@ -29,7 +29,7 @@
     "expo-router": "~3.5.23",
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.24",
-    "randsum": "^4.6.0",
+    "randsum": "^6.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "~0.75.0",
